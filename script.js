@@ -14,4 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
       body.style.overflowX = "hidden";
     }
   });
+
+  const reservationBtnHomeP = document.querySelector(".reservationBtn");
+  reservationBtnHomeP.addEventListener("click", () => {
+    window.location.href = "reserve.php";
+  });
 });

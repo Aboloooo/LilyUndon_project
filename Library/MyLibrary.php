@@ -8,6 +8,18 @@ $password = '';
 $database = 'wesers2';
 $connection = mysqli_connect($host, $username, $password, $database);
 
+
+
+if (!isset($_SESSION["loggedInUser"])) {
+    $_SESSION["loggedInUser"];
+}
+if (!isset($_SESSION["username"])) {
+    $_SESSION["username"];
+}
+if (!isset($_SESSION["Admin"])) {
+    $_SESSION["Admin"];
+}
+
 function NavBar($currentPageLoc)
 {
 ?>
@@ -51,13 +63,5 @@ function NavBar($currentPageLoc)
 <?php
 }
 
-if (!isset($_SESSION["loggedInUser"])) {
-    $_SESSION["loggedInUser"];
-}
-if (!isset($_SESSION["username"])) {
-    $_SESSION["username"];
-}
-if (!isset($_SESSION["Admin"])) {
-    $_SESSION["Admin"];
-}
+
 ?>

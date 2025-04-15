@@ -195,6 +195,124 @@ body {
   box-shadow: #ff6161 0 3px 7px inset;
   transform: translateY(2px);
 }
+
+/* Login page */
+
+.login-container {
+  background-color: #fff;
+  max-width: 400px;
+  width: 100%;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  border-top: 6px solid var(--red); /* Croix-Rouge red */
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 3%;
+}
+
+.login-container h2 {
+  margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #e30613;
+}
+
+.login-container p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.login-container label {
+  display: block;
+  font-size: 14px;
+  margin: 10px 0 5px;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.login-container a.forgot {
+  display: block;
+  font-size: 12px;
+  text-align: right;
+  margin-top: 5px;
+  color: #e30613;
+  text-decoration: none;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  background-color: #e30613;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.separator::before,
+.separator::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ccc;
+}
+
+.separator::before {
+  margin-right: 10px;
+}
+
+.separator::after {
+  margin-left: 10px;
+}
+
+.social-login {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.social-login button {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #000000;
+}
+
+.signup-text {
+  font-size: 13px;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.signup-text a {
+  color: #e30613;
+  text-decoration: none;
+}
+
 /* Responsive styles */
 @media screen and (max-width: 768px) {
   .logo-icon {
@@ -242,5 +360,14 @@ body {
 
   .toggle .line3 {
     transform: rotate(45deg) translate(-5px, -6px);
+  }
+
+  /* login page */
+  .login-container {
+    padding: 20px;
+  }
+
+  .social-login {
+    flex-direction: column;
   }
 }

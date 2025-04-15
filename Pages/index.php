@@ -8,8 +8,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
-  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../style.css? <?= time(); ?>">
   <script src="../script.js"></script>
+  <!-- bank of icons -->
+  <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+  <!-- bank of img 
+  https://www.flaticon.com/free-icons/google 
+  -->
 </head>
 
 <body>

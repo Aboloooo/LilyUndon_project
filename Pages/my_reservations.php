@@ -13,20 +13,9 @@
 </head>
 
 <body>
-  <?= NavBar('index') ?>
+  <?= NavBar('my_reservations') ?>
 
-  <div class="img">
-    <div class="part1">
-      <img src="../img/img1.jpg" alt="" />
-    </div>
-    <?php
 
-    ?>
-    <div class="part2">
-      <h1>Plan | Cook | Enjoy</h1>
-
-      <button class="reservationBtn" role="button">Reserve</button>
-    </div>
 </body>
 
 </html>

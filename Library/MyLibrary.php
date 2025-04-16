@@ -5,19 +5,17 @@ session_start();
 $host = 'localhost';
 $username = 'root';
 $password = '';
-$database = 'wesers2';
+$database = 'Don_Bosco';
 $connection = mysqli_connect($host, $username, $password, $database);
 
-
-
-if (!isset($_SESSION["loggedInUser"])) {
-    $_SESSION["loggedInUser"];
+if (!isset($_SESSION["userLogin"])) {
+    $_SESSION["userLogin"] = false;
 }
 if (!isset($_SESSION["username"])) {
     $_SESSION["username"];
 }
-if (!isset($_SESSION["Admin"])) {
-    $_SESSION["Admin"];
+if (!isset($_SESSION["level"])) {
+    $_SESSION["level"];
 }
 
 function NavBar($currentPageLoc)
@@ -43,7 +41,12 @@ function NavBar($currentPageLoc)
             <li><a href="logout_in.php" <?php
                                         if ($currentPageLoc == "logout_in") {
                                             print("class='active'");
-                                        } ?>>Login/out</a></li>
+                                        }
+                                        $usernameORlink = 'Login';
+                                        if ($_SESSION['userLogin']) {
+                                            $usernameORlink = $_SESSION['username'];
+                                        }
+                                        ?>><img src="../img/user.png" width="25px" height="25px"><?= $usernameORlink ?></a></li>
             <li>
                 <form action="">
                     <select onchange="changeLanguage(this.value)">

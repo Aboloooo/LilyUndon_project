@@ -14,13 +14,40 @@
 
 <body>
   <?= NavBar('logout_in') ?>
+
+  <?php
+  if (isset($_POST['username']) && isset($_POST['password'])) {
+    $loginCheck = $connection->prepare('select * from users where username =?');
+    $loginCheck->bind_param('s', $_POST["username"]);
+    $loginCheck->execute();
+    $result = $loginCheck->get_result();
+    if ($row = $result->fetch_assoc()) {
+      $username = $row['Username'];
+      $password = $row['Password'];
+      $level = $row['Level'];
+
+      if ($password == $_POST['password']) {
+        $_SESSION['username'] = $username;
+        $_SESSION['level'] = $level;
+        $_SESSION["userLogin"] = true;
+        header("location: index.php");
+        exit();
+      } else {
+        echo '<script>alert("Password is incorrect!")</script>';
+      }
+    } else {
+      echo '<script>alert("Username is incorrect!")</script>';
+    }
+  }
+
+  ?>
   <div class="login-container">
     <h2>Welcome to Croix-Rouge 👋</h2>
     <p>Empowering communities with care. Please sign in to manage your reservations and services.</p>
 
-    <form action="login_handler.php" method="POST">
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" placeholder="your@email.com" required />
+    <form action="" method="POST">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="username" required />
 
       <label for="password">Password</label>
       <input type="password" id="password" name="password" placeholder="••••••••" required />
@@ -38,7 +65,7 @@
     </div>
 
     <div class="signup-text">
-      Don’t have an account? <a href="#">Sign up</a>
+      Don't have an account? <a href="#">Sign up</a>
     </div>
   </div>
 

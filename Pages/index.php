@@ -25,12 +25,29 @@
       <img src="../img/img1.jpg" alt="" />
     </div>
     <?php
+    $reserveOrLogout = '';
+    if ($_SESSION['userLogin']) {
+      $reserveOrLogout = 'Logout';
+    } else {
+      $reserveOrLogout = 'Reserve';
+    }
 
+    if ($reserveOrLogout) {
+      if (isset($_POST['Logout'])) {
+        session_unset();
+        session_destroy();
+        header("Refresh:0");
+      }
+      if (isset($_POST['Reserve'])) {
+        header("location: reserve.php");
+      }
+    }
     ?>
     <div class="part2">
       <h1>Plan | Cook | Enjoy</h1>
-
-      <button class="reservationBtn" role="button">Reserve</button>
+      <form action="" method='post'>
+        <button class="reservationBtn" name="<?= $reserveOrLogout ?>" role="button"><?= $reserveOrLogout ?></button>
+      </form>
     </div>
 </body>
 

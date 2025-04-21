@@ -14,7 +14,7 @@
 
 <body>
   <?= NavBar('my_reservations') ?>
-
+  <h1>My Reservations</h1>
 
 </body>
 

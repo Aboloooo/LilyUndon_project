@@ -42,7 +42,9 @@ for ($h = 8; $h <= 20; $h += 2) {
 /* finding last Monday date */
 date_default_timezone_set('Europe/Paris'); // Adjust to your region
 
-$today = new DateTime();
+$today = new DateTime(); //- 7 days * NumberOfWeeks
+
+
 if ($today->format('N') == 1) { // 1 = Monday
   $lastMonday = $today;
 } else {

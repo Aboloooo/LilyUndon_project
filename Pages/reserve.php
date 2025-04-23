@@ -31,9 +31,26 @@
 $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 $times = [];
 
+$currentMonth = date('m');
+$currentYear = date('Y');
+$TotalNumberOfDaysInTheMonth = cal_days_in_month(CAL_GREGORIAN,$currentMonth,$currentYear);
+
 for ($h = 8; $h <= 20; $h += 2) {
   $times[] = sprintf('%02d:00 - %02d:00', $h, $h + 2);
 }
+
+/* finding last Monday date */
+date_default_timezone_set('Europe/Paris'); // Adjust to your region
+
+$today = new DateTime();
+if ($today->format('N') == 1) { // 1 = Monday
+  $lastMonday = $today;
+} else {
+  $lastMonday = clone $today;
+  $lastMonday->modify('last monday');
+}
+$lastMondayDate = $lastMonday->format("d");
+$weekDaysDate += $lastMondayDate+1; 
 
 // Example reserved slots
 $reservedSlots = [
@@ -54,7 +71,7 @@ $reservedSlots = [
     <tr>
       <th>Time</th>
       <?php foreach ($days as $day): ?>
-        <th><?= $day ?></th>
+        <th><?= $day, $weekDaysDate?></th>
       <?php endforeach; ?>
     </tr>
   </thead>

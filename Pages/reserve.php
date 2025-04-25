@@ -28,80 +28,98 @@
 
     <h1>Kitchen Reservation Calendar</h1>
     <?php
-$days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-$times = [];
+    $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    $times = [];
 
-$currentMonth = date('m');
-$currentYear = date('Y');
-$TotalNumberOfDaysInTheMonth = cal_days_in_month(CAL_GREGORIAN,$currentMonth,$currentYear);
+    $currentMonth = date('m');
+    $currentYear = date('Y');
+    $TotalNumberOfDaysInTheMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
 
-for ($h = 8; $h <= 20; $h += 2) {
-  $times[] = sprintf('%02d:00 - %02d:00', $h, $h + 2);
-}
+    for ($h = 8; $h <= 20; $h += 2) {
+      $times[] = sprintf('%02d:00 - %02d:00', $h, $h + 2);
+    }
+    // Example reserved slots
+    $reservedSlots = [
+      'Monday' => ['10:00 - 12:00'],
+      'Wednesday' => ['14:00 - 16:00'],
+      'Saturday' => ['18:00 - 20:00']
+    ];
 
-/* finding last Monday date */
-date_default_timezone_set('Europe/Paris'); // Adjust to your region
+    /* Finding last Monday date */
+    $lastMonday = date('d', strtotime('monday this week')); //- 7 days * NumberOfWeeks
+    $lastMondayDate = $lastMonday - 1; // -1, will be fixed in the following function
 
-$today = new DateTime(); //- 7 days * NumberOfWeeks
+    $currentWeekStart = date('Y-m-d', $lastMonday);
+    $currentWeekEnd = date('Y-m-d', strtotime('sunday', $lastMonday));
+
+    $weekOffset = isset($_GET['week']) ? intval($_GET['week']) : 0;
+    if (isset($_GET['prevWeek'])) {
+      $weekOffset--;
+    } elseif (isset($_GET['nextWeek'])) {
+      $weekOffset++;
+    }
+
+    $nextMonday = strtotime("+1 week", $lastMonday);
+    $prevMonday = strtotime("-1 week", $lastMonday);
+
+    /* function of movement calender btns  */
+    /* previous week btn */
+
+    function dateCalculator()
+    {
+      global $lastMondayDate;
+      ($lastMondayDate += 1) % 7;
+      return $lastMondayDate;
+    }
 
 
-if ($today->format('N') == 1) { // 1 = Monday
-  $lastMonday = $today;
-} else {
-  $lastMonday = clone $today;
-  $lastMonday->modify('last monday');
-}
-$lastMondayDate = $lastMonday->format("d");
-$weekDaysDate += $lastMondayDate+1; 
+    ?>
+    <div class="reservation_table_content">
+      <table class="reservationTable" border="1" cellspacing="0" cellpadding="10">
 
-// Example reserved slots
-$reservedSlots = [
-  'Monday' => ['10:00 - 12:00'],
-  'Wednesday' => ['14:00 - 16:00'],
-  'Saturday' => ['18:00 - 20:00']
-];
-?>
- 
-<table class="reservationTable" border="1" cellspacing="0" cellpadding="10" >
+        <thead>
 
-  <thead>
-  <div class="calMovement">
-        <button id="prevMonth">◀</button>
-        <span id="monthYear"></span>
-        <button id="nextMonth">▶</button>
-      </div>
-    <tr>
-      <th>Time</th>
-      <?php foreach ($days as $day): ?>
-        <th><?= $day, $weekDaysDate?></th>
-      <?php endforeach; ?>
-    </tr>
-  </thead>
-  <tbody>
-    <?php foreach ($times as $time): ?>
-      <tr>
-        <td><strong><?= $time ?></strong></td>
-        <?php foreach ($days as $day): ?>
-          <?php
-            $isReserved = isset($reservedSlots[$day]) && in_array($time, $reservedSlots[$day]);
-          ?>
-          <td style="background-color: <?= $isReserved ? '#f8d7da' : '#d4edda'; ?>;">
-            <?php if ($isReserved): ?>
-              Reserved
-            <?php else: ?>
-              <form method="POST" action="reserve_slot.php" style="margin:0;">
-                <input type="hidden" name="day" value="<?= $day ?>">
-                <input type="hidden" name="time" value="<?= $time ?>">
-                <button type="submit" class="reserveBtn">Available</button>
-              </form>
-            <?php endif; ?>
-          </td>
-        <?php endforeach; ?>
-      </tr>
-    <?php endforeach; ?>
-  </tbody>
-</table>
+          <div class="calMovement">
+            <form action="" method="get">
+              <button id="prevWeek" name="prevWeek">◀</button>
+              <span id="monthYear"> this needs to be changed according to shown dates <?= date('Y-m') ?></span>
+              <button id="nextWeek" name="nextWeek">▶</button>
+            </form>
+          </div>
+          <tr>
+            <th>Time</th>
 
+            <?php foreach ($days as $day): ?>
+              <th><?= $day,
+                  dateCalculator(); ?></th>
+            <?php endforeach; ?>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($times as $time): ?>
+            <tr>
+              <td><strong><?= $time ?></strong></td>
+              <?php foreach ($days as $day): ?>
+                <?php
+                $isReserved = isset($reservedSlots[$day]) && in_array($time, $reservedSlots[$day]);
+                ?>
+                <td style="background-color: <?= $isReserved ? '#f8d7da' : '#d4edda'; ?>;">
+                  <?php if ($isReserved): ?>
+                    Reserved
+                  <?php else: ?>
+                    <form method="POST" action="reserve_slot.php" style="margin:0;">
+                      <input type="hidden" name="day" value="<?= $day ?>">
+                      <input type="hidden" name="time" value="<?= $time ?>">
+                      <button type="submit" class="reserveBtn">Available</button>
+                    </form>
+                  <?php endif; ?>
+                </td>
+              <?php endforeach; ?>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
 
 
   </body>

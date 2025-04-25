@@ -314,24 +314,22 @@ body {
 }
 
 /* Reservation calender */
-.reservationTable{
-margin-left: auto;
-margin-right: auto;
-width: 70%;
-text-align: center;
+.reservationTable {
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+  text-align: center;
 }
-.reserveBtn{
-  background:none;
-  border:none;
-  color:#155724;
-  cursor:pointer;
+.reserveBtn {
+  background: none;
+  border: none;
+  color: #155724;
+  cursor: pointer;
 }
-.calMovement{
+.calMovement {
   display: flex;
   justify-content: space-around;
 }
-
-
 
 /* Responsive styles */
 @media screen and (max-width: 768px) {

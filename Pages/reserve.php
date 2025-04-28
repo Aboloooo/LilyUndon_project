@@ -27,6 +27,7 @@
   <body>
 
     <h1>Kitchen Reservation Calendar</h1>
+
     <?php
     $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     $times = [];
@@ -38,6 +39,7 @@
     for ($h = 8; $h <= 20; $h += 2) {
       $times[] = sprintf('%02d:00 - %02d:00', $h, $h + 2);
     }
+
     // Example reserved slots
     $reservedSlots = [
       'Monday' => ['10:00 - 12:00'],
@@ -45,13 +47,13 @@
       'Saturday' => ['18:00 - 20:00']
     ];
 
+    $minOffset = 0;
+    $maxOffset = 5;
+
     /* Finding last Monday date */
-    $lastMonday = date('d', strtotime('monday this week')); //- 7 days * NumberOfWeeks
-    $lastMondayDate = $lastMonday - 1; // -1, will be fixed in the following function
+    $lastMonday = strtotime('monday this week'); // timestamp of this week's Monday
 
-    $currentWeekStart = date('Y-m-d', $lastMonday);
-    $currentWeekEnd = date('Y-m-d', strtotime('sunday', $lastMonday));
-
+    /* handle week offset */
     $weekOffset = isset($_GET['week']) ? intval($_GET['week']) : 0;
     if (isset($_GET['prevWeek'])) {
       $weekOffset--;
@@ -59,42 +61,46 @@
       $weekOffset++;
     }
 
-    $nextMonday = strtotime("+1 week", $lastMonday);
-    $prevMonday = strtotime("-1 week", $lastMonday);
-
-    /* function of movement calender btns  */
-    /* previous week btn */
-
-    function dateCalculator()
-    {
-      global $lastMondayDate;
-      ($lastMondayDate += 1) % 7;
-      return $lastMondayDate;
+    if ($weekOffset < $minOffset) {
+      $weekOffset = $minOffset;
+    }
+    if ($weekOffset > $maxOffset) {
+      $weekOffset = $maxOffset;
     }
 
+    $startOfWeek = strtotime("+$weekOffset week", $lastMonday);
 
+    $currentMonthYear = date('Y-m F', $startOfWeek);
+    $currentMonthYearName = date('F', $startOfWeek);
+
+    // get dates for each day
+    $weekDates = [];
+    for ($i = 0; $i < 7; $i++) {
+      $weekDates[] = date('d/m', strtotime("+$i day", $startOfWeek));
+    }
     ?>
+
     <div class="reservation_table_content">
+
+      <div class="calMovement">
+        <form action="" method="get" class="calendar-nav">
+          <button id="prevWeek" name="prevWeek">◀</button>
+          <span id="monthYear"><?= $currentMonthYear ?></span>
+          <button id="nextWeek" name="nextWeek">▶</button>
+          <input type="hidden" name="week" value="<?= $weekOffset ?>">
+        </form>
+      </div>
+
       <table class="reservationTable" border="1" cellspacing="0" cellpadding="10">
-
         <thead>
-
-          <div class="calMovement">
-            <form action="" method="get">
-              <button id="prevWeek" name="prevWeek">◀</button>
-              <span id="monthYear"> this needs to be changed according to shown dates <?= date('Y-m') ?></span>
-              <button id="nextWeek" name="nextWeek">▶</button>
-            </form>
-          </div>
           <tr>
             <th>Time</th>
-
-            <?php foreach ($days as $day): ?>
-              <th><?= $day,
-                  dateCalculator(); ?></th>
+            <?php foreach ($days as $index => $day): ?>
+              <th><?= $day ?><br><small>(<?= $weekDates[$index] ?>)</small></th>
             <?php endforeach; ?>
           </tr>
         </thead>
+
         <tbody>
           <?php foreach ($times as $time): ?>
             <tr>
@@ -118,11 +124,13 @@
             </tr>
           <?php endforeach; ?>
         </tbody>
+
       </table>
     </div>
 
-
   </body>
+
+
 
   </html>
 

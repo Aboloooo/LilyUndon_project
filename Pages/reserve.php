@@ -76,6 +76,28 @@
     $currentMonthYear = date('Y-m F', $startOfWeek);
     $currentMonthYearName = date('F', $startOfWeek);
 
+
+
+    if (isset($_POST['reservationBtn'])) {
+      $userIDStmt = $connection->prepare("SELECT UserID FROM users WHERE Username = ?");
+      $userIDStmt->bind_param('s', $_SESSION['username']);
+      $userIDStmt->execute();
+      $result = $userIDStmt->get_result();
+      $row = $result->fetch_assoc();
+      $userId = $row['UserID'];
+
+      $sqlReservationInsert = $connection->prepare('insert into reservation(Reserved_by_userID,StartMoment) values (?,?) ');
+
+      $sqlReservationInsert->bind_param('is', $userId, $currentTimeSlot);
+      if ($sqlReservationInsert->execute()) {
+        echo "<script>alert('Reservation done successfully!')</script>";
+      } else {
+        echo "<script>alert('Error']')</script>";
+      }
+    }
+
+
+
     // get dates for each day
     $weekDates = [];
     $weekDatesAnotherFormat = [];
@@ -115,14 +137,17 @@
 
                 <?php
                 $currentTimeSlot = $weekDatesAnotherFormat[$index] . " " . substr($time, 0, 5);
-                $sqlSelect = $connection->prepare("SELECT * from reservation where StartMoment = '$currentTimeSlot'");
+                $sqlSelect = $connection->prepare("SELECT * FROM reservation WHERE StartMoment = ?");
+                $sqlSelect->bind_param("s", $currentTimeSlot);                
                 $sqlSelect->execute();
                 $result = $sqlSelect->get_result();
-                if ($result->num_rows == 0)
+                if ($result->num_rows == 0) {
                   $isReserved = false;
-                else
+                } else {
                   $isReserved = true;
+                }
 
+               
                 ?>
 
                 <td style="background-color: <?= $isReserved ? '#f8d7da' : '#d4edda'; ?>;">
@@ -130,10 +155,10 @@
                   <?php if ($isReserved): ?>
                     Reserved
                   <?php else: ?>
-                    <form method="POST" action="reserve_slot.php" style="margin:0;">
+                    <form method="POST" style="margin:0;">
                       <input type="hidden" name="day" value="<?= $day ?>">
                       <input type="hidden" name="time" value="<?= $time ?>">
-                      <button type="submit" class="reserveBtn">Available</button>
+                      <button type="submit" class="reserveBtn" name="reservationBtn">Available</button>
                     </form>
                   <?php endif; ?>
                 </td>

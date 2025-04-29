@@ -17,6 +17,9 @@ if (!isset($_SESSION["username"])) {
 if (!isset($_SESSION["level"])) {
     $_SESSION["level"];
 }
+if (!isset($_SESSION["Admin"])) {
+    $_SESSION["Admin"];
+}
 
 function NavBar($currentPageLoc)
 {
@@ -38,6 +41,18 @@ function NavBar($currentPageLoc)
                                                 if ($currentPageLoc == "my_reservations") {
                                                     print("class='active'");
                                                 } ?>>My Reservations</a></li>
+                                                <?php
+                                                /* if user is admin the following link must be display in navigation bar */
+                                               if(isset($_SESSION['Admin']) && $_SESSION["Admin"]){
+                                                ?>
+<li><a href="add_user.php" <?php
+                                                if ($currentPageLoc == "add_user") {
+                                                    print("class='active'");
+                                                } ?>>Add User</a></li>
+<?php
+                                               }
+                                                ?>
+
             <li><a href="logout_in.php" <?php
                                         if ($currentPageLoc == "logout_in") {
                                             print("class='active'");

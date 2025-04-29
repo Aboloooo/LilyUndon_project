@@ -31,6 +31,9 @@
         $_SESSION['username'] = $username;
         $_SESSION['level'] = $level;
         $_SESSION["userLogin"] = true;
+        if(strtoupper($level) == 'ADMIN'){
+          $_SESSION["Admin"] = true;
+        }
         header("location: index.php");
         exit();
       } else {
@@ -69,8 +72,9 @@
         <div class="signup-text">
           Don't have an account? <a href="#">Sign up</a>
         </div>
+        </form>
   </div>
-  </form>
+  
 <?php
       } else {
 ?>

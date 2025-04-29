@@ -47,7 +47,7 @@
       'Saturday' => ['18:00 - 20:00']
     ];
 
-    $minOffset = 0;
+    $minOffset = -1;
     $maxOffset = 5;
 
     /* Finding last Monday date */
@@ -67,6 +67,9 @@
     if ($weekOffset > $maxOffset) {
       $weekOffset = $maxOffset;
     }
+    if (isset($_GET['prevWeek']) && $minOffset = -1) {
+      $minOffset = -1;
+    }
 
     $startOfWeek = strtotime("+$weekOffset week", $lastMonday);
 
@@ -75,8 +78,10 @@
 
     // get dates for each day
     $weekDates = [];
+    $weekDatesAnotherFormat = [];
     for ($i = 0; $i < 7; $i++) {
       $weekDates[] = date('d/m', strtotime("+$i day", $startOfWeek));
+      $weekDatesAnotherFormat[] = date('Y:m:d', strtotime("+$i day", $startOfWeek));
     }
     ?>
 
@@ -105,11 +110,23 @@
           <?php foreach ($times as $time): ?>
             <tr>
               <td><strong><?= $time ?></strong></td>
-              <?php foreach ($days as $day): ?>
+              <?php foreach ($days as $index => $day): ?>
+
+
                 <?php
-                $isReserved = isset($reservedSlots[$day]) && in_array($time, $reservedSlots[$day]);
+                $currentTimeSlot = $weekDatesAnotherFormat[$index] . " " . substr($time, 0, 5);
+                $sqlSelect = $connection->prepare("SELECT * from reservation where StartMoment = '$currentTimeSlot'");
+                $sqlSelect->execute();
+                $result = $sqlSelect->get_result();
+                if ($result->num_rows == 0)
+                  $isReserved = false;
+                else
+                  $isReserved = true;
+
                 ?>
+
                 <td style="background-color: <?= $isReserved ? '#f8d7da' : '#d4edda'; ?>;">
+
                   <?php if ($isReserved): ?>
                     Reserved
                   <?php else: ?>

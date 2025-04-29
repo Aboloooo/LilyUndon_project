@@ -1,4 +1,5 @@
-CREATE DATABASE IF NOT EXISTS Don_Bosco;
+drop DATABASE Don_Bosco;
+CREATE DATABASE Don_Bosco;
 USE Don_Bosco;
 
 
@@ -10,7 +11,7 @@ CREATE TABLE users (
     Last_name VARCHAR(255),
     Email VARCHAR(255),
     Level VARCHAR(255),
-    user_must_change_password boolean;
+    user_must_change_password boolean
     /* Zero is considered as false, nonzero values are considered as true.  */
 );
 
@@ -22,8 +23,10 @@ VALUES
 CREATE TABLE IF NOT EXISTS reservation (
     ReservationID INT PRIMARY KEY AUTO_INCREMENT,
     Reserved_by_userID INT,
-    StartTime TIME,
-    EndTime TIME,
-    ReserveDate DATE,
+    StartMoment DATETIME,
     FOREIGN KEY (Reserved_by_userID) REFERENCES users(UserID) ON DELETE CASCADE
 );
+
+insert into reservation(Reserved_by_userID,StartMoment) Values(2, "2025-04-28 12:00:00");
+insert into reservation(Reserved_by_userID,StartMoment) Values(2, "2025-04-30 10:00:00");
+insert into reservation(Reserved_by_userID,StartMoment) Values(2, "2025-05-03 08:00:00");

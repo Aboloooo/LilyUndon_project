@@ -1,0 +1,15 @@
+Only an admin can create user via web intercafe
+
+Add a smart option for users to be able to change their password
+
+Each user must be forced to change their password after first login
+
+Confirmation for reserving a time slot
+
+A user can not reserve more than two time slot per week
+
+Each user must be able to see their reservations in My Reservation page
+
+Translation
+
+Making everything responsive

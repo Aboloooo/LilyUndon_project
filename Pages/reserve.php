@@ -1,5 +1,5 @@
 <!-- <?php
- session_start();
+      session_start();
       include_once("../Library/MyLibrary.php");
       ?> -->
 <!DOCTYPE html>
@@ -64,40 +64,32 @@
 
 
     if (isset($_POST['reservationBtn'])) {
-      $userIDStmt = $connection->prepare("SELECT UserID FROM users WHERE Username = ?");
-      $userIDStmt->bind_param('s', $_SESSION['username']);
-      $userIDStmt->execute();
-      $result = $userIDStmt->get_result();
-      $row = $result->fetch_assoc();
-      $userId = $row['UserID'];
+      if (isset($_SESSION['username'])) {
+        $userIDStmt = $connection->prepare("SELECT UserID FROM users WHERE Username = ?");
+        $userIDStmt->bind_param('s', $_SESSION['username']);
+        $userIDStmt->execute();
+        $result = $userIDStmt->get_result();
+        $row = $result->fetch_assoc();
 
-      $date= $_POST['day'];
-      $time= $_POST['time'];
+        $userId = $row['UserID'];
+        $date = $_POST['day'];
+        $time = $_POST['time'];
 
-      $currentTimeSlot = date('Y-m-d', strtotime($date)) . ' ' . substr($time, 0, 5);
+        $currentTimeSlot = date('Y-m-d', strtotime($date)) . ' ' . substr($time, 0, 5);
 
 
+        $sqlReservationInsert = $connection->prepare('insert into reservation(Reserved_by_userID,StartMoment) values (?,?) ');
 
-      $sqlReservationInsert = $connection->prepare('insert into reservation(Reserved_by_userID,StartMoment) values (?,?) ');
-
-      $sqlReservationInsert->bind_param('is', $userId, $currentTimeSlot);
-      if ($sqlReservationInsert->execute()) {
-        echo "<script>alert('Reservation done successfully!')</script>";
+        $sqlReservationInsert->bind_param('is', $userId, $currentTimeSlot);
+        if ($sqlReservationInsert->execute()) {
+          echo "<script>alert('Reservation done successfully!')</script>";
+        } else {
+          echo "<script>alert('Error']')</script>";
+        }
       } else {
-        echo "<script>alert('Error']')</script>";
+        echo "<script>alert('Plase login first!')</script>";
       }
     }
-
-    /* coloring past timeslots */
-    $Date = $_POST['day'];
-    $time = $_POST['time'];
-    $timeSlot = date('Y-m-d', strtotime($Date)) . ' ' . substr($time, 0, 5);
-
-    $dateNow = new DateTime();
-    $now->format('Y-m-d H:i'); // Outputs: 2025-04-28 12:00
-
-    $past = ($timeslot < $now) ? 'style="background-color: #e0e0e0;"' : '';
-    
 
 
     // get dates for each day
@@ -125,13 +117,13 @@
           <tr>
             <th>Time</th>
 
-            <?php 
+            <?php
             $today = date('d/m');
             foreach ($days as $index => $day):
               $isToday = ($weekDates[$index] === $today);
-              $BackHeadingColor = $isToday ?'style="background-color: #e3f2fd;"' : ''; 
+              $BackHeadingColor = $isToday ? 'style="background-color: #e3f2fd;"' : '';
             ?>
-              <th <?=$BackHeadingColor?>><?= $day ?><br><small>(<?= $weekDates[$index] ?>)</small></th>
+              <th <?= $BackHeadingColor ?>><?= $day ?><br><small>(<?= $weekDates[$index] ?>)</small></th>
             <?php endforeach; ?>
           </tr>
         </thead>
@@ -141,35 +133,40 @@
             <tr>
               <td><strong><?= $time ?></strong></td>
               <?php foreach ($days as $index => $day): ?>
-
-
                 <?php
-                   $currentTimeSlot = $weekDatesAnotherFormat[$index] . " " . substr($time, 0, 5);
-                   $sqlSelect = $connection->prepare("SELECT * FROM reservation WHERE StartMoment = ?");
-                   $sqlSelect->bind_param("s", $currentTimeSlot);                
-                   $sqlSelect->execute();
-                   $result = $sqlSelect->get_result();
-                   if ($result->num_rows == 0) {
-                     $isReserved = false;
-                   } else {
-                     $isReserved = true;
-                   }
-   
+                $currentTimeSlot = $weekDatesAnotherFormat[$index] . " " . substr($time, 0, 5);
+                $currentTimeSlotDateTime = DateTime::createFromFormat('Y:m:d H:i', $currentTimeSlot);
+                $now = new DateTime();
 
-               
+                $isPast = $currentTimeSlotDateTime < $now;
+
+                $sqlSelect = $connection->prepare("SELECT * FROM reservation WHERE StartMoment = ?");
+                $sqlSelect->bind_param("s", $currentTimeSlot);
+                $sqlSelect->execute();
+                $result = $sqlSelect->get_result();
+                if ($result->num_rows == 0) {
+                  $isReserved = false;
+                } else {
+                  $isReserved = true;
+                }
+                $cellColor = $isReserved ? '#f8d7da' : ($isPast ? '#e0e0e0' : '#d4edda');
+
                 ?>
 
-                <td style="background-color: <?= $isReserved ? '#f8d7da' : $past; ?>;">
+                <td style="background-color: <?= $cellColor ?>;">
 
-                  <?php if ($isReserved): ?>
+                  <?php if ($isReserved) { ?>
                     Reserved
-                  <?php else: ?>
+                  <?php } else { ?>
                     <form method="POST" style="margin:0;">
                       <input type="hidden" name="day" value="<?= $day ?>">
                       <input type="hidden" name="time" value="<?= $time ?>">
-                      <button type="submit" class="reserveBtn" name="reservationBtn">Available</button>
+                      <button type="submit" class="reserveBtn" name="reservationBtn" <?= ($isPast ? 'disabled style="background-color: #ccc; cursor: not-allowed;"' : '') ?>>
+                        <?= $isPast ? 'Past' : 'Available' ?>
+                      </button>
                     </form>
-                  <?php endif; ?>
+                  <?php } ?>
+
                 </td>
               <?php endforeach; ?>
             </tr>
@@ -180,13 +177,5 @@
     </div>
 
   </body>
-
-
-
-  </html>
-
-
-
-</body>
 
 </html>

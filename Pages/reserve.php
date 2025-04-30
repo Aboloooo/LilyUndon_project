@@ -88,6 +88,16 @@
       }
     }
 
+    /* coloring past timeslots */
+    $Date = $_POST['day'];
+    $time = $_POST['time'];
+    $timeSlot = date('Y-m-d', strtotime($Date)) . ' ' . substr($time, 0, 5);
+
+    $dateNow = new DateTime();
+    $now->format('Y-m-d H:i'); // Outputs: 2025-04-28 12:00
+
+    $past = ($timeslot < $now) ? 'style="background-color: #e0e0e0;"' : '';
+    
 
 
     // get dates for each day
@@ -127,8 +137,6 @@
         </thead>
 
         <tbody>
-        /*  $pastTime = ( < DateTime()) */
-
           <?php foreach ($times as $time): ?>
             <tr>
               <td><strong><?= $time ?></strong></td>
@@ -151,7 +159,7 @@
                
                 ?>
 
-                <td style="background-color: <?= $isReserved ? '#f8d7da' : '#d4edda'; ?>;">
+                <td style="background-color: <?= $isReserved ? '#f8d7da' : $past; ?>;">
 
                   <?php if ($isReserved): ?>
                     Reserved

@@ -1,4 +1,5 @@
 <!-- <?php
+ session_start();
       include_once("../Library/MyLibrary.php");
       ?> -->
 <!DOCTYPE html>
@@ -7,22 +8,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <title>Kitchen Reservation Calendar</title>
   <link rel="stylesheet" href="../style.css? <?= time(); ?>">
   <script src="../script.js"></script>
 </head>
 
 <body>
   <?= NavBar('reserve') ?>
-  <!DOCTYPE html>
-  <html lang="en">
-
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kitchen Reservation Calendar</title>
-    <link rel="stylesheet" href="calendar.css" />
-  </head>
 
   <body>
 
@@ -39,13 +31,6 @@
     for ($h = 8; $h <= 20; $h += 2) {
       $times[] = sprintf('%02d:00 - %02d:00', $h, $h + 2);
     }
-
-    // Example reserved slots
-    $reservedSlots = [
-      'Monday' => ['10:00 - 12:00'],
-      'Wednesday' => ['14:00 - 16:00'],
-      'Saturday' => ['18:00 - 20:00']
-    ];
 
     $minOffset = -1;
     $maxOffset = 5;
@@ -86,6 +71,13 @@
       $row = $result->fetch_assoc();
       $userId = $row['UserID'];
 
+      $date= $_POST['day'];
+      $time= $_POST['time'];
+
+      $currentTimeSlot = date('Y-m-d', strtotime($date)) . ' ' . substr($time, 0, 5);
+
+
+
       $sqlReservationInsert = $connection->prepare('insert into reservation(Reserved_by_userID,StartMoment) values (?,?) ');
 
       $sqlReservationInsert->bind_param('is', $userId, $currentTimeSlot);
@@ -122,13 +114,21 @@
         <thead>
           <tr>
             <th>Time</th>
-            <?php foreach ($days as $index => $day): ?>
-              <th><?= $day ?><br><small>(<?= $weekDates[$index] ?>)</small></th>
+
+            <?php 
+            $today = date('d/m');
+            foreach ($days as $index => $day):
+              $isToday = ($weekDates[$index] === $today);
+              $BackHeadingColor = $isToday ?'style="background-color: #e3f2fd;"' : ''; 
+            ?>
+              <th <?=$BackHeadingColor?>><?= $day ?><br><small>(<?= $weekDates[$index] ?>)</small></th>
             <?php endforeach; ?>
           </tr>
         </thead>
 
         <tbody>
+        /*  $pastTime = ( < DateTime()) */
+
           <?php foreach ($times as $time): ?>
             <tr>
               <td><strong><?= $time ?></strong></td>
@@ -136,16 +136,17 @@
 
 
                 <?php
-                $currentTimeSlot = $weekDatesAnotherFormat[$index] . " " . substr($time, 0, 5);
-                $sqlSelect = $connection->prepare("SELECT * FROM reservation WHERE StartMoment = ?");
-                $sqlSelect->bind_param("s", $currentTimeSlot);                
-                $sqlSelect->execute();
-                $result = $sqlSelect->get_result();
-                if ($result->num_rows == 0) {
-                  $isReserved = false;
-                } else {
-                  $isReserved = true;
-                }
+                   $currentTimeSlot = $weekDatesAnotherFormat[$index] . " " . substr($time, 0, 5);
+                   $sqlSelect = $connection->prepare("SELECT * FROM reservation WHERE StartMoment = ?");
+                   $sqlSelect->bind_param("s", $currentTimeSlot);                
+                   $sqlSelect->execute();
+                   $result = $sqlSelect->get_result();
+                   if ($result->num_rows == 0) {
+                     $isReserved = false;
+                   } else {
+                     $isReserved = true;
+                   }
+   
 
                
                 ?>

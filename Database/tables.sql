@@ -27,6 +27,6 @@ CREATE TABLE IF NOT EXISTS reservation (
     FOREIGN KEY (Reserved_by_userID) REFERENCES users(UserID) ON DELETE CASCADE
 );
 
-insert into reservation(Reserved_by_userID,StartMoment) Values(2, "2025-04-28 12:00:00");
-insert into reservation(Reserved_by_userID,StartMoment) Values(2, "2025-04-30 10:00:00");
-insert into reservation(Reserved_by_userID,StartMoment) Values(2, "2025-05-03 08:00:00");
+insert into reservation(Reserved_by_userID,StartMoment) Values(2, "2025-04-28 12:00");
+insert into reservation(Reserved_by_userID,StartMoment) Values(2, "2025-04-30 10:00");
+insert into reservation(Reserved_by_userID,StartMoment) Values(2, "2025-05-03 08:00");

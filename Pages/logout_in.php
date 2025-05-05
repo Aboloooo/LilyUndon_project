@@ -1,5 +1,5 @@
 <!-- <?php
- session_start();
+      session_start();
       include_once("../Library/MyLibrary.php");
       ?> -->
 <!DOCTYPE html>
@@ -32,7 +32,7 @@
         $_SESSION['username'] = $username;
         $_SESSION['level'] = $level;
         $_SESSION["userLogin"] = true;
-        if(strtoupper($level) == 'ADMIN'){
+        if (strtoupper($level) == 'ADMIN') {
           $_SESSION["Admin"] = true;
         }
         header("location: index.php");
@@ -44,6 +44,21 @@
       echo '<script>alert("Username is incorrect!")</script>';
     }
   }
+
+  // user will be double checked to see if user still use their initial pass or not
+  /*   if (isset($_SESSION['username'])) {
+    $sqlChangeYourPass = $connection->prepare('select user_must_change_password from users where username=?');
+    $sqlChangeYourPass->bind_param('s', $_SESSION['username']);
+    $sqlChangeYourPass->execute();
+    $result = $sqlChangeYourPass->get_result();
+    $row = $result->fetch_assoc();
+    if ($row["user_must_change_password"] == 1) {
+      $_SESSION['userMustChangeThePass'] = true;
+    }
+    if ($_SESSION['userMustChangeThePass']) {
+      header("location: logout_in.php");
+    }
+  } */
 
   ?>
   <div class="login-container">
@@ -73,9 +88,9 @@
         <div class="signup-text">
           Don't have an account? <a href="#">Sign up</a>
         </div>
-        </form>
+    </form>
   </div>
-  
+
 <?php
       } else {
 ?>

@@ -1,5 +1,5 @@
 <!-- <?php
- session_start();
+      session_start();
       include_once("../Library/MyLibrary.php");
       ?> -->
 <!DOCTYPE html>
@@ -43,6 +43,7 @@
         header("location: reserve.php");
       }
     }
+
     ?>
     <div class="part2">
       <h1>Plan | Cook | Enjoy</h1>

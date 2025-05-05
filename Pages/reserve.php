@@ -84,7 +84,7 @@
         if ($sqlReservationInsert->execute()) {
           echo "<script>alert('Reservation done successfully!')</script>";
         } else {
-          echo "<script>alert('Error']')</script>";
+          echo "<script>alert('Error')</script>";
         }
       } else {
         echo "<script>alert('Plase login first!')</script>";

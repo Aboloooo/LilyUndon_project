@@ -64,6 +64,8 @@
 
 
     if (isset($_POST['reservationBtn'])) {
+      $canBookTimeSlot = false;
+
       if (isset($_SESSION['username'])) {
         $userIDStmt = $connection->prepare("SELECT UserID FROM users WHERE Username = ?");
         $userIDStmt->bind_param('s', $_SESSION['username']);
@@ -74,6 +76,32 @@
         $userId = $row['UserID'];
         $date = $_POST['day'];
         $time = $_POST['time'];
+
+
+         //here we will check if this user has reserved the kitchen more than 4 times
+         $reservationCheckStatement = $connection->prepare('select count(*) from reservation where Reserved_by_userID = ?');
+         $reservationCheckStatement->bind_param('i' , $userId);
+         $reservationCheckStatement->execute();
+        $resultOfReservationCheck = $reservationCheckStatement->get_result();
+        $rowOfReservationCheck = $resultOfReservationCheck->fetch_assoc();
+
+         if($rowOfReservationCheck){
+          if($rowOfReservationCheck <= 4){
+            $canBookTimeSlot = true;
+          }
+         }else{
+          $canBookTimeSlot = false;
+         }
+
+         if($canBookTimeSlot){
+// user can continue booking if reservation hasnt been done more than 4 times 
+
+         }else{
+          echo "<script>alert('You already pass your reservatin limit!')</script>";
+         }
+
+         
+  
 
         $currentTimeSlot = date('Y-m-d', strtotime($date)) . ' ' . substr($time, 0, 5);
 
@@ -87,8 +115,15 @@
           echo "<script>alert('Error')</script>";
         }
       } else {
-        echo "<script>alert('Plase login first!')</script>";
+        echo "<script>
+        alert('Plase login first!')
+          window.location.href = 'logout_in.php';
+        </script>";
+      
+      
       }
+
+      
     }
 
 
@@ -158,7 +193,7 @@
                   <?php if ($isReserved) { ?>
                     Reserved
                   <?php } else { ?>
-                    <form method="POST" style="margin:0;">
+                    <form method="POST" style="margin:0;" onsubmit="return confirm('Are you sure you want to reserve this time?');">
                       <input type="hidden" name="day" value="<?= $day ?>">
                       <input type="hidden" name="time" value="<?= $time ?>">
                       <button type="submit" class="reserveBtn" name="reservationBtn" <?= ($isPast ? 'disabled style="background-color: #ccc; cursor: not-allowed;"' : '') ?>>

@@ -2,13 +2,15 @@ Only an admin can create user via web intercafe > done
 
 Add a smart option for users to be able to change their password > idk
 
-Each user must be forced to change their password after first login
+Each user must be forced to change their password after first login     >       done
 
-if user hasnt login yet, and click on reserve btn in index page, user must be redirected to login page
+User will be redirected to login page until user change their password
 
-Confirmation for reserving a time slot
+if user hasnt login yet, and click on reserve btn in index page, user must be redirected to login page      >   done
 
-A user can not reserve more than two time slot per week
+Confirmation for reserving a time slot      >       done
+
+A user can not reserve more than four times per week        
 
 Each user must be able to see their reservations in My Reservation page
 

@@ -74,7 +74,7 @@
             <input type="text" id="username" name="last_name" placeholder="Last name" required />
 
             <label for="CNS">Social security number</label>
-            <input type="text" id="username" name="CNS_number" placeholder="CNS number" required />
+            <input type="text" id="username" name="CNS_number" placeholder="CNS number" pattern="\d{13}" maxlength="13" minlength="13" required />
 
             <label for="username">Username</label>
             <input type="text" id="username" name="username" placeholder="username" required />

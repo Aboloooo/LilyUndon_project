@@ -21,14 +21,14 @@ if (!isset($_SESSION["Admin"])) {
     $_SESSION["Admin"];
 }
 if (!isset($_SESSION["userMustChangeThePass"])) {
-    $_SESSION["userMustChangeThePass"];
+    $_SESSION["userMustChangeThePass"] = false;
 }
 
-//user will be locked in login page utill user change his initial pass
-if ($_SESSION["userMustChangeThePass"]) {
-    header("location: logout_in.php");
-}
-
+//if session created and user hasnt change his password lock the page
+/* if (isset($_SESSION["userMustChangeThePass"]) && $_SESSION["userMustChangeThePass"] == true) {
+    header("Location: logout_in.php");
+    exit();
+} */
 
 function NavBar($currentPageLoc)
 {

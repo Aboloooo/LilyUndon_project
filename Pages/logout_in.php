@@ -28,15 +28,36 @@
       $password = $row['Password'];
       $level = $row['Level'];
 
+      //use password verify function
       if ($password == $_POST['password']) {
+
+
         $_SESSION['username'] = $username;
         $_SESSION['level'] = $level;
         $_SESSION["userLogin"] = true;
+
         if (strtoupper($level) == 'ADMIN') {
           $_SESSION["Admin"] = true;
         }
-        header("location: index.php");
+
+
+
+          // user will be double checked to see if user still use their initial pass or not
+        $sqlChangeYourPass = $connection->prepare('select user_must_change_password from users where username=?');
+        $sqlChangeYourPass->bind_param('s', $_SESSION['username']);
+        $sqlChangeYourPass->execute();
+        $result = $sqlChangeYourPass->get_result();
+        $row = $result->fetch_assoc();
+        if ($row["user_must_change_password"] == 1) {
+          header("location: logout_in.php");
+          $_SESSION['userMustChangeThePass'] = true;
+        }
+        if ($row["user_must_change_password"] == 0) {
+          $_SESSION['userMustChangeThePass'] = false;
+          header("location: index.php");
+        }
         exit();
+
       } else {
         echo '<script>alert("Password is incorrect!")</script>';
       }
@@ -45,26 +66,23 @@
     }
   }
 
-  // user will be double checked to see if user still use their initial pass or not
-  /*   if (isset($_SESSION['username'])) {
-    $sqlChangeYourPass = $connection->prepare('select user_must_change_password from users where username=?');
-    $sqlChangeYourPass->bind_param('s', $_SESSION['username']);
-    $sqlChangeYourPass->execute();
-    $result = $sqlChangeYourPass->get_result();
-    $row = $result->fetch_assoc();
-    if ($row["user_must_change_password"] == 1) {
-      $_SESSION['userMustChangeThePass'] = true;
-    }
-    if ($_SESSION['userMustChangeThePass']) {
-      header("location: logout_in.php");
-    }
-  } */
 
   ?>
   <div class="login-container">
     <h2>Welcome to Croix-Rouge 👋</h2>
-    <?= ($_SESSION["userLogin"]) ? "<p>Secure your account. Please update your password and keep your information safe.</p>" : "<p>Empowering communities with care. Please sign in to manage your reservations and services.</p>" ?>
-
+    <?php if ($_SESSION["userMustChangeThePass"]): ?>
+    <p style="color: #b30000; background-color: #ffe6e6; border: 1px solid #b30000; padding: 10px; border-radius: 5px; font-weight: bold;">
+        Your initial password needs to be changed. Please change your password and try again.
+    </p>
+<?php elseif ($_SESSION["userLogin"]): ?>
+    <p style="color: #004085; background-color: #e2e3e5; border: 1px solid #b8daff; padding: 10px; border-radius: 5px;">
+        Secure your account. Please update your password and keep your information safe.
+    </p>
+<?php else: ?>
+    <p style="color: #0c5460; background-color: #d1ecf1; border: 1px solid #bee5eb; padding: 10px; border-radius: 5px;">
+        Empowering communities with care. Please sign in to manage your reservations and services.
+    </p>
+<?php endif; ?>
     <form action="" method="POST">
       <?php
       if (!$_SESSION["userLogin"]) {
@@ -106,13 +124,32 @@
             $passRow = $result->fetch_assoc();
             if ($passRow) {
               $userSessionPass = $passRow["Password"];
-              if (password_verify($_POST["CurrentPassword"], $userSessionPass)) {
-                echo '<script>alert("working well!")</script>';
+              if ($_POST["CurrentPassword"]== $userSessionPass) {
+
+                if ($_POST["NewPassword"] == $_POST["ConfirmNewPassword"]) {
+                  $newPassword = $_POST["ConfirmNewPassword"];
+
+                  $updatePass = $connection->prepare('UPDATE users SET Password = ?, user_must_change_password = ? WHERE Username = ?');
+                  $zeroValue = 0;
+                  $updatePass->bind_param("sis", $newPassword, $zeroValue, $_SESSION["username"]);
+              
+                  if ($updatePass->execute()) {
+                    /* $_SESSION["userMustChangeThePass"] = false; */
+                      echo '<script>alert("Password updated successfully.");</script>';
+                  } else {
+                      echo '<script>alert("Failed to update password.");</script>';
+                  }
+
               } else {
-                echo '<script>alert("Your password is incorrect.")</script>';
+                  echo '<script>alert("New passwords do not match!");</script>';
+                  exit();
+              }
+                echo '<script>alert("Your password changed successfully!")</script>';
+              } else {
+                echo '<script>alert("Your current password is incorrect.")</script>';
               }
             } else {
-              echo '<script>alert("user wasnt found")</script>';
+              echo '<script>alert("user didnt find")</script>';
             }
           } else {
             echo '<script>alert("All fields required!")</script>';

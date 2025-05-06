@@ -41,8 +41,14 @@
       }
       if (isset($_POST['Reserve'])) {
         header("location: reserve.php");
+        //if user is not login user must be redirected to login page
+      }
+      if(isset($_POST['Reserve']) && !$_SESSION['userLogin']){
+        header("location: logout_in.php");
       }
     }
+
+    
 
     ?>
     <div class="part2">

@@ -27,8 +27,8 @@ include_once("../Library/MyLibrary.php");
     $currentYear = date('Y');
     $TotalNumberOfDaysInTheMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
 
-    for ($h = 8; $h <= 20; $h += 2) {
-      $times[] = sprintf('%02d:00 - %02d:00', $h, $h + 2);
+    for ($h = 8; $h <= 17; $h += 3) {
+      $times[] = sprintf('%02d:00 - %02d:00', $h, $h + 3);
     }
 
     $minOffset = -1;
@@ -92,26 +92,31 @@ include_once("../Library/MyLibrary.php");
         $reservationCheckStatement->bind_param('iss', $userId, $lastDayOfWeek, $startOfWeekGoodFormat);
         $reservationCheckStatement->execute();
         $resultOfReservationCheck = $reservationCheckStatement->get_result();
-        $rowOfReservationCheck = $resultOfReservationCheck->fetch_assoc();
+        $BookedTimeSlotsNumber = $resultOfReservationCheck->fetch_assoc();
 
-        //But still i need to reset and find the last day date of the next or previous week when user navigate between weeks
-
-        if ($rowOfReservationCheck) {
-          if ($rowOfReservationCheck['cnt'] < 4) {
+        if ($BookedTimeSlotsNumber) {
+          if ($BookedTimeSlotsNumber['cnt'] < 3) {
             $canBookTimeSlot = true;
-    
 
+            /* check if user is booking in the same day */
+            /* $reservationCheckStatement = $connection->prepare('select ReservationID from reservation where StartMoment = ?');
+            $reservationCheckStatement->bind_param('s',);
+            $reservationCheckStatement->execute();
+            $resultOfReservationCheck = $reservationCheckStatement->get_result();
+            $BookedTimeSlotsNumber = $resultOfReservationCheck->fetch_assoc();
+            
+            foreach ($times as $time) {
+              echo $time;
+            } */
+            // 
           }
-        } else {
-          $canBookTimeSlot = false;
-        
         }
 
         if ($canBookTimeSlot) {
           // user can continue booking if reservation hasnt been done more than 4 times 
           //  $currentTimeSlot = date('Y-m-d', strtotime($date)) . ' ' . substr($time, 0, 5);
           //print($startOfWeekGoodFormat);
-          $curDateToday =  date("Y-m", $startOfWeek)."-".substr($date, 0, 2);
+          $curDateToday =  date("Y-m", $startOfWeek) . "-" . substr($date, 0, 2);
           //print($curDateToday);
           $currentTimeSlot = $curDateToday . ' ' . substr($time, 0, 5);
           //print($currentTimeSlot);
@@ -125,9 +130,8 @@ include_once("../Library/MyLibrary.php");
           } else {
             echo "<script>alert('Error')</script>";
           }
-          
         } else {
-          echo "<script>alert('You already pass your reservation limit!')</script>";
+          echo "<script>alert('You can not reserve more than 4 times per week!')</script>";
         }
       } else {
         echo "<script>
@@ -164,7 +168,7 @@ include_once("../Library/MyLibrary.php");
             <th>Time</th>
 
             <?php
-            $today = date('d/m');
+            $today = date('m-d');
             foreach ($days as $index => $day):
               $isToday = ($weekDates[$index] === $today);
               $BackHeadingColor = $isToday ? 'style="background-color: #e3f2fd;"' : '';
@@ -205,7 +209,7 @@ include_once("../Library/MyLibrary.php");
                     Reserved
                   <?php } else { ?>
                     <form method="POST" style="margin:0;" onsubmit="return confirm('Are you sure you want to reserve this time?');">
-                      <input type="hidden" name="day" value="<?=  $weekDates[$index] /*$day*/ ?>">
+                      <input type="hidden" name="day" value="<?= $weekDates[$index] /*$day*/ ?>">
                       <input type="hidden" name="time" value="<?= $time ?>">
                       <button type="submit" class="reserveBtn" name="reservationBtn" <?= ($isPast ? 'disabled style="background-color: #ccc; cursor: not-allowed;"' : '') ?>>
                         <?= $isPast ? 'Past' : 'Available' ?>

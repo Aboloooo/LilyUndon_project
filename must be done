@@ -1,24 +1,10 @@
-Only an admin can create user via web intercafe > done
+kitchen can be booked maximum once a day and four times per week for each user
 
-Add a smart option for users to be able to change their password > idk
+prevent users from choosing dublicated value when creating users
 
-Each user must be forced to change their password after first login     >       done
-
-User will be redirected to login page until user change their password
-
-if user hasnt login yet, and click on reserve btn in index page, user must be redirected to login page      >   done
-
-Confirmation for reserving a time slot      >       done
-
-Add another button to login page for loggin out         >           done
-
-limitation reserve cant be apply for all the users
+reservation limitat per week cant be apply
 
 CNS number type in database must be unique
-
-
-
-kitchen can be booked maximum once a day and four times per week 
 
 Each user must be able to see their reservations in My Reservation page
 

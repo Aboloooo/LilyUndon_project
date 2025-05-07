@@ -78,52 +78,47 @@
         $time = $_POST['time'];
 
 
-         //here we will check if this user has reserved the kitchen more than 4 times
-         $reservationCheckStatement = $connection->prepare('select count(*) from reservation where Reserved_by_userID = ?');
-         $reservationCheckStatement->bind_param('i' , $userId);
-         $reservationCheckStatement->execute();
+        //here we will check if this user has reserved the kitchen more than 4 times
+        $reservationCheckStatement = $connection->prepare('select count(*) from reservation where Reserved_by_userID = ?');
+        //                                                  select count(*) from reservation where Reserved_by_userID = 2 and StartMoment < '2025-05-11 20:00:00' == last day of the week
+
+
+        $reservationCheckStatement->bind_param('i', $userId);
+        $reservationCheckStatement->execute();
         $resultOfReservationCheck = $reservationCheckStatement->get_result();
         $rowOfReservationCheck = $resultOfReservationCheck->fetch_assoc();
 
-         if($rowOfReservationCheck){
-          if($rowOfReservationCheck <= 4){
+        if ($rowOfReservationCheck) {
+          if ($rowOfReservationCheck <= 4) {
             $canBookTimeSlot = true;
           }
-         }else{
-          $canBookTimeSlot = false;
-         }
-
-         if($canBookTimeSlot){
-// user can continue booking if reservation hasnt been done more than 4 times 
-
-         }else{
-          echo "<script>alert('You already pass your reservatin limit!')</script>";
-         }
-
-         
-  
-
-        $currentTimeSlot = date('Y-m-d', strtotime($date)) . ' ' . substr($time, 0, 5);
-
-
-        $sqlReservationInsert = $connection->prepare('insert into reservation(Reserved_by_userID,StartMoment) values (?,?) ');
-
-        $sqlReservationInsert->bind_param('is', $userId, $currentTimeSlot);
-        if ($sqlReservationInsert->execute()) {
-          echo "<script>alert('Reservation done successfully!')</script>";
         } else {
-          echo "<script>alert('Error')</script>";
+          $canBookTimeSlot = false;
+        }
+
+        if ($canBookTimeSlot) {
+          // user can continue booking if reservation hasnt been done more than 4 times 
+          $currentTimeSlot = date('Y-m-d', strtotime($date)) . ' ' . substr($time, 0, 5);
+
+
+          $sqlReservationInsert = $connection->prepare('insert into reservation(Reserved_by_userID,StartMoment) values (?,?) ');
+
+
+          $sqlReservationInsert->bind_param('is', $userId, $currentTimeSlot);
+          if ($sqlReservationInsert->execute()) {
+            echo "<script>alert('Reservation done successfully!')</script>";
+          } else {
+            echo "<script>alert('Error')</script>";
+          }
+        } else {
+          echo "<script>alert('You already pass your reservation limit!')</script>";
         }
       } else {
         echo "<script>
         alert('Plase login first!')
           window.location.href = 'logout_in.php';
         </script>";
-      
-      
       }
-
-      
     }
 
 

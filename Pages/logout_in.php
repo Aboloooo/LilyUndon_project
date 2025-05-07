@@ -1,7 +1,6 @@
-<!-- <?php
-      session_start();
+<?php
       include_once("../Library/MyLibrary.php");
-      ?> -->
+      ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,6 +16,7 @@
   <?= NavBar('logout_in') ?>
 
   <?php
+ 
   /* sign in  */
   if (isset($_POST['username']) && isset($_POST['password'])) {
     $loginCheck = $connection->prepare('select * from users where username =?');
@@ -35,6 +35,8 @@
         $_SESSION['username'] = $username;
         $_SESSION['level'] = $level;
         $_SESSION["userLogin"] = true;
+       
+
 
         if (strtoupper($level) == 'ADMIN') {
           $_SESSION["Admin"] = true;
@@ -111,10 +113,16 @@
 
 <?php
       } else {
+        
 ?>
   <form action="" method="POST">
     <!-- Chaging password -->
     <?php
+    if (isset($_POST["logout"])) {
+   session_unset();
+      session_destroy();
+      header("Refresh:0");
+    }
         if (isset($_POST["updateBtn"])) {
           if (isset($_POST["CurrentPassword"]) && isset($_POST["NewPassword"]) && isset($_POST["ConfirmNewPassword"])) {
             $loggedInUserPass = $connection->prepare('select Password from users where username =?');
@@ -134,8 +142,9 @@
                   $updatePass->bind_param("sis", $newPassword, $zeroValue, $_SESSION["username"]);
               
                   if ($updatePass->execute()) {
-                    /* $_SESSION["userMustChangeThePass"] = false; */
+                    $_SESSION["userMustChangeThePass"] = false;
                       echo '<script>alert("Password updated successfully.");</script>';
+                      header("Refresh:0");
                   } else {
                       echo '<script>alert("Failed to update password.");</script>';
                   }
@@ -144,7 +153,6 @@
                   echo '<script>alert("New passwords do not match!");</script>';
                   exit();
               }
-                echo '<script>alert("Your password changed successfully!")</script>';
               } else {
                 echo '<script>alert("Your current password is incorrect.")</script>';
               }
@@ -169,11 +177,15 @@
     <a href="#" class="forgot">Forgot Password?</a>
 
     <button type="submit" name="updateBtn">Update password</button>
+    
   <?php
       }
   ?>
   </form>
 
+  <form action="" method="POST">
+  <button type="submit" name="logout">Log out</button>
+  </form>
 
 
 </body>

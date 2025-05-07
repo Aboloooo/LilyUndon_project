@@ -1,7 +1,6 @@
-<!-- <?php
-      session_start();
-      include_once("../Library/MyLibrary.php");
-      ?> -->
+<?php
+include_once("../Library/MyLibrary.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -58,8 +57,15 @@
 
     $startOfWeek = strtotime("+$weekOffset week", $lastMonday);
 
+    /* finding last date day of the displayed week */
+    $endOfWeek = strtotime("+6 days", $startOfWeek);
+    $lastDayOfWeek = date('Y-m-d', $endOfWeek);
+
     $currentMonthYear = date('Y-m F', $startOfWeek);
     $currentMonthYearName = date('F', $startOfWeek);
+
+
+    $startOfWeekGoodFormat = date('Y-m-d', $startOfWeek);
 
 
 
@@ -73,33 +79,42 @@
         $result = $userIDStmt->get_result();
         $row = $result->fetch_assoc();
 
+        // if user is not login user must be redirected to login page
+
         $userId = $row['UserID'];
         $date = $_POST['day'];
         $time = $_POST['time'];
 
 
         //here we will check if this user has reserved the kitchen more than 4 times
-        $reservationCheckStatement = $connection->prepare('select count(*) from reservation where Reserved_by_userID = ?');
-        //                                                  select count(*) from reservation where Reserved_by_userID = 2 and StartMoment < '2025-05-11 20:00:00' == last day of the week
+        $reservationCheckStatement = $connection->prepare('select count(*) as cnt from reservation where Reserved_by_userID = ? and StartMoment <= ? and StartMoment>=?');
 
-
-        $reservationCheckStatement->bind_param('i', $userId);
+        $reservationCheckStatement->bind_param('iss', $userId, $lastDayOfWeek, $startOfWeekGoodFormat);
         $reservationCheckStatement->execute();
         $resultOfReservationCheck = $reservationCheckStatement->get_result();
         $rowOfReservationCheck = $resultOfReservationCheck->fetch_assoc();
 
+        //But still i need to reset and find the last day date of the next or previous week when user navigate between weeks
+
         if ($rowOfReservationCheck) {
-          if ($rowOfReservationCheck <= 4) {
+          if ($rowOfReservationCheck['cnt'] < 4) {
             $canBookTimeSlot = true;
+    
+
           }
         } else {
           $canBookTimeSlot = false;
+        
         }
 
         if ($canBookTimeSlot) {
           // user can continue booking if reservation hasnt been done more than 4 times 
-          $currentTimeSlot = date('Y-m-d', strtotime($date)) . ' ' . substr($time, 0, 5);
-
+          //  $currentTimeSlot = date('Y-m-d', strtotime($date)) . ' ' . substr($time, 0, 5);
+          //print($startOfWeekGoodFormat);
+          $curDateToday =  date("Y-m", $startOfWeek)."-".substr($date, 0, 2);
+          //print($curDateToday);
+          $currentTimeSlot = $curDateToday . ' ' . substr($time, 0, 5);
+          //print($currentTimeSlot);
 
           $sqlReservationInsert = $connection->prepare('insert into reservation(Reserved_by_userID,StartMoment) values (?,?) ');
 
@@ -110,6 +125,7 @@
           } else {
             echo "<script>alert('Error')</script>";
           }
+          
         } else {
           echo "<script>alert('You already pass your reservation limit!')</script>";
         }
@@ -189,7 +205,7 @@
                     Reserved
                   <?php } else { ?>
                     <form method="POST" style="margin:0;" onsubmit="return confirm('Are you sure you want to reserve this time?');">
-                      <input type="hidden" name="day" value="<?= $day ?>">
+                      <input type="hidden" name="day" value="<?=  $weekDates[$index] /*$day*/ ?>">
                       <input type="hidden" name="time" value="<?= $time ?>">
                       <button type="submit" class="reserveBtn" name="reservationBtn" <?= ($isPast ? 'disabled style="background-color: #ccc; cursor: not-allowed;"' : '') ?>>
                         <?= $isPast ? 'Past' : 'Available' ?>

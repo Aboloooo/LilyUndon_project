@@ -10,7 +10,15 @@ if user hasnt login yet, and click on reserve btn in index page, user must be re
 
 Confirmation for reserving a time slot      >       done
 
-A user can not reserve more than four times per week        
+Add another button to login page for loggin out         >           done
+
+limitation reserve cant be apply for all the users
+
+CNS number type in database must be unique
+
+
+
+kitchen can be booked maximum once a day and four times per week 
 
 Each user must be able to see their reservations in My Reservation page
 

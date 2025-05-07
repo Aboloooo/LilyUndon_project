@@ -11,24 +11,31 @@ $connection = mysqli_connect($host, $username, $password, $database);
 if (!isset($_SESSION["userLogin"])) {
     $_SESSION["userLogin"] = false;
 }
-if (!isset($_SESSION["username"])) {
+ if (!isset($_SESSION["username"])) {
     $_SESSION["username"];
-}
+} 
 if (!isset($_SESSION["level"])) {
-    $_SESSION["level"];
+    $_SESSION["level"] = "customer";
 }
 if (!isset($_SESSION["Admin"])) {
-    $_SESSION["Admin"];
+    $_SESSION["Admin"] = false;
 }
 if (!isset($_SESSION["userMustChangeThePass"])) {
     $_SESSION["userMustChangeThePass"] = false;
 }
 
+
 //if session created and user hasnt change his password lock the page
-/* if (isset($_SESSION["userMustChangeThePass"]) && $_SESSION["userMustChangeThePass"] == true) {
+$arrFileName = explode("/",$_SERVER['PHP_SELF']);
+$fileToCheck = trim($arrFileName[count($arrFileName)-1]);
+
+if ($fileToCheck!= "logout_in.php")
+ {
+    if (isset($_SESSION["userMustChangeThePass"]) && $_SESSION["userMustChangeThePass"] == true) {
     header("Location: logout_in.php");
     exit();
-} */
+    }
+ }
 
 function NavBar($currentPageLoc)
 {

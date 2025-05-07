@@ -10,7 +10,7 @@ CREATE TABLE users (
     social_security_number VARCHAR(13),
     Username VARCHAR(255) not null unique,
     Password VARCHAR(255),
-    Email VARCHAR(255) not null unique,
+    Email VARCHAR(255) not null,
     Level VARCHAR(255),
     user_must_change_password boolean
     /* Zero is considered as false, nonzero values are considered as true.  */

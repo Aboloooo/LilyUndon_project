@@ -68,11 +68,20 @@ include_once("../Library/MyLibrary.php");
     $startOfWeekGoodFormat = date('Y-m-d', $startOfWeek);
 
 
+    // get dates for each day
+    $weekDates = [];
+    $weekDatesAnotherFormat = [];
+    for ($i = 0; $i < 7; $i++) {
+      $weekDates[] = date('d/m', strtotime("+$i day", $startOfWeek));
+      $weekDatesAnotherFormat[] = date('Y:m:d', strtotime("+$i day", $startOfWeek));
+    }
+
+
 
     if (isset($_POST['reservationBtn'])) {
       $canBookTimeSlot = false;
 
-      if (isset($_SESSION['username'])) {
+      if ($_SESSION['username'] !== "Unknown") {
         $userIDStmt = $connection->prepare("SELECT UserID FROM users WHERE Username = ?");
         $userIDStmt->bind_param('s', $_SESSION['username']);
         $userIDStmt->execute();
@@ -86,6 +95,8 @@ include_once("../Library/MyLibrary.php");
         $time = $_POST['time'];
 
 
+
+
         //here we will check if this user has reserved the kitchen more than 4 times
         $reservationCheckStatement = $connection->prepare('select count(*) as cnt from reservation where Reserved_by_userID = ? and StartMoment <= ? and StartMoment>=?');
 
@@ -97,38 +108,36 @@ include_once("../Library/MyLibrary.php");
         if ($BookedTimeSlotsNumber) {
           if ($BookedTimeSlotsNumber['cnt'] < 3) {
             $canBookTimeSlot = true;
-
-            /* check if user is booking in the same day */
-            /* $reservationCheckStatement = $connection->prepare('select ReservationID from reservation where StartMoment = ?');
-            $reservationCheckStatement->bind_param('s',);
-            $reservationCheckStatement->execute();
-            $resultOfReservationCheck = $reservationCheckStatement->get_result();
-            $BookedTimeSlotsNumber = $resultOfReservationCheck->fetch_assoc();
-            
-            foreach ($times as $time) {
-              echo $time;
-            } */
-            // 
           }
         }
 
         if ($canBookTimeSlot) {
+
           // user can continue booking if reservation hasnt been done more than 4 times 
           //  $currentTimeSlot = date('Y-m-d', strtotime($date)) . ' ' . substr($time, 0, 5);
           //print($startOfWeekGoodFormat);
           $curDateToday =  date("Y-m", $startOfWeek) . "-" . substr($date, 0, 2);
-          //print($curDateToday);
+          // print($curDateToday);
+          $reservationDate = $curDateToday;
           $currentTimeSlot = $curDateToday . ' ' . substr($time, 0, 5);
           //print($currentTimeSlot);
 
-          $sqlReservationInsert = $connection->prepare('insert into reservation(Reserved_by_userID,StartMoment) values (?,?) ');
-
-
-          $sqlReservationInsert->bind_param('is', $userId, $currentTimeSlot);
-          if ($sqlReservationInsert->execute()) {
-            echo "<script>alert('Reservation done successfully!')</script>";
+          /* check if user is booking in the same day */
+          $checkSameDayStmt  = $connection->prepare('select count(*) as count from reservation where Reserved_by_userID = ? and DATE(StartMoment) = ?');
+          $checkSameDayStmt->bind_param('is', $userId, $reservationDate);
+          $checkSameDayStmt->execute();
+          $resultOfCheckSameDayStmt  = $checkSameDayStmt->get_result();
+          $sameDayCount = $resultOfCheckSameDayStmt->fetch_assoc()['count'];
+          if ($sameDayCount > 0) {
+            echo "<script>alert('You already have a reservation on this day!')</script>";
           } else {
-            echo "<script>alert('Error')</script>";
+            $sqlReservationInsert = $connection->prepare('insert into reservation(Reserved_by_userID,StartMoment) values (?,?) ');
+            $sqlReservationInsert->bind_param('is', $userId, $currentTimeSlot);
+            if ($sqlReservationInsert->execute()) {
+              echo "<script>alert('Reservation done successfully!')</script>";
+            } else {
+              echo "<script>alert('Error')</script>";
+            }
           }
         } else {
           echo "<script>alert('You can not reserve more than 4 times per week!')</script>";
@@ -141,14 +150,6 @@ include_once("../Library/MyLibrary.php");
       }
     }
 
-
-    // get dates for each day
-    $weekDates = [];
-    $weekDatesAnotherFormat = [];
-    for ($i = 0; $i < 7; $i++) {
-      $weekDates[] = date('d/m', strtotime("+$i day", $startOfWeek));
-      $weekDatesAnotherFormat[] = date('Y:m:d', strtotime("+$i day", $startOfWeek));
-    }
     ?>
 
     <div class="reservation_table_content">

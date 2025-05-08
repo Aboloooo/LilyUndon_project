@@ -363,6 +363,58 @@ body {
   text-align: center;
 }
 
+/* My Reservation Page style */
+.my_reservation_container {
+  max-width: 900px;
+  margin: 50px auto;
+  background-color: #ffffff;
+  padding: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th,
+td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid var(--black);
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+.no-reservations {
+  text-align: center;
+  font-size: 1.1em;
+  color: #777;
+  margin-top: 40px;
+}
+.cancel-btn {
+  padding: 8px 12px;
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background-color: #b71c1c;
+}
+
 /* Responsive styles */
 @media screen and (max-width: 768px) {
   .logo-icon {

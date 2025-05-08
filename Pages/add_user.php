@@ -1,6 +1,6 @@
 <?php
-        include_once("../Library/MyLibrary.php");
-        ?>
+include_once("../Library/MyLibrary.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,10 +46,22 @@
             $user_must_change_pass = 1;
 
             if ($pass == $passConfir) {
-                $sqlInsertValues = $connection->prepare('INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, Level, user_must_change_password) VALUES (?,?,?,?,?,?,?,?)');
-                $sqlInsertValues->bind_param('ssissssi', $firstN, $lastN, $CNS, $userN, $pass, $email, $defaultLevel, $user_must_change_pass);
-                $sqlInsertValues->execute();
-                echo "<script>alert('User created successfully!')</script>";
+                // check if inputs would be doublicated in database. CNS and Username must be unique
+                $sqlCheckingDouclicedInput = $connection->prepare('select count(*) as count from users where social_security_number =?  or Username =? ');
+                $sqlCheckingDouclicedInput->bind_param('is', $CNS, $userN);
+                $sqlCheckingDouclicedInput->execute();
+                $result = $sqlCheckingDouclicedInput->get_result();
+                $row = $result->fetch_assoc();
+                $inputExist = ($row['count'] > 0);
+
+                if ($inputExist) {
+                    echo "<script>alert('Error, Either CNS number or username has been already used! Please enter a unique value.')</script>";
+                } else {
+                    $sqlInsertValues = $connection->prepare('INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, Level, user_must_change_password) VALUES (?,?,?,?,?,?,?,?)');
+                    $sqlInsertValues->bind_param('ssissssi', $firstN, $lastN, $CNS, $userN, $pass, $email, $defaultLevel, $user_must_change_pass);
+                    $sqlInsertValues->execute();
+                    echo "<script>alert('User created successfully!')</script>";
+                }
             } else {
                 echo "<script>alert('Passwords are not match!')</script>";
                 exit();

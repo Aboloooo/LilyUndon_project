@@ -1,12 +1,10 @@
 kitchen can be booked maximum once a day and four times per week for each user
-
-prevent users from choosing dublicated value when creating users
-
-reservation limitat per week cant be apply
-
-CNS number type in database must be unique
+problem with number 4
+01/06  can not be reserved
 
 Each user must be able to see their reservations in My Reservation page
+
+encryption of passwords
 
 Translation
 

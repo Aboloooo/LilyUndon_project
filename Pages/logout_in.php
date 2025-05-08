@@ -1,6 +1,6 @@
 <?php
-      include_once("../Library/MyLibrary.php");
-      ?>
+include_once("../Library/MyLibrary.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +16,7 @@
   <?= NavBar('logout_in') ?>
 
   <?php
- 
+
   /* sign in  */
   if (isset($_POST['username']) && isset($_POST['password'])) {
     $loginCheck = $connection->prepare('select * from users where username =?');
@@ -30,12 +30,10 @@
 
       //use password verify function
       if ($password == $_POST['password']) {
-
-
-        $_SESSION['username'] = $username;
+        $_SESSION["username"] = $username;
         $_SESSION['level'] = $level;
         $_SESSION["userLogin"] = true;
-       
+
 
 
         if (strtoupper($level) == 'ADMIN') {
@@ -44,7 +42,7 @@
 
 
 
-          // user will be double checked to see if user still use their initial pass or not
+        // user will be double checked to see if user still use their initial pass or not
         $sqlChangeYourPass = $connection->prepare('select user_must_change_password from users where username=?');
         $sqlChangeYourPass->bind_param('s', $_SESSION['username']);
         $sqlChangeYourPass->execute();
@@ -59,12 +57,11 @@
           header("location: index.php");
         }
         exit();
-
       } else {
         echo '<script>alert("Password is incorrect!")</script>';
       }
     } else {
-      echo '<script>alert("Username is incorrect!")</script>';
+      echo '<script>alert("Username couldnt find!")</script>';
     }
   }
 
@@ -73,18 +70,18 @@
   <div class="login-container">
     <h2>Welcome to Croix-Rouge 👋</h2>
     <?php if ($_SESSION["userMustChangeThePass"]): ?>
-    <p style="color: #b30000; background-color: #ffe6e6; border: 1px solid #b30000; padding: 10px; border-radius: 5px; font-weight: bold;">
+      <p style="color: #b30000; background-color: #ffe6e6; border: 1px solid #b30000; padding: 10px; border-radius: 5px; font-weight: bold;">
         Your initial password needs to be changed. Please change your password and try again.
-    </p>
-<?php elseif ($_SESSION["userLogin"]): ?>
-    <p style="color: #004085; background-color: #e2e3e5; border: 1px solid #b8daff; padding: 10px; border-radius: 5px;">
+      </p>
+    <?php elseif ($_SESSION["userLogin"]): ?>
+      <p style="color: #004085; background-color: #e2e3e5; border: 1px solid #b8daff; padding: 10px; border-radius: 5px;">
         Secure your account. Please update your password and keep your information safe.
-    </p>
-<?php else: ?>
-    <p style="color: #0c5460; background-color: #d1ecf1; border: 1px solid #bee5eb; padding: 10px; border-radius: 5px;">
+      </p>
+    <?php else: ?>
+      <p style="color: #0c5460; background-color: #d1ecf1; border: 1px solid #bee5eb; padding: 10px; border-radius: 5px;">
         Empowering communities with care. Please sign in to manage your reservations and services.
-    </p>
-<?php endif; ?>
+      </p>
+    <?php endif; ?>
     <form action="" method="POST">
       <?php
       if (!$_SESSION["userLogin"]) {
@@ -113,16 +110,16 @@
 
 <?php
       } else {
-        
+
 ?>
   <form action="" method="POST">
     <!-- Chaging password -->
     <?php
-    if (isset($_POST["logout"])) {
-   session_unset();
-      session_destroy();
-      header("Refresh:0");
-    }
+        if (isset($_POST["logout"])) {
+          session_unset();
+          session_destroy();
+          header("Refresh:0");
+        }
         if (isset($_POST["updateBtn"])) {
           if (isset($_POST["CurrentPassword"]) && isset($_POST["NewPassword"]) && isset($_POST["ConfirmNewPassword"])) {
             $loggedInUserPass = $connection->prepare('select Password from users where username =?');
@@ -132,7 +129,7 @@
             $passRow = $result->fetch_assoc();
             if ($passRow) {
               $userSessionPass = $passRow["Password"];
-              if ($_POST["CurrentPassword"]== $userSessionPass) {
+              if ($_POST["CurrentPassword"] == $userSessionPass) {
 
                 if ($_POST["NewPassword"] == $_POST["ConfirmNewPassword"]) {
                   $newPassword = $_POST["ConfirmNewPassword"];
@@ -140,19 +137,18 @@
                   $updatePass = $connection->prepare('UPDATE users SET Password = ?, user_must_change_password = ? WHERE Username = ?');
                   $zeroValue = 0;
                   $updatePass->bind_param("sis", $newPassword, $zeroValue, $_SESSION["username"]);
-              
+
                   if ($updatePass->execute()) {
                     $_SESSION["userMustChangeThePass"] = false;
-                      echo '<script>alert("Password updated successfully.");</script>';
-                      header("Refresh:0");
+                    echo '<script>alert("Password updated successfully.");</script>';
+                    header("Refresh:0");
                   } else {
-                      echo '<script>alert("Failed to update password.");</script>';
+                    echo '<script>alert("Failed to update password.");</script>';
                   }
-
-              } else {
+                } else {
                   echo '<script>alert("New passwords do not match!");</script>';
                   exit();
-              }
+                }
               } else {
                 echo '<script>alert("Your current password is incorrect.")</script>';
               }
@@ -177,14 +173,14 @@
     <a href="#" class="forgot">Forgot Password?</a>
 
     <button type="submit" name="updateBtn">Update password</button>
-    
+
   <?php
       }
   ?>
   </form>
 
   <form action="" method="POST">
-  <button type="submit" name="logout">Log out</button>
+    <button type="submit" name="logout">Log out</button>
   </form>
 
 

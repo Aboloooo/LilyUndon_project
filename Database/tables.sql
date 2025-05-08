@@ -7,9 +7,9 @@ CREATE TABLE users (
     UserID INT PRIMARY KEY AUTO_INCREMENT,
     First_name VARCHAR(255),
     Last_name VARCHAR(255),
-    social_security_number VARCHAR(13),
-    Username VARCHAR(255) not null unique,
-    Password VARCHAR(255),
+    social_security_number VARCHAR(13) not null,
+    Username VARCHAR(255) not null ,
+    Password VARCHAR(255) not null,
     Email VARCHAR(255) not null,
     Level VARCHAR(255),
     user_must_change_password boolean
@@ -19,7 +19,7 @@ CREATE TABLE users (
 INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, Level, user_must_change_password)
 VALUES
 ("abolo", "ahmadi", "2003122601327", "admin", "password", "admin@gmail.com", "aDmin", 0),
-("abolo", "ahmadi", "2003122601327", "abolo123", "123", "abolo@gmail.com", "cusTomer", 1);
+("abolo", "ahmadi", "2003122601328", "abolo123", "123", "abolo@gmail.com", "cusTomer", 1);
 
 
 CREATE TABLE IF NOT EXISTS reservation (

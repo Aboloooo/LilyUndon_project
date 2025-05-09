@@ -64,6 +64,10 @@ function NavBar($currentPageLoc)
                                             if ($currentPageLoc == "add_user") {
                                                 print("class='active'");
                                             } ?>>Add User</a></li>
+                <li><a href="users.php" <?php
+                                        if ($currentPageLoc == "users") {
+                                            print("class='active'");
+                                        } ?>>Users</a></li>
             <?php
             }
             ?>

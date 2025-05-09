@@ -1,11 +1,13 @@
-kitchen can be booked maximum once a day and four times per week for each user
-problem with number 4
-01/06  can not be reserved
+admin must be able to see all the created users details in a specific page
 
-Each user must be able to see their reservations in My Reservation page
+forget password must have a solution
 
 encryption of passwords
 
 Translation
 
 Making everything responsive
+
+kitchen can be booked maximum once a day and four times per week for each user
+problem with number 4
+01/06  can not be reserved

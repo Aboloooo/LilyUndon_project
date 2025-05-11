@@ -7,14 +7,15 @@ CREATE TABLE users (
     UserID INT PRIMARY KEY AUTO_INCREMENT,
     First_name VARCHAR(255),
     Last_name VARCHAR(255),
-    social_security_number VARCHAR(13) not null,
-    Username VARCHAR(255) not null ,
-    Password VARCHAR(255) not null,
-    Email VARCHAR(255) not null,
+    social_security_number BIGINT NOT NULL,
+    Username VARCHAR(255) NOT NULL,
+    Password VARCHAR(255) NOT NULL,
+    Email VARCHAR(255) NOT NULL,
     Level VARCHAR(255),
-    user_must_change_password boolean
-    /* Zero is considered as false, nonzero values are considered as true.  */
+    user_must_change_password BOOLEAN
+    /* Zero is considered as false, nonzero values are considered as true. */
 );
+
 
 INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, Level, user_must_change_password)
 VALUES

@@ -10,59 +10,19 @@ include_once("../Library/MyLibrary.php");
     <title>Users</title>
     <link rel="stylesheet" href="../style.css? <?= time(); ?>">
     <script src="../script.js"></script>
-
-    <style>
-        .user-table-container {
-            max-width: 1300px;
-            margin: 40px auto;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-        }
-
-        .user-table-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        table.user-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        table.user-table th,
-        table.user-table td {
-            padding: 8px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        table.user-table th {
-            background-color: #f5f5f5;
-        }
-
-        table.user-table tr:hover {
-            background-color: #f0f8ff;
-        }
-
-        .action-btn {
-            background-color: #ff4d4f;
-            border: none;
-            padding: 5px 10px;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .action-btn:hover {
-            background-color: #d9363e;
-        }
-    </style>
 </head>
 
 <body>
     <?= NavBar('users') ?>
+    <?php
+if(isset($_POST['deleteUser'])){
+    $userIDToDelete = $_POST['deleteUserID'];
+
+    $deleteUserStatment = $connection->prepare("DELETE FROM users WHERE UserID = ?");
+    $deleteUserStatment->bind_param('i' , $userIDToDelete);
+    $deleteUserStatment->execute();
+}
+    ?>
 
     <div class="user-table-container">
         <h2>Registered Users</h2>
@@ -81,26 +41,47 @@ include_once("../Library/MyLibrary.php");
                     <th>Action</th>
                 </tr>
             </thead>
+            <?php
+            $displayUsers = $connection->prepare('select * from users');
+            $displayUsers->execute();
+            $result = $displayUsers->get_result();
+            while($row = $result->fetch_assoc()){
+                $UserID = $row['UserID'];
+                $Fname = $row['First_name'];
+                $Lname = $row['Last_name'];
+                $CNS = $row['social_security_number'];
+                $UserN = $row['Username'];
+                $Password = $row['Password'];
+                $Email = $row['Email'];
+                $Level = $row['Level'];
+                $mustChangePass = $row['user_must_change_password'];
+                
+            ?>
             <tbody>
                 <tr>
-                    <td>user_ID</td>
-                    <td>a</td>
-                    <td>a</td>
-                    <td>1234567891234</td>
-                    <td>a</td>
-                    <td>a</td>
-                    <td>a@gmail.com</td>
-                    <td>customer</td>
-                    <td>Yes</td>
+                    <td><?=$UserID?></td>
+                    <td><?=$Fname?></td>
+                    <td><?=$Lname?></td>
+                    <td><?=$CNS?></td>
+                    <td><?=$UserN?></td>
+                    <td><?=$Password?></td>
+                    <td><?=$Email?></td>
+                    <td><?=$Level?></td>
+                    <td><?php if($mustChangePass == 1)
+                    { echo 'false';}
+                    else{ echo 'true';}?></td>
                     <td>
                         <!-- Example action -->
                         <form method="POST" onsubmit="return confirm('Delete this user?');" style="display:inline;">
-                            <input type="hidden" name="deleteUserID" value="userID">
+                            <input type="hidden" name="deleteUserID" value="<?=$UserID?>">
                             <button type="submit" name="deleteUser" class="action-btn">Delete</button>
                         </form>
                     </td>
                 </tr>
             </tbody>
+            <?php
+        }
+        ?>
         </table>
     </div>
 

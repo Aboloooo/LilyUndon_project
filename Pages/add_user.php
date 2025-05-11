@@ -47,7 +47,7 @@ include_once("../Library/MyLibrary.php");
 
             if ($pass == $passConfir) {
                 // check if inputs would be doublicated in database. CNS and Username must be unique
-                $sqlCheckingDouclicedInput = $connection->prepare('select count(*) as count from users where social_security_number =?  or Username =? ');
+                $sqlCheckingDouclicedInput = $connection->prepare('select count(*) as count from users where social_security_number = ?  or Username =? ');
                 $sqlCheckingDouclicedInput->bind_param('is', $CNS, $userN);
                 $sqlCheckingDouclicedInput->execute();
                 $result = $sqlCheckingDouclicedInput->get_result();

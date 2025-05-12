@@ -18,6 +18,8 @@ include_once("../Library/MyLibrary.php");
   <?php
 
   /* sign in  */
+   /* echo password_hash('password', PASSWORD_DEFAULT); */
+
   if (isset($_POST['username']) && isset($_POST['password'])) {
     $loginCheck = $connection->prepare('select * from users where username =?');
     $loginCheck->bind_param('s', $_POST["username"]);
@@ -29,19 +31,14 @@ include_once("../Library/MyLibrary.php");
       $level = $row['Level'];
 
       //use password verify function
-      if ($password == $_POST['password']) {
-        $_SESSION["username"] = $username;
+      if(password_verify($_POST['password'], $password)){
+$_SESSION["username"] = $username;
         $_SESSION['level'] = $level;
         $_SESSION["userLogin"] = true;
-
-
-
+      
         if (strtoupper($level) == 'ADMIN') {
           $_SESSION["Admin"] = true;
         }
-
-
-
         // user will be double checked to see if user still use their initial pass or not
         $sqlChangeYourPass = $connection->prepare('select user_must_change_password from users where username=?');
         $sqlChangeYourPass->bind_param('s', $_SESSION['username']);

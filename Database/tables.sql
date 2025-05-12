@@ -17,11 +17,11 @@ CREATE TABLE users (
 );
 
 
-INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, Level, user_must_change_password)
+/* INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, Level, user_must_change_password)
 VALUES
 ("abolo", "ahmadi", "2003122601327", "admin", "password", "admin@gmail.com", "aDmin", 0),
 ("abolo", "ahmadi", "2003122601328", "abolo123", "123", "abolo@gmail.com", "cusTomer", 1);
-
+ */
 
 CREATE TABLE IF NOT EXISTS reservation (
     ReservationID INT PRIMARY KEY AUTO_INCREMENT,

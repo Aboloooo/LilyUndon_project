@@ -40,6 +40,7 @@ include_once("../Library/MyLibrary.php");
             $CNS = $_POST['CNS_number'];
             $userN = $_POST['username'];
             $pass = $_POST['password'];
+            $hashedPass = password_hash($pass, PASSWORD_DEFAULT);
             $passConfir = $_POST['password_confirmation'];
             $email = $_POST['email'];
             $defaultLevel = "customer";
@@ -58,7 +59,7 @@ include_once("../Library/MyLibrary.php");
                     echo "<script>alert('Error, Either CNS number or username has been already used! Please enter a unique value.')</script>";
                 } else {
                     $sqlInsertValues = $connection->prepare('INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, Level, user_must_change_password) VALUES (?,?,?,?,?,?,?,?)');
-                    $sqlInsertValues->bind_param('ssissssi', $firstN, $lastN, $CNS, $userN, $pass, $email, $defaultLevel, $user_must_change_pass);
+                    $sqlInsertValues->bind_param('ssissssi', $firstN, $lastN, $CNS, $userN, $hashedPass, $email, $defaultLevel, $user_must_change_pass);
                     $sqlInsertValues->execute();
                     echo "<script>alert('User created successfully!')</script>";
                 }

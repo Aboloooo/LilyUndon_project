@@ -91,11 +91,13 @@ include_once("../Library/MyLibrary.php");
             <label for="username">Username</label>
             <input type="text" id="username" name="username" placeholder="username" required />
 
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="••••••••" required />
+           <label for="password">Password</label>
+<input type="password" id="password" name="password" placeholder="••••••••" required />
 
-            <label for="password">Password confirmation</label>
-            <input type="password" id="password" name="password_confirmation" placeholder="••••••••" required />
+
+<label for="password_confirmation">Password confirmation</label>
+<input type="password" id="password_confirmation" name="password_confirmation" placeholder="••••••••" required />
+
 
             <label for="email">Email</label>
             <input type="email" id="username" name="email" placeholder="Email" required />

@@ -23,6 +23,34 @@ if (!isset($_SESSION["Admin"])) {
 if (!isset($_SESSION["userMustChangeThePass"])) {
     $_SESSION["userMustChangeThePass"] = false;
 }
+if (!isset($_SESSION["language"])) {
+    $_SESSION["language"] = "en";
+}
+
+
+if (isset($_POST["selectedLang"])) {
+    $lang = $_POST['selectedLang'];
+    if (in_array($lang, ['en', 'fr', 'de'])) {
+        $_SESSION['language'] = $lang;
+    }
+}
+$t = [];
+$langColumn = '';
+if ($_SESSION['language'] == 'en') {
+    $langColumn = 'en';
+} else if ($_SESSION['language'] == 'fr') {
+    $langColumn = 'fr';
+} else if ($_SESSION['language'] == 'de') {
+    $langColumn = 'de';
+} else {
+    $langColumn = '';
+}
+$sqlTranslation = $connection->prepare("select translationID, $langColumn as translation from translation");
+$sqlTranslation->execute();
+$result = $sqlTranslation->get_result();
+while ($row = $result->fetch_assoc()) {
+    $t[$row['translationID']] = $row['translation'];
+}
 
 
 //if session created and user hasnt change his password lock the page
@@ -38,6 +66,7 @@ if ($fileToCheck != "logout_in.php") {
 
 function NavBar($currentPageLoc)
 {
+    global $t;
 ?>
     <nav class="navbar">
         <div class="logo">
@@ -47,15 +76,15 @@ function NavBar($currentPageLoc)
             <li><a href="index.php" <?php
                                     if ($currentPageLoc == "index") {
                                         print("class='active'");
-                                    } ?>>Home</a></li>
+                                    } ?>><?= $t['home'] ?></a></li>
             <li><a href="reserve.php" <?php
                                         if ($currentPageLoc == "reserve") {
                                             print("class='active'");
-                                        } ?>>Reserve</a></li>
+                                        } ?>><?= $t['Reserve'] ?></a></li>
             <li><a href="my_reservations.php" <?php
                                                 if ($currentPageLoc == "my_reservations") {
                                                     print("class='active'");
-                                                } ?>>My Reservations</a></li>
+                                                } ?>><?= $t['my_reservations'] ?></a></li>
             <?php
             /* if user is admin the following link must be display in navigation bar */
             if (isset($_SESSION['Admin']) && $_SESSION["Admin"]) {
@@ -63,11 +92,11 @@ function NavBar($currentPageLoc)
                 <li><a href="add_user.php" <?php
                                             if ($currentPageLoc == "add_user") {
                                                 print("class='active'");
-                                            } ?>>Add User</a></li>
+                                            } ?>><?= $t['add_user'] ?></a></li>
                 <li><a href="users.php" <?php
                                         if ($currentPageLoc == "users") {
                                             print("class='active'");
-                                        } ?>>Users</a></li>
+                                        } ?>><?= $t['users'] ?></a></li>
             <?php
             }
             ?>
@@ -82,11 +111,11 @@ function NavBar($currentPageLoc)
                                         }
                                         ?>><img src="../img/user.png" width="25px" height="25px"><?= $usernameORlink ?></a></li>
             <li>
-                <form action="">
-                    <select onchange="changeLanguage(this.value)">
-                        <option value="en">EN</option>
-                        <option value="fr">FR</option>
-                        <option value="de">DE</option>
+                <form method="POST">
+                    <select name="selectedLang" onchange="this.form.submit()">
+                        <option value="en" <?php if ($_SESSION['language'] == "en") echo 'selected' ?>>EN</option>
+                        <option value="fr" <?php if ($_SESSION['language'] == "fr") echo 'selected' ?>>FR</option>
+                        <option value="de" <?php if ($_SESSION['language'] == "de") echo 'selected' ?>>DE</option>
                     </select>
                 </form>
             </li>

@@ -7,7 +7,7 @@ include_once("../Library/MyLibrary.php");
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <title><?= $t['login_logout'] ?></title>
   <link rel="stylesheet" href="../style.css? <?= time(); ?>">
   <script src="../script.js"></script>
 </head>
@@ -18,7 +18,7 @@ include_once("../Library/MyLibrary.php");
   <?php
 
   /* sign in  */
-   /* echo password_hash('password', PASSWORD_DEFAULT); */
+  echo password_hash('password', PASSWORD_DEFAULT);
 
   if (isset($_POST['username']) && isset($_POST['password'])) {
     $loginCheck = $connection->prepare('select * from users where username =?');
@@ -31,11 +31,11 @@ include_once("../Library/MyLibrary.php");
       $level = $row['Level'];
 
       //use password verify function
-      if(password_verify($_POST['password'], $password)){
-$_SESSION["username"] = $username;
+      if (password_verify($_POST['password'], $password)) {
+        $_SESSION["username"] = $username;
         $_SESSION['level'] = $level;
         $_SESSION["userLogin"] = true;
-      
+
         if (strtoupper($level) == 'ADMIN') {
           $_SESSION["Admin"] = true;
         }
@@ -55,44 +55,44 @@ $_SESSION["username"] = $username;
         }
         exit();
       } else {
-        echo '<script>alert("Password is incorrect!")</script>';
+        echo "<script>alert('" . $t['password_incorrect'] . "')</script>";
       }
     } else {
-      echo '<script>alert("Username couldnt find!")</script>';
+      echo "<script>alert('" . $t["username_not_found"] . "')</script>";
     }
   }
 
 
   ?>
   <div class="login-container">
-    <h2>Welcome to Croix-Rouge 👋</h2>
+    <h2><?= $t['welcome_message'] ?> 👋</h2>
     <?php if ($_SESSION["userMustChangeThePass"]): ?>
       <p style="color: #b30000; background-color: #ffe6e6; border: 1px solid #b30000; padding: 10px; border-radius: 5px; font-weight: bold;">
-        Your initial password needs to be changed. Please change your password and try again.
+        <?= $t['initial_password_change_required'] ?>
       </p>
     <?php elseif ($_SESSION["userLogin"]): ?>
       <p style="color: #004085; background-color: #e2e3e5; border: 1px solid #b8daff; padding: 10px; border-radius: 5px;">
-        Secure your account. Please update your password and keep your information safe.
+        <?= $t['secure_account'] ?>
       </p>
     <?php else: ?>
       <p style="color: #0c5460; background-color: #d1ecf1; border: 1px solid #bee5eb; padding: 10px; border-radius: 5px;">
-        Empowering communities with care. Please sign in to manage your reservations and services.
+        <?= $t['welcome_tagline'] ?>
       </p>
     <?php endif; ?>
     <form action="" method="POST">
       <?php
       if (!$_SESSION["userLogin"]) {
       ?>
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" placeholder="username" required />
+        <label for="username"><?= $t['username'] ?></label>
+        <input type="text" id="username" name="username" placeholder="<?= $t['username'] ?>" required />
 
-        <label for="password">Password</label>
+        <label for="password"><?= $t['password'] ?></label>
         <input type="password" id="password" name="password" placeholder="••••••••" required />
 
-        <a href="#" class="forgot">Forgot Password?</a>
+        <a href="#" class="forgot"><?= $t['forgot_password'] ?></a>
 
-        <button type="submit">Sign in</button>
-        <div class="separator">Or sign in with</div>
+        <button type="submit"><?= $t['sign_in'] ?></button>
+        <div class="separator"><?= $t['or_sign_in_with'] ?></div>
 
         <div class="social-login">
           <button><img src="../img/google.png" width="15px" height="15px" /> Google</button>
@@ -100,7 +100,7 @@ $_SESSION["username"] = $username;
         </div>
 
         <div class="signup-text">
-          Don't have an account? <a href="#">Sign up</a>
+          <?= $t['no_account'] ?> <a href="#"><?= $t['sign_up'] ?></a>
         </div>
     </form>
   </div>
@@ -126,7 +126,7 @@ $_SESSION["username"] = $username;
             $passRow = $result->fetch_assoc();
             if ($passRow) {
               $userSessionPass = $passRow["Password"];
-              if ($_POST["CurrentPassword"] == $userSessionPass) {
+              if (password_verify($_POST["CurrentPassword"], $userSessionPass)) {
 
                 if ($_POST["NewPassword"] == $_POST["ConfirmNewPassword"]) {
                   $newPassword = $_POST["ConfirmNewPassword"];
@@ -137,48 +137,47 @@ $_SESSION["username"] = $username;
 
                   if ($updatePass->execute()) {
                     $_SESSION["userMustChangeThePass"] = false;
-                    echo '<script>alert("Password updated successfully.");</script>';
+                    echo '<script>alert("' . $t["password_updated"] . '");</script>';
                     header("Refresh:0");
                   } else {
-                    echo '<script>alert("Failed to update password.");</script>';
+                    echo '<script>alert("' . $t["password_update_failed"] . '.");</script>';
                   }
                 } else {
-                  echo '<script>alert("New passwords do not match!");</script>';
+                  echo '<script>alert("' . $t["new_passwords_do_not_match"] . '");</script>';
                   exit();
                 }
               } else {
-                echo '<script>alert("Your current password is incorrect.")</script>';
+                echo '<script>alert("' . $t["current_password_incorrect"] . '!")</script>';
               }
             } else {
-              echo '<script>alert("user didnt find")</script>';
+              echo '<script>alert("' . $t["user_not_found"] . '")</script>';
             }
           } else {
-            echo '<script>alert("All fields required!")</script>';
+            echo '<script>alert("' . $t["all_fields_required"] . '!")</script>';
           }
         }
 
     ?>
-    <label for="username">Current Password</label>
+    <label for="username"><?= $t['current_password'] ?></label>
     <input type="password" id="username" name="CurrentPassword" placeholder="Current password" required />
 
-    <label for="username">New Password</label>
+    <label for="username"><?= $t['new_password'] ?></label>
     <input type="password" id="username" name="NewPassword" placeholder="••••••••" required />
 
-    <label for="password">Confirm New Password</label>
+    <label for="password"><?= $t['confirm_new_password'] ?></label>
     <input type="password" id="password" name="ConfirmNewPassword" placeholder="••••••••" required />
 
-    <a href="#" class="forgot">Forgot Password?</a>
+    <a href="#" class="forgot"><?= $t['forgot_password'] ?></a>
 
-    <button type="submit" name="updateBtn">Update password</button>
+    <button type="submit" name="updateBtn"><?= $t['update_password'] ?></button>
+  </form>
 
+  <form action="" method="post">
+    <button id="username" type="submit" name="logout"><?= $t['Logout'] ?></button>
+  </form>
   <?php
       }
   ?>
-  </form>
-
-  <form action="" method="POST">
-    <button type="submit" name="logout">Log out</button>
-  </form>
 
 
 </body>

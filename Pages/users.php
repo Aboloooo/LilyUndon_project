@@ -7,7 +7,7 @@ include_once("../Library/MyLibrary.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users</title>
+    <title><?= $t['users'] ?></title>
     <link rel="stylesheet" href="../style.css? <?= time(); ?>">
     <script src="../script.js"></script>
 </head>
@@ -15,37 +15,37 @@ include_once("../Library/MyLibrary.php");
 <body>
     <?= NavBar('users') ?>
     <?php
-if(isset($_POST['deleteUser'])){
-    $userIDToDelete = $_POST['deleteUserID'];
+    if (isset($_POST['deleteUser'])) {
+        $userIDToDelete = $_POST['deleteUserID'];
 
-    $deleteUserStatment = $connection->prepare("DELETE FROM users WHERE UserID = ?");
-    $deleteUserStatment->bind_param('i' , $userIDToDelete);
-    $deleteUserStatment->execute();
-}
+        $deleteUserStatment = $connection->prepare("DELETE FROM users WHERE UserID = ?");
+        $deleteUserStatment->bind_param('i', $userIDToDelete);
+        $deleteUserStatment->execute();
+    }
     ?>
 
     <div class="user-table-container">
-        <h2>Registered Users</h2>
+        <h2><?= $t['registered_users'] ?></h2>
         <table class="user-table">
             <thead>
                 <tr>
-                    <th>User ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>CNS Number</th>
-                    <th>Username</th>
-                    <th>Password</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Changed Pass</th>
-                    <th>Action</th>
+                    <th><?= $t['user_id'] ?></th>
+                    <th><?= $t['first_name'] ?></th>
+                    <th><?= $t['last_name'] ?></th>
+                    <th><?= $t['CNS_number'] ?></th>
+                    <th><?= $t['username'] ?></th>
+                    <th><?= $t['password'] ?></th>
+                    <th><?= $t['email'] ?></th>
+                    <th><?= $t['role'] ?></th>
+                    <th><?= $t['changed_pass'] ?></th>
+                    <th><?= $t['action'] ?></th>
                 </tr>
             </thead>
             <?php
             $displayUsers = $connection->prepare('select * from users');
             $displayUsers->execute();
             $result = $displayUsers->get_result();
-            while($row = $result->fetch_assoc()){
+            while ($row = $result->fetch_assoc()) {
                 $UserID = $row['UserID'];
                 $Fname = $row['First_name'];
                 $Lname = $row['Last_name'];
@@ -55,33 +55,35 @@ if(isset($_POST['deleteUser'])){
                 $Email = $row['Email'];
                 $Level = $row['Level'];
                 $mustChangePass = $row['user_must_change_password'];
-                
+
             ?>
-            <tbody>
-                <tr>
-                    <td><?=$UserID?></td>
-                    <td><?=$Fname?></td>
-                    <td><?=$Lname?></td>
-                    <td><?=$CNS?></td>
-                    <td><?=$UserN?></td>
-                    <td><?=$Password?></td>
-                    <td><?=$Email?></td>
-                    <td><?=$Level?></td>
-                    <td><?php if($mustChangePass == 1)
-                    { echo 'false';}
-                    else{ echo 'true';}?></td>
-                    <td>
-                        <!-- Example action -->
-                        <form method="POST" onsubmit="return confirm('Delete this user?');" style="display:inline;">
-                            <input type="hidden" name="deleteUserID" value="<?=$UserID?>">
-                            <button type="submit" name="deleteUser" class="action-btn">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            </tbody>
+                <tbody>
+                    <tr>
+                        <td><?= $UserID ?></td>
+                        <td><?= $Fname ?></td>
+                        <td><?= $Lname ?></td>
+                        <td><?= $CNS ?></td>
+                        <td><?= $UserN ?></td>
+                        <td><?= $Password ?></td>
+                        <td><?= $Email ?></td>
+                        <td><?= $Level ?></td>
+                        <td><?php if ($mustChangePass == 1) {
+                                echo 'false';
+                            } else {
+                                echo 'true';
+                            } ?></td>
+                        <td>
+                            <!-- Example action -->
+                            <form method="POST" onsubmit="return confirm('<?= $t['confirm_delete_user'] ?>');" style="display:inline;">
+                                <input type="hidden" name="deleteUserID" value="<?= $UserID ?>">
+                                <button type="submit" name="deleteUser" class="action-btn"><?= $t['delete'] ?></button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
             <?php
-        }
-        ?>
+            }
+            ?>
         </table>
     </div>
 

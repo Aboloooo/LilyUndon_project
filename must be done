@@ -1,10 +1,8 @@
-forget password must have a solution
+forget password must have a solution logout_in page 
 
-Translation
 
-Making everything responsive
-navigation bar is visible when user scroll to the right
+<div class="signup-text">Don't have an account? <a href="#">Sign up</a></div>
 
-kitchen can be booked maximum once a day and four times per week for each user
-problem with number 4
-01/06  can not be reserved
+-Making everything responsive navigation bar is visible when user
+scroll to the right kitchen can be booked maximum once a day and four times per
+week for each user problem with number 4 01/06 can not be reserved

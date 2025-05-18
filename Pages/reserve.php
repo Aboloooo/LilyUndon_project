@@ -7,7 +7,7 @@ include_once("../Library/MyLibrary.php");
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kitchen Reservation Calendar</title>
+  <title><?= $t['kitchen_reservation_calendar'] ?></title>
   <link rel="stylesheet" href="../style.css? <?= time(); ?>">
   <script src="../script.js"></script>
 </head>
@@ -17,7 +17,7 @@ include_once("../Library/MyLibrary.php");
 
   <body>
 
-    <h1>Kitchen Reservation Calendar</h1>
+    <h1><?= $t['kitchen_reservation_calendar'] ?></h1>
 
     <?php
     $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -129,22 +129,22 @@ include_once("../Library/MyLibrary.php");
           $resultOfCheckSameDayStmt  = $checkSameDayStmt->get_result();
           $sameDayCount = $resultOfCheckSameDayStmt->fetch_assoc()['count'];
           if ($sameDayCount > 0) {
-            echo "<script>alert('You already have a reservation on this day!')</script>";
+            echo "<script>alert('" . $t['already_have_reservation_on_day'] . "')</script>";
           } else {
             $sqlReservationInsert = $connection->prepare('insert into reservation(Reserved_by_userID,StartMoment) values (?,?) ');
             $sqlReservationInsert->bind_param('is', $userId, $currentTimeSlot);
             if ($sqlReservationInsert->execute()) {
-              echo "<script>alert('Reservation done successfully!')</script>";
+              echo "<script>alert('" . $t['reservation_done_successfully'] . "')</script>";
             } else {
-              echo "<script>alert('Error')</script>";
+              echo "<script>alert('" . $t['error'] . "')</script>";
             }
           }
         } else {
-          echo "<script>alert('You can not reserve more than 4 times per week!')</script>";
+          echo "<script>alert('" . $t['reservation_limit_exceeded'] . "')</script>";
         }
       } else {
         echo "<script>
-        alert('Plase login first!')
+        alert('" . $t['please_login_first'] . "')
           window.location.href = 'logout_in.php';
         </script>";
       }
@@ -166,7 +166,7 @@ include_once("../Library/MyLibrary.php");
       <table class="reservationTable" border="1" cellspacing="0" cellpadding="10">
         <thead>
           <tr>
-            <th>Time</th>
+            <th><?= $t['time'] ?></th>
 
             <?php
             $today = date('m-d');
@@ -207,13 +207,13 @@ include_once("../Library/MyLibrary.php");
                 <td style="background-color: <?= $cellColor ?>;">
 
                   <?php if ($isReserved) { ?>
-                    Reserved
+                    <?= $t['reserved'] ?>
                   <?php } else { ?>
-                    <form method="POST" style="margin:0;" onsubmit="return confirm('Are you sure you want to reserve this time?');">
-                      <input type="hidden" name="day" value="<?= $weekDates[$index] /*$day*/ ?>">
+                    <form method="POST" style="margin:0;" onsubmit="return confirm('<?= $t['confirm_reserve_time'] ?>');">
+                      <input type="hidden" name="day" value="<?= $weekDates[$index] ?>">
                       <input type="hidden" name="time" value="<?= $time ?>">
                       <button type="submit" class="reserveBtn" name="reservationBtn" <?= ($isPast ? 'disabled style="background-color: #ccc; cursor: not-allowed;"' : '') ?>>
-                        <?= $isPast ? 'Past' : 'Available' ?>
+                        <?= $isPast ? $t['past'] : $t['available'] ?>
                       </button>
                     </form>
                   <?php } ?>

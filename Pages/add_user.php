@@ -7,7 +7,7 @@ include_once("../Library/MyLibrary.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title><?= $t['add_user'] ?></title>
     <link rel="stylesheet" href="../style.css? <?= time(); ?>">
     <script src="../script.js"></script>
 </head>
@@ -56,15 +56,15 @@ include_once("../Library/MyLibrary.php");
                 $inputExist = ($row['count'] > 0);
 
                 if ($inputExist) {
-                    echo "<script>alert('Error, Either CNS number or username has been already used! Please enter a unique value.')</script>";
+                    echo "<script>alert('" . addslashes($t['Error: The CNS number or username has already been used. Please enter a unique value.']) . "');</script>";
                 } else {
                     $sqlInsertValues = $connection->prepare('INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, Level, user_must_change_password) VALUES (?,?,?,?,?,?,?,?)');
                     $sqlInsertValues->bind_param('ssissssi', $firstN, $lastN, $CNS, $userN, $hashedPass, $email, $defaultLevel, $user_must_change_pass);
                     $sqlInsertValues->execute();
-                    echo "<script>alert('User created successfully!')</script>";
+                    echo "<script>alert('" . $t['user_created_successfully'] . "')</script>";
                 }
             } else {
-                echo "<script>alert('Passwords are not match!')</script>";
+                echo "<script>alert('" . $t['passwords_not_match'] . "')</script>";
                 exit();
             }
         }
@@ -76,34 +76,34 @@ include_once("../Library/MyLibrary.php");
 
     <?= NavBar('add_user') ?>
     <div class="login-container">
-        <h2>Welcome to Croix-Rouge 👋</h2>
-        <p>Fill in the form below to register a new user in the system. Make sure all required fields are completed accurately.</p>
+        <h2><?= $t['welcome_message'] ?> 👋</h2>
+        <p><?= $t['form_instruction'] ?></p>
         <form action="" method="POST">
-            <label for="First_name">First Name</label>
-            <input type="text" id="username" name="first_name" placeholder="First name" required />
+            <label for="First_name"><?= $t['first_name'] ?></label>
+            <input type="text" id="username" name="first_name" placeholder="<?= $t['first_name'] ?>" required />
 
-            <label for="Last_name">Last Name</label>
-            <input type="text" id="username" name="last_name" placeholder="Last name" required />
+            <label for="Last_name"><?= $t['last_name'] ?></label>
+            <input type="text" id="username" name="last_name" placeholder="<?= $t['last_name'] ?>" required />
 
-            <label for="CNS">Social security number</label>
-            <input type="text" id="username" name="CNS_number" placeholder="CNS number" pattern="\d{13}" maxlength="13" minlength="13" required />
+            <label for="CNS"><?= $t['social_security_number'] ?></label>
+            <input type="text" id="username" name="CNS_number" placeholder="<?= $t['social_security_number'] ?>" pattern="\d{13}" maxlength="13" minlength="13" required />
 
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="username" required />
+            <label for="username"><?= $t['username'] ?></label>
+            <input type="text" id="username" name="username" placeholder="<?= $t['username'] ?>" required />
 
-           <label for="password">Password</label>
-<input type="password" id="password" name="password" placeholder="••••••••" required />
-
-
-<label for="password_confirmation">Password confirmation</label>
-<input type="password" id="password_confirmation" name="password_confirmation" placeholder="••••••••" required />
+            <label for="password"><?= $t['password'] ?></label>
+            <input type="password" id="password" name="password" placeholder="••••••••" required />
 
 
-            <label for="email">Email</label>
-            <input type="email" id="username" name="email" placeholder="Email" required />
+            <label for="password_confirmation"><?= $t['password_confirmation'] ?></label>
+            <input type="password" id="password_confirmation" name="password_confirmation" placeholder="••••••••" required />
 
 
-            <button type="submit" name="submit">Sign in</button>
+            <label for="email"><?= $t['email'] ?></label>
+            <input type="email" id="username" name="email" placeholder="<?= $t['email'] ?>" required />
+
+
+            <button type="submit" name="submit"><?= $t['sign_in'] ?></button>
 
         </form>
     </div>

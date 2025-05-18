@@ -7,7 +7,7 @@ include_once("../Library/MyLibrary.php");
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Reservations</title>
+  <title><?= $t['my_reservations'] ?></title>
   <link rel="stylesheet" href="../style.css?<?= time(); ?>">
   <script src="../script.js"></script>
 </head>
@@ -56,16 +56,16 @@ include_once("../Library/MyLibrary.php");
             $delete->bind_param('ss', $cancelDateTime, $_SESSION['username']);
           }
           if ($delete->execute()) {
-            echo "<script>alert('Reservation cancelled successfully');</script>";
+            echo '<script>alert("' . $t["reservation_cancelled_successfully"] . '");</script>';
             header("Refresh:0");
           } else {
-            echo "<script>alert('Cancellation failed');</script>";
+            echo "<script>alert('" . $t["cancellation_failed"] . "');</script>";
           }
         }
   ?>
 
         <div class="my_reservation_container">
-          <h1>My Kitchen Reservations</h1>
+          <h1><?= $t["my_kitchen_reservations"] ?></h1>
           <table>
             <thead>
               <tr>
@@ -73,9 +73,9 @@ include_once("../Library/MyLibrary.php");
                 <th>#</th>
                 </a>
                 <?= ($AdminMode) ? '<th>Reserved by user_ID</th>' : ''; ?>
-                <th>Date</th>
-                <th>Time Slot</th>
-                <th>Action</th>
+                <th><?= $t["date"] ?></th>
+                <th><?= $t["time_slot"] ?></th>
+                <th><?= $t["action"] ?></th>
               </tr>
             </thead>
             <tbody>
@@ -98,9 +98,9 @@ include_once("../Library/MyLibrary.php");
                   <td><?= $reservedDate ?></td>
                   <td><?= $timeSlot ?></td>
                   <td>
-                    <form method="POST" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
+                    <form method="POST" onsubmit="return confirm('<?= $t['confirm_cancel_reservation'] ?>');">
                       <input type="hidden" name="datetime" value="<?= $startMoment ?>">
-                      <button type="submit" class="cancel-btn" name="cancel">Cancel</button>
+                      <button type="submit" class="cancel-btn" name="cancel"><?= $t['cancel'] ?></button>
                     </form>
                   </td>
                 </tr>
@@ -111,12 +111,12 @@ include_once("../Library/MyLibrary.php");
       <?php
       } else {
       ?>
-        <div class="no-reservations">You have no reservations yet.</div>
+        <div class="no-reservations"><?= $t['no_reservations_yet'] ?></div>
       <?php
       }
     } else {
       ?>
-      <div class="no-reservations">Please Login to display the reservations.</div>
+      <div class="no-reservations"><?= $t['please_login_to_view_reservations'] ?></div>
   <?php
     }
   }

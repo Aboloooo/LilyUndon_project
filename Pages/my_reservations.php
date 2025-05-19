@@ -72,7 +72,9 @@ include_once("../Library/MyLibrary.php");
 
                 <th>#</th>
                 </a>
-                <?= ($AdminMode) ? '<th>Reserved by user_ID</th>' : ''; ?>
+<?php if ($AdminMode): ?>
+    <th><?= $t["reserved_by_user_id"] ?></th>
+<?php endif; ?>
                 <th><?= $t["date"] ?></th>
                 <th><?= $t["time_slot"] ?></th>
                 <th><?= $t["action"] ?></th>

@@ -68,9 +68,9 @@ include_once("../Library/MyLibrary.php");
                         <td><?= $Email ?></td>
                         <td><?= $Level ?></td>
                         <td><?php if ($mustChangePass == 1) {
-                                echo 'false';
+                                echo $t['false'];
                             } else {
-                                echo 'true';
+                                echo $t['true'];
                             } ?></td>
                         <td>
                             <!-- Example action -->

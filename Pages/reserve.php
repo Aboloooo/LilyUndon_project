@@ -174,7 +174,7 @@ include_once("../Library/MyLibrary.php");
               $isToday = ($weekDates[$index] === $today);
               $BackHeadingColor = $isToday ? 'style="background-color: #e3f2fd;"' : '';
             ?>
-              <th <?= $BackHeadingColor ?>><?= $day ?><br><small>(<?= $weekDates[$index] ?>)</small></th>
+              <th <?= $BackHeadingColor ?>><?= $t[$day] ?><br><small>(<?= $weekDates[$index] ?>)</small></th>
             <?php endforeach; ?>
           </tr>
         </thead>

@@ -163,6 +163,14 @@ INSERT INTO translation (translationID, en, fr, de) VALUES
 ('confirm_reserve_time', 'Are you sure you want to reserve this time?', 'Êtes-vous sûr de vouloir réserver ce créneau ?', 'Sind Sie sicher, dass Sie diese Zeit reservieren möchten?'),
 ('past', 'Past', 'Passé', 'Vergangenheit'),
 ('available', 'Available', 'Disponible', 'Verfügbar'),
+('Monday', 'Monday', 'Lundi', 'Montag'),
+('Tuesday', 'Tuesday', 'Mardi', 'Dienstag'),
+('Wednesday', 'Wednesday', 'Mercredi', 'Mittwoch'),
+('Thursday', 'Thursday', 'Jeudi', 'Donnerstag'),
+('Friday', 'Friday', 'Vendredi', 'Freitag'),
+('Saturday', 'Saturday', 'Samedi', 'Samstag'),
+('Sunday', 'Sunday', 'Dimanche', 'Sonntag'),
+('reserved_by_user_id', 'Reserved by user_ID', 'Réservé par l/ID utilisateur', 'Reserviert durch Benutzer-ID'),
 
 /* users */
 ('users', 'Users', 'Utilisateurs', 'Benutzer'),
@@ -173,6 +181,8 @@ INSERT INTO translation (translationID, en, fr, de) VALUES
 ('changed_pass', 'Changed Pass', 'Mot de passe changé', 'Passwort geändert'),
 ('action', 'Action', 'Action', 'Aktion'),
 ('delete', 'Delete', 'Supprimer', 'Löschen'),
+('true', 'True', 'vrai', 'wahr'),
+('false', 'False', 'faux', 'falsch'),
 ('confirm_delete_user', 'Delete this user?', 'Supprimer cet utilisateur ?', 'Diesen Benutzer löschen?')
 
 

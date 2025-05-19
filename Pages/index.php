@@ -53,7 +53,7 @@ include_once("../Library/MyLibrary.php");
     <div class="part2">
       <h1>Plan | <?= $t['cook'] ?> | <?= $t['enjoy'] ?></h1>
       <form action="" method='post'>
-        <button class="reservationBtn" name="<?= $t[$reserveOrLogout] ?>" role="button"><?= $t[$reserveOrLogout] ?></button>
+        <button class="reservationBtn" name="<?= $reserveOrLogout ?>" role="button"><?= $t[$reserveOrLogout] ?></button>
       </form>
     </div>
 </body>

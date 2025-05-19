@@ -22,6 +22,23 @@ include_once("../Library/MyLibrary.php");
         $deleteUserStatment->bind_param('i', $userIDToDelete);
         $deleteUserStatment->execute();
     }
+    if (isset($_POST['statusBtnChange'])) {
+        $userIDToChangeStatus = $_POST['statusBtnChangeUserID'];
+
+          $fetchStatus = $connection->prepare('select status from users where UserID = ?');
+    $fetchStatus->bind_param('i', $userIDToChangeStatus);
+    $fetchStatus->execute();
+    $resultStatus = $fetchStatus->get_result();
+    $userStatusRow = $resultStatus->fetch_assoc();
+    $userStatus = $userStatusRow['status'];
+
+    $newStatus = (strtolower($userStatus) == 'pending') ? 'active' : 'pending';
+
+
+        $statusUserToChangeStatment = $connection->prepare("update users set status =? WHERE UserID = ?");
+        $statusUserToChangeStatment->bind_param('si', $newStatus,$userIDToChangeStatus);
+        $statusUserToChangeStatment->execute();
+    }
     ?>
 
     <div class="user-table-container">
@@ -38,6 +55,7 @@ include_once("../Library/MyLibrary.php");
                     <th><?= $t['email'] ?></th>
                     <th><?= $t['role'] ?></th>
                     <th><?= $t['changed_pass'] ?></th>
+                    <th>status</th>
                     <th><?= $t['action'] ?></th>
                 </tr>
             </thead>
@@ -54,7 +72,14 @@ include_once("../Library/MyLibrary.php");
                 $Password = $row['Password'];
                 $Email = $row['Email'];
                 $Level = $row['Level'];
+                $status = $row['status'];
                 $mustChangePass = $row['user_must_change_password'];
+
+                $btnStyle = (strtolower($status) == 'pending') 
+    ? 'background-color: #f0ad4e; color: #fff; border: none; padding: 6px 12px; border-radius: 4px;' 
+    : 'background-color: #28a745; color: #fff; border: none; padding: 6px 12px; border-radius: 4px;';
+
+                
 
             ?>
                 <tbody>
@@ -72,6 +97,12 @@ include_once("../Library/MyLibrary.php");
                             } else {
                                 echo $t['true'];
                             } ?></td>
+                            <td>
+                         <form method="POST" onsubmit="return confirm('<?= $t['confirmation_either_to_activate_or_deactivate_user'] ?>');" style="display:inline;">
+                                <input type="hidden" name="statusBtnChangeUserID" value="<?= $UserID ?>">
+                                <button type="submit" name="statusBtnChange" style="<?= $btnStyle ?>" class="action-btn"><?= $t[$status] ?></button>
+                            </form>
+                        </td>
                         <td>
                             <!-- Example action -->
                             <form method="POST" onsubmit="return confirm('<?= $t['confirm_delete_user'] ?>');" style="display:inline;">

@@ -12,6 +12,7 @@ CREATE TABLE users (
     Password VARCHAR(255) NOT NULL,
     Email VARCHAR(255) NOT NULL,
     Level VARCHAR(255),
+    status VARCHAR(50),
     user_must_change_password BOOLEAN
     /* Zero is considered as false, nonzero values are considered as true. */
 );
@@ -49,10 +50,10 @@ INSERT INTO translation (translationID, en, fr, de) VALUES
   'Fehler: Die CNS-Nummer oder der Benutzername wurde bereits verwendet. Bitte geben Sie einen eindeutigen Wert ein.'
 ),
 ('user_created_successfully', 
-  'User created successfully!', 
-  'Utilisateur créé avec succès!', 
-  'Benutzer erfolgreich erstellt!'
-),
+ 'User created successfully! Please be patient while an admin approves your registration.', 
+ 'Utilisateur créé avec succès ! Veuillez patienter pendant que l/administrateur approuve votre inscription.', 
+ 'Benutzer erfolgreich erstellt! Bitte haben Sie etwas Geduld, bis ein Administrator Ihre Registrierung genehmigt.'),
+
 ('passwords_not_match', 
   'Passwords do not match!', 
   'Les mots de passe ne correspondent pas !', 
@@ -63,12 +64,9 @@ INSERT INTO translation (translationID, en, fr, de) VALUES
   'Bienvenue à la Croix-Rouge', 
   'Willkommen bei Croix-Rouge'
 ),
-('form_instruction', 
-  'Fill in the form below to register a new user in the system. Make sure all required fields are completed accurately.', 
-  'Remplissez le formulaire ci-dessous pour enregistrer un nouvel utilisateur dans le système. Assurez-vous que tous les champs obligatoires sont remplis correctement.', 
-  'Füllen Sie das folgende Formular aus, um einen neuen Benutzer im System zu registrieren. Stellen Sie sicher, dass alle Pflichtfelder korrekt ausgefüllt sind.'
-),
-('first_name', 
+('form_instruction', 'Please fill out the form below to complete your registration. All fields marked as required must be filled in accurately.', 'Veuillez remplir le formulaire ci-dessous pour compléter votre inscription. Tous les champs obligatoires doivent être remplis avec précision.', 'Bitte füllen Sie das untenstehende Formular aus, um Ihre Registrierung abzuschließen. Alle Pflichtfelder müssen korrekt ausgefüllt werden.'),
+
+('first_name',
   'First name', 
   'Prénom', 
   'Vorname'
@@ -108,7 +106,7 @@ INSERT INTO translation (translationID, en, fr, de) VALUES
   'Se connecter', 
   'Anmelden'
 ),
-('add_user', 'Add User', 'Ajouter un utilisateur', 'Benutzer hinzufügen'),
+('register', 'Register', 'S/inscrire', 'Registrieren'),
 
 /* index */
 ('home', 'Home', 'Accueil', 'Startseite'),
@@ -183,6 +181,9 @@ INSERT INTO translation (translationID, en, fr, de) VALUES
 ('delete', 'Delete', 'Supprimer', 'Löschen'),
 ('true', 'True', 'vrai', 'wahr'),
 ('false', 'False', 'faux', 'falsch'),
+('pending', 'Pending', 'En attente', 'Ausstehend'),
+('active', 'Active', 'Actif', 'Aktiv'),
+('confirmation_either_to_activate_or_deactivate_user', 'Are you sure you want to activate or deactivate this user?', 'Êtes-vous sûr de vouloir activer ou désactiver cet utilisateur ?', 'Möchten Sie diesen Benutzer wirklich aktivieren oder deaktivieren?'),
 ('confirm_delete_user', 'Delete this user?', 'Supprimer cet utilisateur ?', 'Diesen Benutzer löschen?')
 
 

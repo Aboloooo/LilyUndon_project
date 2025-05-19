@@ -130,10 +130,11 @@ include_once("../Library/MyLibrary.php");
 
                 if ($_POST["NewPassword"] == $_POST["ConfirmNewPassword"]) {
                   $newPassword = $_POST["ConfirmNewPassword"];
+                  $newPasswordHashed = password_hash($newPassword,PASSWORD_DEFAULT);
 
                   $updatePass = $connection->prepare('UPDATE users SET Password = ?, user_must_change_password = ? WHERE Username = ?');
                   $zeroValue = 0;
-                  $updatePass->bind_param("sis", $newPassword, $zeroValue, $_SESSION["username"]);
+                  $updatePass->bind_param("sis", $newPasswordHashed, $zeroValue, $_SESSION["username"]);
 
                   if ($updatePass->execute()) {
                     $_SESSION["userMustChangeThePass"] = false;

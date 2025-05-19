@@ -2,6 +2,9 @@ forget password must have a solution logout_in page
 
 
 <div class="signup-text">Don't have an account? <a href="#">Sign up</a></div>
+we can redirect the user to a registration form to fill in and form will be display in another page for the admin to approve it.
+
+only an approved user can reserve and see reservation if exist.
 
 -Making everything responsive navigation bar is visible when user
 scroll to the right kitchen can be booked maximum once a day and four times per

@@ -7,7 +7,7 @@ include_once("../Library/MyLibrary.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $t['add_user'] ?></title>
+    <title><?= $t['register'] ?></title>
     <link rel="stylesheet" href="../style.css? <?= time(); ?>">
     <script src="../script.js"></script>
 </head>
@@ -44,6 +44,7 @@ include_once("../Library/MyLibrary.php");
             $passConfir = $_POST['password_confirmation'];
             $email = $_POST['email'];
             $defaultLevel = "customer";
+            $defaultStatus = "pending";
             $user_must_change_pass = 1;
 
             if ($pass == $passConfir) {
@@ -56,10 +57,10 @@ include_once("../Library/MyLibrary.php");
                 $inputExist = ($row['count'] > 0);
 
                 if ($inputExist) {
-                    echo "<script>alert('" . addslashes($t['Error: The CNS number or username has already been used. Please enter a unique value.']) . "');</script>";
+                    echo "<script>alert('" . addslashes($t['cns_username_error']) . "');</script>";
                 } else {
-                    $sqlInsertValues = $connection->prepare('INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, Level, user_must_change_password) VALUES (?,?,?,?,?,?,?,?)');
-                    $sqlInsertValues->bind_param('ssissssi', $firstN, $lastN, $CNS, $userN, $hashedPass, $email, $defaultLevel, $user_must_change_pass);
+                    $sqlInsertValues = $connection->prepare('INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, Level,status, user_must_change_password) VALUES (?,?,?,?,?,?,?,?,?)');
+                    $sqlInsertValues->bind_param('ssisssssi', $firstN, $lastN, $CNS, $userN, $hashedPass, $email, $defaultLevel,$defaultStatus, $user_must_change_pass);
                     $sqlInsertValues->execute();
                     echo "<script>alert('" . $t['user_created_successfully'] . "')</script>";
                 }

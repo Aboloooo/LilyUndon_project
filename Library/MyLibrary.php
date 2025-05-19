@@ -26,6 +26,9 @@ if (!isset($_SESSION["userMustChangeThePass"])) {
 if (!isset($_SESSION["language"])) {
     $_SESSION["language"] = "en";
 }
+if (!isset($_SESSION["activatedUser"])) {
+    $_SESSION["activatedUser"] = false;
+}
 
 
 if (isset($_POST["selectedLang"])) {
@@ -85,14 +88,15 @@ function NavBar($currentPageLoc)
                                                 if ($currentPageLoc == "my_reservations") {
                                                     print("class='active'");
                                                 } ?>><?= $t['my_reservations'] ?></a></li>
+                                                <li><a href="add_user.php" <?php
+                                            if ($currentPageLoc == "add_user") {
+                                                print("class='active'");
+                                            } ?>><?= $t['register'] ?></a></li>
             <?php
             /* if user is admin the following link must be display in navigation bar */
             if (isset($_SESSION['Admin']) && $_SESSION["Admin"]) {
             ?>
-                <li><a href="add_user.php" <?php
-                                            if ($currentPageLoc == "add_user") {
-                                                print("class='active'");
-                                            } ?>><?= $t['add_user'] ?></a></li>
+                
                 <li><a href="users.php" <?php
                                         if ($currentPageLoc == "users") {
                                             print("class='active'");

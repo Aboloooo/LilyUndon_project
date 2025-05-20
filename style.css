@@ -477,7 +477,8 @@ table.user-table tr:hover {
 /* Responsive styles */
 @media screen and (max-width: 768px) {
   body {
-    position: fixed;
+    /* position: fixed; */
+    overflow-x: hidden;
     width: 100%;
   }
   .logo-icon {
@@ -493,7 +494,7 @@ table.user-table tr:hover {
     background-color: var(--white);
     flex-direction: column;
     width: 100%;
-    height: calc(75vh - 60px);
+    height: calc(100vh - 60px);
     justify-content: center;
     align-items: center;
     transform: translateX(100%);
@@ -501,6 +502,8 @@ table.user-table tr:hover {
     border-top: 2px solid var(--red);
     overflow-x: auto;
     margin: 0;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
   }
 
   .nav-links li {
@@ -541,11 +544,20 @@ table.user-table tr:hover {
   }
   /* login page */
   .login-container {
-  padding: 20px;
-    width: 80%;
+    padding: 20px;
+    width: 65%;
+    font-size: 11px;
+    line-height: 1.4;
+    margin-top: 25px;
   }
-  .login-container input {
+  .login-container label {
+    font-size: 12px;
+  }
+
+  .login-container input,
+  button {
     width: 95%;
+    font-size: 11px;
   }
 
   .social-login {
@@ -553,7 +565,7 @@ table.user-table tr:hover {
   }
 
   /* reseravtion table */
-  .reservationTable{
+  .reservationTable {
     width: 100%;
   }
   .reservation_table_content {
@@ -565,13 +577,12 @@ table.user-table tr:hover {
     padding: 8px;
     font-size: 12px;
   }
-  
+
   .reserveBtn {
     font-size: 11px;
     padding: 8px 12px;
   }
-  
- 
+
   .calendar-nav {
     display: flex;
     flex-wrap: wrap;
@@ -699,6 +710,4 @@ table.user-table tr:hover {
     padding: 6px 10px;
     font-size: 0.9em;
   }
-
-  
 }

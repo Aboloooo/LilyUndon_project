@@ -15,11 +15,8 @@ include_once("../Library/MyLibrary.php");
 <body>
 
     <?php
-
-
-
     if (isset($_POST['submit'])) {
-        //        echo "<script>alert('Error')</script>";
+        //echo "<script>alert('Error')</script>";
 
         $requiredFields = ["first_name", "last_name", "CNS_number", "username", "password", "password_confirmation", "email"];
         $errors = [];
@@ -60,7 +57,7 @@ include_once("../Library/MyLibrary.php");
                     echo "<script>alert('" . addslashes($t['cns_username_error']) . "');</script>";
                 } else {
                     $sqlInsertValues = $connection->prepare('INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, Level,status, user_must_change_password) VALUES (?,?,?,?,?,?,?,?,?)');
-                    $sqlInsertValues->bind_param('ssisssssi', $firstN, $lastN, $CNS, $userN, $hashedPass, $email, $defaultLevel,$defaultStatus, $user_must_change_pass);
+                    $sqlInsertValues->bind_param('ssisssssi', $firstN, $lastN, $CNS, $userN, $hashedPass, $email, $defaultLevel, $defaultStatus, $user_must_change_pass);
                     $sqlInsertValues->execute();
                     echo "<script>alert('" . $t['user_created_successfully'] . "')</script>";
                 }

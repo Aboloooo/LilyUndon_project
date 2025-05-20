@@ -15,8 +15,6 @@ include_once("../Library/MyLibrary.php");
 <body>
   <?= NavBar('reserve') ?>
 
-  <body>
-
     <h1><?= $t['kitchen_reservation_calendar'] ?></h1>
 
     <?php
@@ -51,7 +49,7 @@ include_once("../Library/MyLibrary.php");
     if ($weekOffset > $maxOffset) {
       $weekOffset = $maxOffset;
     }
-    if (isset($_GET['prevWeek']) && $minOffset = -1) {
+    if (isset($_GET['prevWeek']) && $minOffset == -1) {
       $minOffset = -1;
     }
 
@@ -69,9 +67,11 @@ include_once("../Library/MyLibrary.php");
 
 
     // get dates for each day
+    $fullWeekDates = [];
     $weekDates = [];
     $weekDatesAnotherFormat = [];
     for ($i = 0; $i < 7; $i++) {
+      $fullWeekDates[] = date('Y-m-d', strtotime("+$i day", $startOfWeek));
       $weekDates[] = date('d/m', strtotime("+$i day", $startOfWeek));
       $weekDatesAnotherFormat[] = date('Y:m:d', strtotime("+$i day", $startOfWeek));
     }
@@ -95,18 +95,23 @@ include_once("../Library/MyLibrary.php");
         $time = $_POST['time'];
 
 
+        /*
+        use don_bosco;
+select count(*) as cnt from reservation where Reserved_by_userID = 2 and StartMoment <= "2025-06-01" and StartMoment>="2025-05-26";
+        */
 
-
+        // 2 2025-06-01 2025-05-26
         //here we will check if this user has reserved the kitchen more than 4 times
-        $reservationCheckStatement = $connection->prepare('select count(*) as cnt from reservation where Reserved_by_userID = ? and StartMoment <= ? and StartMoment>=?');
+        //print ($userId." ".$lastDayOfWeek." ". $startOfWeekGoodFormat);
+        $reservationCheckStatement = $connection->prepare('select count(*) as cnt from reservation where Reserved_by_userID = ? and Date(StartMoment) <= ? and Date(StartMoment)>=?');
 
         $reservationCheckStatement->bind_param('iss', $userId, $lastDayOfWeek, $startOfWeekGoodFormat);
         $reservationCheckStatement->execute();
         $resultOfReservationCheck = $reservationCheckStatement->get_result();
         $BookedTimeSlotsNumber = $resultOfReservationCheck->fetch_assoc();
-
+        //print("Already reserved = ". $BookedTimeSlotsNumber['cnt']);
         if ($BookedTimeSlotsNumber) {
-          if ($BookedTimeSlotsNumber['cnt'] < 3) {
+          if ($BookedTimeSlotsNumber['cnt'] <= 3) {
             $canBookTimeSlot = true;
           }
         }
@@ -116,11 +121,11 @@ include_once("../Library/MyLibrary.php");
           // user can continue booking if reservation hasnt been done more than 4 times 
           //  $currentTimeSlot = date('Y-m-d', strtotime($date)) . ' ' . substr($time, 0, 5);
           //print($startOfWeekGoodFormat);
-          $curDateToday =  date("Y-m", $startOfWeek) . "-" . substr($date, 0, 2);
-          // print($curDateToday);
+          // $curDateToday =  date("Y-m", $startOfWeek) . "-" . substr($date, 0, 2);
+
+          $curDateToday = $date;
           $reservationDate = $curDateToday;
           $currentTimeSlot = $curDateToday . ' ' . substr($time, 0, 5);
-          //print($currentTimeSlot);
 
           /* check if user is booking in the same day */
           $checkSameDayStmt  = $connection->prepare('select count(*) as count from reservation where Reserved_by_userID = ? and DATE(StartMoment) = ?');
@@ -151,10 +156,7 @@ include_once("../Library/MyLibrary.php");
     }
 
     ?>
-
-    <div class="reservation_table_content">
-
-      <div class="calMovement">
+<div class="calMovement">
         <form action="" method="get" class="calendar-nav">
           <button id="prevWeek" name="prevWeek">◀</button>
           <span id="monthYear"><?= $currentMonthYear ?></span>
@@ -162,6 +164,9 @@ include_once("../Library/MyLibrary.php");
           <input type="hidden" name="week" value="<?= $weekOffset ?>">
         </form>
       </div>
+    <div class="reservation_table_content">
+
+      
 
       <table class="reservationTable" border="1" cellspacing="0" cellpadding="10">
         <thead>
@@ -209,13 +214,16 @@ include_once("../Library/MyLibrary.php");
                   <?php if ($isReserved) { ?>
                     <?= $t['reserved'] ?>
                   <?php } else { ?>
-                    <form method="POST" style="margin:0;" onsubmit="return confirm('<?= $t['confirm_reserve_time'] ?>');">
-                      <input type="hidden" name="day" value="<?= $weekDates[$index] ?>">
+
+                    <form method="POST" class="formBtn" style="margin:0;" onsubmit="return confirm('<?= $t['confirm_reserve_time'] ?>');">
+                     
+                      <input type="hidden" name="day" value="<?= $fullWeekDates[$index] ?>">
                       <input type="hidden" name="time" value="<?= $time ?>">
                       <button type="submit" class="reserveBtn" name="reservationBtn" <?= ($isPast ? 'disabled style="background-color: #ccc; cursor: not-allowed;"' : '') ?>>
                         <?= $isPast ? $t['past'] : $t['available'] ?>
                       </button>
                     </form>
+
                   <?php } ?>
 
                 </td>

@@ -319,6 +319,15 @@ body {
   margin-right: auto;
   width: 70%;
   text-align: center;
+  width: 80%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+.reservationTable th,
+.reservationTable td {
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
 }
 .reserveBtn {
   background: none;
@@ -467,6 +476,10 @@ table.user-table tr:hover {
 
 /* Responsive styles */
 @media screen and (max-width: 768px) {
+  body {
+    position: fixed;
+    width: 100%;
+  }
   .logo-icon {
     height: 60px;
     margin-right: 20px;
@@ -474,7 +487,7 @@ table.user-table tr:hover {
 
   .nav-links {
     position: absolute;
-    top: 70px;
+    top: 91px;
     left: -40px;
     right: 0;
     background-color: var(--white);
@@ -486,7 +499,7 @@ table.user-table tr:hover {
     transform: translateX(100%);
     transition: transform 0.4s ease-in;
     border-top: 2px solid var(--red);
-    overflow-x: hidden;
+    overflow-x: auto;
     margin: 0;
   }
 
@@ -528,7 +541,7 @@ table.user-table tr:hover {
   }
   /* login page */
   .login-container {
-    padding: 20px;
+  padding: 20px;
     width: 80%;
   }
   .login-container input {
@@ -540,6 +553,25 @@ table.user-table tr:hover {
   }
 
   /* reseravtion table */
+  .reservationTable{
+    width: 100%;
+  }
+  .reservation_table_content {
+    overflow-x: auto;
+    margin: 20px;
+  }
+  .reservationTable th,
+  .reservationTable td {
+    padding: 8px;
+    font-size: 12px;
+  }
+  
+  .reserveBtn {
+    font-size: 11px;
+    padding: 8px 12px;
+  }
+  
+ 
   .calendar-nav {
     display: flex;
     flex-wrap: wrap;
@@ -594,7 +626,7 @@ table.user-table tr:hover {
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     background-color: #fff;
-    overflow-x: auto; /* Enables horizontal scroll on small screens */
+    /*overflow-x: auto; /* Enables horizontal scroll on small screens */
   }
 
   .user-table-container h2 {
@@ -614,7 +646,7 @@ table.user-table tr:hover {
     border: 1px solid #ddd;
     text-align: left;
     max-width: 100px;
-    overflow: hidden;
+    overflow-x: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
@@ -640,33 +672,33 @@ table.user-table tr:hover {
     background-color: #d9363e;
   }
 
-  /* 🔁 Responsive Styles */
-  @media (max-width: 768px) {
-    .my_reservation_container,
-    .user-table-container {
-      margin: 10px 20px;
-      padding: 15px;
-    }
-
-    h1,
-    .user-table-container h2 {
-      font-size: 1.4em;
-    }
-
-    table,
-    table.user-table {
-      font-size: 0.9em;
-    }
-
-    th,
-    td {
-      padding: 10px;
-    }
-
-    .cancel-btn,
-    .action-btn {
-      padding: 6px 10px;
-      font-size: 0.9em;
-    }
+  .my_reservation_container,
+  .user-table-container {
+    margin: 10px 20px;
+    padding: 15px;
+    overflow-x: auto;
   }
+
+  h1,
+  .user-table-container h2 {
+    font-size: 1.4em;
+  }
+
+  table,
+  table.user-table {
+    font-size: 0.9em;
+  }
+
+  th,
+  td {
+    padding: 10px;
+  }
+
+  .cancel-btn,
+  .action-btn {
+    padding: 6px 10px;
+    font-size: 0.9em;
+  }
+
+  
 }

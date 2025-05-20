@@ -477,7 +477,6 @@ table.user-table tr:hover {
 /* Responsive styles */
 @media screen and (max-width: 768px) {
   body {
-    /* position: fixed; */
     overflow-x: hidden;
     width: 100%;
   }
@@ -487,7 +486,8 @@ table.user-table tr:hover {
   }
 
   .nav-links {
-    position: absolute;
+    position: fixed;
+    z-index: 999;
     top: 91px;
     left: -40px;
     right: 0;
@@ -532,32 +532,47 @@ table.user-table tr:hover {
 
   /* index */
   .img {
-    flex-direction: column;
+    /* flex-direction: column; */
+    flex-direction: column-reverse;
     margin-top: 50px;
+    position: relative;
   }
   .part1 {
     width: 100%;
     margin: 0px;
+    margin-top: 65px;
+    z-index: -100;
   }
   .part2 {
     width: 100%;
+    z-index: 99;
+    height: 60vh;
+    justify-content: space-between;
+  }
+  .part1,
+  .part2 {
+    position: absolute;
+    top: 0;
+    left: 0;
   }
   /* login page */
   .login-container {
     padding: 20px;
     width: 65%;
-    font-size: 11px;
-    line-height: 1.4;
+    line-height: 1.2;
     margin-top: 25px;
   }
-  .login-container label {
-    font-size: 12px;
-  }
 
-  .login-container input,
-  button {
+  .login-container input {
     width: 95%;
-    font-size: 11px;
+  }
+  .login-container h2 {
+    font-size: large;
+  }
+  .login-container input,
+  .login-container label,
+  .login-container p {
+    font-size: x-small;
   }
 
   .social-login {

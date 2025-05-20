@@ -46,9 +46,6 @@ include_once("../Library/MyLibrary.php");
         header("location: logout_in.php");
       }
     }
-
-
-
     ?>
     <div class="part2">
       <h1>Plan | <?= $t['cook'] ?> | <?= $t['enjoy'] ?></h1>

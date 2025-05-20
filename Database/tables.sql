@@ -136,6 +136,11 @@ INSERT INTO translation (translationID, en, fr, de) VALUES
 ('new_password', 'New Password', 'Nouveau mot de passe', 'Neues Passwort'),
 ('confirm_new_password', 'Confirm New Password', 'Confirmer le nouveau mot de passe', 'Neues Passwort bestätigen'),
 ('update_password', 'Update Password', 'Mettre à jour le mot de passe', 'Passwort aktualisieren'),
+('session_terminated_status_changed', 
+ '⚠️ Your session has been terminated because your account status has changed. Please contact the administrator if you believe this is a mistake.', 
+ '⚠️ Votre session a été terminée car le statut de votre compte a changé. Veuillez contacter l/administrateur si vous pensez qu/il s/agit d/une erreur.', 
+ '⚠️ Ihre Sitzung wurde beendet, weil sich der Status Ihres Kontos geändert hat. Bitte kontaktieren Sie den Administrator, wenn Sie glauben, dass dies ein Fehler ist.'),
+
 
 /* my reservation */
 ('my_reservations', 'My Reservations', 'Mes réservations', 'Meine Reservierungen'),

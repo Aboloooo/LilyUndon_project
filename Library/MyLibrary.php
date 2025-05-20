@@ -26,8 +26,21 @@ if (!isset($_SESSION["userMustChangeThePass"])) {
 if (!isset($_SESSION["language"])) {
     $_SESSION["language"] = "en";
 }
-if (!isset($_SESSION["activatedUser"])) {
-    $_SESSION["activatedUser"] = false;
+
+/* in case there is a change in user's status admin will log user out  */
+if ($_SESSION['username'] && $_SESSION['username'] != 'Unknown') {
+    $userIDstat = $connection->prepare('select status from users where UserID = (select UserID from users where Username = ?)');
+    $userIDstat->bind_param('s', $_SESSION['username']);
+    $userIDstat->execute();
+    $userIDstatResult = $userIDstat->get_result();
+    $userStatus = $userIDstatResult->fetch_assoc();
+
+    if (!$userStatus || strtolower($userStatus['status']) != 'active') {
+        session_destroy();
+        echo "<script>alert('" . $t['session_terminated_status_changed'] . "')</script>";
+        header("Location: login.php?message=logged_out_by_admin");
+        exit();
+    }
 }
 
 
@@ -88,41 +101,43 @@ function NavBar($currentPageLoc)
                                                 if ($currentPageLoc == "my_reservations") {
                                                     print("class='active'");
                                                 } ?>><?= $t['my_reservations'] ?></a></li>
-                                                <li><a href="add_user.php" <?php
+            <li><a href="add_user.php" <?php
+                                        if ($_SESSION['username'] == 'Unknown' || $_SESSION['Admin']) {
                                             if ($currentPageLoc == "add_user") {
                                                 print("class='active'");
                                             } ?>><?= $t['register'] ?></a></li>
-            <?php
-            /* if user is admin the following link must be display in navigation bar */
-            if (isset($_SESSION['Admin']) && $_SESSION["Admin"]) {
-            ?>
-                
-                <li><a href="users.php" <?php
-                                        if ($currentPageLoc == "users") {
-                                            print("class='active'");
-                                        } ?>><?= $t['users'] ?></a></li>
-            <?php
-            }
-            ?>
+        <?php
+                                        }
+                                        /* if user is admin the following link must be display in navigation bar */
+                                        if (isset($_SESSION['Admin']) && $_SESSION["Admin"]) {
+        ?>
 
-            <li><a href="logout_in.php" <?php
-                                        if ($currentPageLoc == "logout_in") {
-                                            print("class='active'");
+            <li><a href="users.php" <?php
+                                            if ($currentPageLoc == "users") {
+                                                print("class='active'");
+                                            } ?>><?= $t['users'] ?></a></li>
+        <?php
                                         }
-                                        $usernameORlink = 'Login';
-                                        if ($_SESSION['userLogin']) {
-                                            $usernameORlink = $_SESSION['username'];
-                                        }
-                                        ?>><img src="../img/user.png" width="25px" height="25px"><?= $usernameORlink ?></a></li>
-            <li>
-                <form method="POST">
-                    <select name="selectedLang" onchange="this.form.submit()">
-                        <option value="en" <?php if ($_SESSION['language'] == "en") echo 'selected' ?>>EN</option>
-                        <option value="fr" <?php if ($_SESSION['language'] == "fr") echo 'selected' ?>>FR</option>
-                        <option value="de" <?php if ($_SESSION['language'] == "de") echo 'selected' ?>>DE</option>
-                    </select>
-                </form>
-            </li>
+        ?>
+
+        <li><a href="logout_in.php" <?php
+                                    if ($currentPageLoc == "logout_in") {
+                                        print("class='active'");
+                                    }
+                                    $usernameORlink = 'Login';
+                                    if ($_SESSION['userLogin']) {
+                                        $usernameORlink = $_SESSION['username'];
+                                    }
+                                    ?>><img src="../img/user.png" width="25px" height="25px"><?= $usernameORlink ?></a></li>
+        <li>
+            <form method="POST">
+                <select name="selectedLang" onchange="this.form.submit()">
+                    <option value="en" <?php if ($_SESSION['language'] == "en") echo 'selected' ?>>EN</option>
+                    <option value="fr" <?php if ($_SESSION['language'] == "fr") echo 'selected' ?>>FR</option>
+                    <option value="de" <?php if ($_SESSION['language'] == "de") echo 'selected' ?>>DE</option>
+                </select>
+            </form>
+        </li>
         </ul>
         <div class="burger">
             <div class="line1"></div>

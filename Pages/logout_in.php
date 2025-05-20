@@ -100,7 +100,7 @@ include_once("../Library/MyLibrary.php");
         </div>
 
         <div class="signup-text">
-          <?= $t['no_account'] ?> <a href="#"><?= $t['sign_up'] ?></a>
+          <?= $t['no_account'] ?> <a href="add_user.php"><?= $t['sign_up'] ?></a>
         </div>
     </form>
   </div>
@@ -130,7 +130,7 @@ include_once("../Library/MyLibrary.php");
 
                 if ($_POST["NewPassword"] == $_POST["ConfirmNewPassword"]) {
                   $newPassword = $_POST["ConfirmNewPassword"];
-                  $newPasswordHashed = password_hash($newPassword,PASSWORD_DEFAULT);
+                  $newPasswordHashed = password_hash($newPassword, PASSWORD_DEFAULT);
 
                   $updatePass = $connection->prepare('UPDATE users SET Password = ?, user_must_change_password = ? WHERE Username = ?');
                   $zeroValue = 0;
@@ -176,9 +176,9 @@ include_once("../Library/MyLibrary.php");
   <form action="" method="post">
     <button id="username" type="submit" name="logout"><?= $t['Logout'] ?></button>
   </form>
-  <?php
+<?php
       }
-  ?>
+?>
 
 
 </body>

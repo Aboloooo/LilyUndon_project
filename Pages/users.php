@@ -42,7 +42,8 @@ include_once("../Library/MyLibrary.php");
     ?>
 
     <div class="user-table-container">
-        <h2><?= $t['registered_users'] ?></h2>
+    <h2><?= $t['registered_users'] ?></h2>
+
         <table class="user-table">
             <thead>
                 <tr>

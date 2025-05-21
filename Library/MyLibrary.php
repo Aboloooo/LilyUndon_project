@@ -27,21 +27,7 @@ if (!isset($_SESSION["language"])) {
     $_SESSION["language"] = "en";
 }
 
-/* in case there is a change in user's status admin will log user out  */
-if ($_SESSION['username'] && $_SESSION['username'] != 'Unknown') {
-    $userIDstat = $connection->prepare('select status from users where UserID = (select UserID from users where Username = ?)');
-    $userIDstat->bind_param('s', $_SESSION['username']);
-    $userIDstat->execute();
-    $userIDstatResult = $userIDstat->get_result();
-    $userStatus = $userIDstatResult->fetch_assoc();
 
-    if (!$userStatus || strtolower($userStatus['status']) != 'active') {
-        session_destroy();
-        echo "<script>alert('" . $t['session_terminated_status_changed'] . "')</script>";
-        header("Location: login.php?message=logged_out_by_admin");
-        exit();
-    }
-}
 
 
 if (isset($_POST["selectedLang"])) {
@@ -66,6 +52,21 @@ $sqlTranslation->execute();
 $result = $sqlTranslation->get_result();
 while ($row = $result->fetch_assoc()) {
     $t[$row['translationID']] = $row['translation'];
+}
+
+/* in case there is a change in user's status admin will logout the user   */
+if ($_SESSION['username'] && $_SESSION['username'] != 'Unknown') {
+    $userIDstat = $connection->prepare('select status from users where UserID = (select UserID from users where Username = ?)');
+    $userIDstat->bind_param('s', $_SESSION['username']);
+    $userIDstat->execute();
+    $userIDstatResult = $userIDstat->get_result();
+    $userStatus = $userIDstatResult->fetch_assoc();
+
+    if (!$userStatus || strtolower($userStatus['status']) != 'active') {
+        session_destroy();
+        echo "<script>alert('" . $t['session_terminated_status_changed'] . "')</script>";
+        exit();
+    }
 }
 
 

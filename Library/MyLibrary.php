@@ -27,9 +27,6 @@ if (!isset($_SESSION["language"])) {
     $_SESSION["language"] = "en";
 }
 
-
-
-
 if (isset($_POST["selectedLang"])) {
     $lang = $_POST['selectedLang'];
     if (in_array($lang, ['en', 'fr', 'de'])) {

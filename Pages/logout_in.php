@@ -18,7 +18,7 @@ include_once("../Library/MyLibrary.php");
   <?php
 
   /* sign in  */
-  echo password_hash('password', PASSWORD_DEFAULT);
+  //echo password_hash('password', PASSWORD_DEFAULT);
 
   if (isset($_POST['username']) && isset($_POST['password'])) {
     $loginCheck = $connection->prepare('select * from users where username =?');

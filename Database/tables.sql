@@ -1,4 +1,4 @@
-drop DATABASE Don_Bosco;
+drop DATABASE if exists Don_Bosco;
 CREATE DATABASE Don_Bosco;
 USE Don_Bosco;
 

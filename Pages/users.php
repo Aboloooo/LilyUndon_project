@@ -42,7 +42,7 @@ include_once("../Library/MyLibrary.php");
     ?>
 
     <div class="user-table-container">
-    <h2><?= $t['registered_users'] ?></h2>
+        <h2><?= $t['registered_users'] ?></h2>
 
         <table class="user-table">
             <thead>
@@ -56,7 +56,7 @@ include_once("../Library/MyLibrary.php");
                     <th><?= $t['email'] ?></th>
                     <th><?= $t['role'] ?></th>
                     <th><?= $t['changed_pass'] ?></th>
-                    <th>status</th>
+                    <th><?= $t['status'] ?></th>
                     <th><?= $t['action'] ?></th>
                 </tr>
             </thead>

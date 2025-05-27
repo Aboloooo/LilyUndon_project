@@ -27,23 +27,19 @@ if (!isset($_SESSION["language"])) {
     $_SESSION["language"] = "en";
 }
 
+$t = [];
+$supportedLanguages = ['en', 'fr', 'de', 'ti', 'es', 'ar', 'fa'];
+
 if (isset($_POST["selectedLang"])) {
     $lang = $_POST['selectedLang'];
-    if (in_array($lang, ['en', 'fr', 'de'])) {
+    if (in_array($lang, $supportedLanguages)) {
         $_SESSION['language'] = $lang;
     }
 }
-$t = [];
-$langColumn = '';
-if ($_SESSION['language'] == 'en') {
-    $langColumn = 'en';
-} else if ($_SESSION['language'] == 'fr') {
-    $langColumn = 'fr';
-} else if ($_SESSION['language'] == 'de') {
-    $langColumn = 'de';
-} else {
-    $langColumn = '';
-}
+
+$langColumn = in_array($_SESSION['language'], $supportedLanguages) ? $_SESSION['language'] : 'en';
+
+
 $sqlTranslation = $connection->prepare("select translationID, $langColumn as translation from translation");
 $sqlTranslation->execute();
 $result = $sqlTranslation->get_result();
@@ -81,6 +77,8 @@ if ($fileToCheck != "logout_in.php") {
 function NavBar($currentPageLoc)
 {
     global $t;
+    global $supportedLanguages;
+    $currentLanguage = $_SESSION['language'] ?? 'en';  // Default to English
 ?>
     <nav class="navbar">
         <div class="logo">
@@ -122,7 +120,7 @@ function NavBar($currentPageLoc)
                                     if ($currentPageLoc == "logout_in") {
                                         print("class='active'");
                                     }
-                                    $usernameORlink = 'Login';
+                                    $usernameORlink = $t['login'];
                                     if ($_SESSION['userLogin']) {
                                         $usernameORlink = $_SESSION['username'];
                                     }
@@ -130,9 +128,13 @@ function NavBar($currentPageLoc)
         <li>
             <form method="POST">
                 <select name="selectedLang" onchange="this.form.submit()">
-                    <option value="en" <?php if ($_SESSION['language'] == "en") echo 'selected' ?>>EN</option>
-                    <option value="fr" <?php if ($_SESSION['language'] == "fr") echo 'selected' ?>>FR</option>
-                    <option value="de" <?php if ($_SESSION['language'] == "de") echo 'selected' ?>>DE</option>
+
+                    <?php
+                    foreach ($supportedLanguages as $supportedLanguage) {
+                    ?>
+                        <option value="<?= $supportedLanguage ?>" <?= $currentLanguage == $supportedLanguage ? 'selected' : '' ?>> <?= strtoupper($supportedLanguage) ?> </option> <?php
+                                                                                                                                                                                }
+                                                                                                                                                                                    ?>
                 </select>
             </form>
         </li>

@@ -90,7 +90,7 @@ include_once("../Library/MyLibrary.php");
             <input type="text" id="username" name="username" placeholder="<?= $t['username'] ?>" required />
 
             <label for="password"><?= $t['password'] ?></label>
-            <input type="password" id="password" name="password" placeholder="••••••••" required />
+            <input type="password" id="password" name="password" placeholder="••••••••" pattern="(?=.*\d).{7,}" title="at least 7 characters long,one number and one special character " required />
 
 
             <label for="password_confirmation"><?= $t['password_confirmation'] ?></label>

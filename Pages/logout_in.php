@@ -160,10 +160,10 @@ include_once("../Library/MyLibrary.php");
 
     ?>
     <label for="username"><?= $t['current_password'] ?></label>
-    <input type="password" id="username" name="CurrentPassword" placeholder="Current password" required />
+    <input type="password" id="username" name="CurrentPassword" placeholder="<?= $t['current_password'] ?>" required />
 
     <label for="username"><?= $t['new_password'] ?></label>
-    <input type="password" id="username" name="NewPassword" placeholder="••••••••" required />
+    <input type="password" id="username" name="NewPassword" placeholder="••••••••" pattern="(?=.*\d).{7,}" title="at least 7 characters long,one number and one special character " required />
 
     <label for="password"><?= $t['confirm_new_password'] ?></label>
     <input type="password" id="password" name="ConfirmNewPassword" placeholder="••••••••" required />

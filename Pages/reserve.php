@@ -82,7 +82,7 @@ include_once("../Library/MyLibrary.php");
     $canBookTimeSlot = false;
 
     if ($_SESSION['username'] !== "Unknown") {
-      $userIDStmt = $connection->prepare("SELECT UserID FROM users WHERE Username = ?");
+      $userIDStmt = $connection->prepare("SELECT UserID,Level FROM users WHERE Username = ?");
       $userIDStmt->bind_param('s', $_SESSION['username']);
       $userIDStmt->execute();
       $result = $userIDStmt->get_result();
@@ -91,6 +91,7 @@ include_once("../Library/MyLibrary.php");
       // if user is not login user must be redirected to login page
 
       $userId = $row['UserID'];
+      $Level = $row['Level'];
       $date = $_POST['day'];
       $time = $_POST['time'];
 
@@ -103,7 +104,7 @@ include_once("../Library/MyLibrary.php");
       $BookedTimeSlotsNumber = $resultOfReservationCheck->fetch_assoc();
 
       if ($BookedTimeSlotsNumber) {
-        if ($BookedTimeSlotsNumber['cnt'] <= 3) {
+        if ($BookedTimeSlotsNumber['cnt'] <= 3 || strtolower($Level) == "admin") {
           $canBookTimeSlot = true;
         }
       }
@@ -119,7 +120,7 @@ include_once("../Library/MyLibrary.php");
         $checkSameDayStmt->execute();
         $resultOfCheckSameDayStmt  = $checkSameDayStmt->get_result();
         $sameDayCount = $resultOfCheckSameDayStmt->fetch_assoc()['count'];
-        if ($sameDayCount > 0) {
+        if ($sameDayCount > 0 && strtolower($Level) != "admin") {
           echo "<script>alert('" . $t['already_have_reservation_on_day'] . "')</script>";
         } else {
           $sqlReservationInsert = $connection->prepare('insert into reservation(Reserved_by_userID,StartMoment) values (?,?) ');

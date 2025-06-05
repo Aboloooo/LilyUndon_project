@@ -106,10 +106,16 @@ include_once("../Library/MyLibrary.php");
                         </td>
                         <td>
                             <!-- Example action -->
-                            <form method="POST" onsubmit="return confirm('<?= $t['confirm_delete_user'] ?>');" style="display:inline;">
-                                <input type="hidden" name="deleteUserID" value="<?= $UserID ?>">
-                                <button type="submit" name="deleteUser" class="action-btn"><?= $t['delete'] ?></button>
-                            </form>
+                            <?php
+                            if ($Level == "customer") {
+                            ?>
+                                <form method="POST" onsubmit="return confirm('<?= $t['confirm_delete_user'] ?>');" style="display:inline;">
+                                    <input type="hidden" name="deleteUserID" value="<?= $UserID ?>">
+                                    <button type="submit" name="deleteUser" class="action-btn"><?= $t['delete'] ?></button>
+                                </form>
+                            <?php
+                            }
+                            ?>
                         </td>
                     </tr>
                 </tbody>

@@ -98,10 +98,14 @@ include_once("../Library/MyLibrary.php");
                             } else {
                                 echo $t['true'];
                             } ?></td>
+
                         <td>
+                            <?php
+                            $disableIfAdmin = (strtolower($Level) == "admin") ? "disabled" : " ";
+                            ?>
                             <form method="POST" onsubmit="return confirm('<?= $t['confirmation_either_to_activate_or_deactivate_user'] ?>');" style="display:inline;">
                                 <input type="hidden" name="statusBtnChangeUserID" value="<?= $UserID ?>">
-                                <button type="submit" name="statusBtnChange" style="<?= $btnStyle ?>" class="action-btn"><?= $t[strtolower($status)] ?></button>
+                                <button <?= $disableIfAdmin ?> type="submit" name="statusBtnChange" style="<?= $btnStyle ?>" class="action-btn"><?= $t[strtolower($status)] ?></button>
                             </form>
                         </td>
                         <td>

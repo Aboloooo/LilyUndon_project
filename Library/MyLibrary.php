@@ -27,6 +27,15 @@ if (!isset($_SESSION["language"])) {
     $_SESSION["language"] = "en";
 }
 
+if (!isset($_SESSION["currentSite"])) {
+    $_SESSION["currentSite"] = 1;
+}
+
+if (isset($_POST["site"]))
+{
+    $_SESSION["currentSite"] = $_POST["site"];
+}
+
 $t = [];
 $supportedLanguages = ['en', 'fr', 'de', 'ti', 'es', 'ar', 'fa'];
 

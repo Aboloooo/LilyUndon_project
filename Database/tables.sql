@@ -24,12 +24,23 @@ VALUES
 ("abolo", "ahmadi", "2003122601328", "abolo123", "123", "abolo@gmail.com", "cusTomer", 1);
  */
 
+ create table if not exists Sites(
+    SiteId INT PRIMARY KEY AUTO_INCREMENT,
+    SiteName VARCHAR(255)
+ );
+
 CREATE TABLE IF NOT EXISTS reservation (
     ReservationID INT PRIMARY KEY AUTO_INCREMENT,
     Reserved_by_userID INT,
     StartMoment DATETIME,
-    FOREIGN KEY (Reserved_by_userID) REFERENCES users(UserID) ON DELETE CASCADE
+    SiteId INT not null,
+    FOREIGN KEY (Reserved_by_userID) REFERENCES users(UserID) ON DELETE CASCADE,
+    FOREIGN KEY (SiteId) REFERENCES Sites(SiteId) 
 );
+
+insert into Sites(SiteName) values("DonBosco");
+insert into Sites(SiteName) values("LilyUnden");
+
 
 /* 
 insert into reservation(Reserved_by_userID,StartMoment) Values(2, "2025-04-28 12:00");
@@ -101,6 +112,15 @@ INSERT INTO translation (translationID, en, fr, de, ti, es, ar, fa) VALUES
  '¡Usuario creado con éxito! Por favor sea paciente mientras un administrador aprueba su registro.',
  'تم إنشاء المستخدم بنجاح! يرجى الانتظار حتى يوافق المسؤول على تسجيلك.',
  'کاربر با موفقیت ایجاد شد! لطفاً صبر کنید تا مدیر ثبت نام شما را تأیید کند.'
+),
+('user_created_successfully_admin', 
+ 'User created successfully!', 
+ 'Utilisateur créé avec succès !', 
+ 'Benutzer erfolgreich erstellt!',
+ 'ተጠቃሚ ብኽብረት ተፈጢሩ!',
+ '¡Usuario creado con éxito!',
+ 'تم إنشاء المستخدم بنجاح!',
+ 'کاربر با موفقیت ایجاد شد!.'
 ),
 
 ('passwords_not_match', 

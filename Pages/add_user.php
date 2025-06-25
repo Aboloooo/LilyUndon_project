@@ -59,7 +59,11 @@ include_once("../Library/MyLibrary.php");
                     $sqlInsertValues = $connection->prepare('INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, Level,status, user_must_change_password) VALUES (?,?,?,?,?,?,?,?,?)');
                     $sqlInsertValues->bind_param('ssisssssi', $firstN, $lastN, $CNS, $userN, $hashedPass, $email, $defaultLevel, $defaultStatus, $user_must_change_pass);
                     $sqlInsertValues->execute();
-                    echo "<script>alert('" . $t['user_created_successfully'] . "')</script>";
+                    if($_SESSION["Admin"] = true){
+                        echo "<script>alert('" . $t['user_created_successfully_admin'] . "')</script>";
+                    }else{
+                        echo "<script>alert('" . $t['user_created_successfully'] . "')</script>";
+                    }
                 }
             } else {
                 echo "<script>alert('" . $t['passwords_not_match'] . "')</script>";

@@ -96,9 +96,9 @@ include_once("../Library/MyLibrary.php");
       $time = $_POST['time'];
 
 
-      $reservationCheckStatement = $connection->prepare('select count(*) as cnt from reservation where Reserved_by_userID = ? and Date(StartMoment) <= ? and Date(StartMoment)>=?');
+      $reservationCheckStatement = $connection->prepare('select count(*) as cnt from reservation where Reserved_by_userID = ? and Date(StartMoment) <= ? and Date(StartMoment)>=? and SiteId=?');
 
-      $reservationCheckStatement->bind_param('iss', $userId, $lastDayOfWeek, $startOfWeekGoodFormat);
+      $reservationCheckStatement->bind_param('issi', $userId, $lastDayOfWeek, $startOfWeekGoodFormat,$_SESSION["currentSite"]);
       $reservationCheckStatement->execute();
       $resultOfReservationCheck = $reservationCheckStatement->get_result();
       $BookedTimeSlotsNumber = $resultOfReservationCheck->fetch_assoc();
@@ -115,16 +115,16 @@ include_once("../Library/MyLibrary.php");
         $currentTimeSlot = $curDateToday . ' ' . substr($time, 0, 5);
 
         /* check if user is booking in the same day */
-        $checkSameDayStmt  = $connection->prepare('select count(*) as count from reservation where Reserved_by_userID = ? and DATE(StartMoment) = ?');
-        $checkSameDayStmt->bind_param('is', $userId, $reservationDate);
+        $checkSameDayStmt  = $connection->prepare('select count(*) as count from reservation where Reserved_by_userID = ? and DATE(StartMoment) = ? and SiteId=?');
+        $checkSameDayStmt->bind_param('isi', $userId, $reservationDate,$_SESSION["currentSite"]);
         $checkSameDayStmt->execute();
         $resultOfCheckSameDayStmt  = $checkSameDayStmt->get_result();
         $sameDayCount = $resultOfCheckSameDayStmt->fetch_assoc()['count'];
         if ($sameDayCount > 0 && strtolower($Level) != "admin") {
           echo "<script>alert('" . $t['already_have_reservation_on_day'] . "')</script>";
         } else {
-          $sqlReservationInsert = $connection->prepare('insert into reservation(Reserved_by_userID,StartMoment) values (?,?) ');
-          $sqlReservationInsert->bind_param('is', $userId, $currentTimeSlot);
+          $sqlReservationInsert = $connection->prepare('insert into reservation(Reserved_by_userID,StartMoment,SiteId) values (?,?,?) ');
+          $sqlReservationInsert->bind_param('isi', $userId, $currentTimeSlot,$_SESSION["currentSite"]);
           if ($sqlReservationInsert->execute()) {
             echo "<script>alert('" . $t['reservation_done_successfully'] . "')</script>";
           } else {
@@ -153,6 +153,23 @@ include_once("../Library/MyLibrary.php");
   </div>
   <div class="reservation_table_content">
 
+<form method="POST" id="siteForm">
+  <select name = "site" onchange="document.getElementById('siteForm').submit();">
+    <!-- translation needed -->
+    <?php
+    $sqlSelectSite = $connection->prepare('select * from Sites');
+    $sqlSelectSite->execute();
+    $resutlOfSite = $sqlSelectSite->get_result();
+    while($row=$resutlOfSite->fetch_assoc()){
+      $siteID = $row['SiteId'];
+      $siteName = $row['SiteName'];
+      ?>
+      <option value="<?=$siteID?>" <?= ($siteID==$_SESSION["currentSite"]?"selected":"") ?>  ><?=$siteName?></option>
+      <?php
+    } 
+    ?>
+  </select>
+</form>
 
 
     <table class="reservationTable" border="1" cellspacing="0" cellpadding="10">
@@ -183,8 +200,8 @@ include_once("../Library/MyLibrary.php");
 
               $isPast = $currentTimeSlotDateTime < $now;
 
-              $sqlSelect = $connection->prepare("SELECT * FROM reservation WHERE StartMoment = ?");
-              $sqlSelect->bind_param("s", $currentTimeSlot);
+              $sqlSelect = $connection->prepare("SELECT * FROM reservation WHERE StartMoment = ? and SiteId=?");
+              $sqlSelect->bind_param("si", $currentTimeSlot,$_SESSION["currentSite"]);
               $sqlSelect->execute();
               $result = $sqlSelect->get_result();
               if ($result->num_rows == 0) {

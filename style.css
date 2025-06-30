@@ -322,6 +322,7 @@ body {
   width: 80%;
   border-collapse: collapse;
   min-width: 800px;
+  margin-bottom: 50px;
 }
 .reservationTable th,
 .reservationTable td {

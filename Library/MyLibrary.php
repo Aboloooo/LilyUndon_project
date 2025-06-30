@@ -31,8 +31,7 @@ if (!isset($_SESSION["currentSite"])) {
     $_SESSION["currentSite"] = 1;
 }
 
-if (isset($_POST["site"]))
-{
+if (isset($_POST["site"])) {
     $_SESSION["currentSite"] = $_POST["site"];
 }
 
@@ -67,6 +66,7 @@ if ($_SESSION['username'] && $_SESSION['username'] != 'Unknown') {
     if (!$userStatus || strtolower($userStatus['status']) != 'active') {
         session_destroy();
         echo "<script>alert('" . $t['session_terminated_status_changed'] . "')</script>";
+        header("Location: index.php");
         exit();
     }
 }

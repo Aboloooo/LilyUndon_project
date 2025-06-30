@@ -98,7 +98,7 @@ include_once("../Library/MyLibrary.php");
 
       $reservationCheckStatement = $connection->prepare('select count(*) as cnt from reservation where Reserved_by_userID = ? and Date(StartMoment) <= ? and Date(StartMoment)>=? and SiteId=?');
 
-      $reservationCheckStatement->bind_param('issi', $userId, $lastDayOfWeek, $startOfWeekGoodFormat,$_SESSION["currentSite"]);
+      $reservationCheckStatement->bind_param('issi', $userId, $lastDayOfWeek, $startOfWeekGoodFormat, $_SESSION["currentSite"]);
       $reservationCheckStatement->execute();
       $resultOfReservationCheck = $reservationCheckStatement->get_result();
       $BookedTimeSlotsNumber = $resultOfReservationCheck->fetch_assoc();
@@ -116,7 +116,7 @@ include_once("../Library/MyLibrary.php");
 
         /* check if user is booking in the same day */
         $checkSameDayStmt  = $connection->prepare('select count(*) as count from reservation where Reserved_by_userID = ? and DATE(StartMoment) = ? and SiteId=?');
-        $checkSameDayStmt->bind_param('isi', $userId, $reservationDate,$_SESSION["currentSite"]);
+        $checkSameDayStmt->bind_param('isi', $userId, $reservationDate, $_SESSION["currentSite"]);
         $checkSameDayStmt->execute();
         $resultOfCheckSameDayStmt  = $checkSameDayStmt->get_result();
         $sameDayCount = $resultOfCheckSameDayStmt->fetch_assoc()['count'];
@@ -124,7 +124,7 @@ include_once("../Library/MyLibrary.php");
           echo "<script>alert('" . $t['already_have_reservation_on_day'] . "')</script>";
         } else {
           $sqlReservationInsert = $connection->prepare('insert into reservation(Reserved_by_userID,StartMoment,SiteId) values (?,?,?) ');
-          $sqlReservationInsert->bind_param('isi', $userId, $currentTimeSlot,$_SESSION["currentSite"]);
+          $sqlReservationInsert->bind_param('isi', $userId, $currentTimeSlot, $_SESSION["currentSite"]);
           if ($sqlReservationInsert->execute()) {
             echo "<script>alert('" . $t['reservation_done_successfully'] . "')</script>";
           } else {
@@ -153,23 +153,22 @@ include_once("../Library/MyLibrary.php");
   </div>
   <div class="reservation_table_content">
 
-<form method="POST" id="siteForm">
-  <select name = "site" onchange="document.getElementById('siteForm').submit();">
-    <!-- translation needed -->
-    <?php
-    $sqlSelectSite = $connection->prepare('select * from Sites');
-    $sqlSelectSite->execute();
-    $resutlOfSite = $sqlSelectSite->get_result();
-    while($row=$resutlOfSite->fetch_assoc()){
-      $siteID = $row['SiteId'];
-      $siteName = $row['SiteName'];
-      ?>
-      <option value="<?=$siteID?>" <?= ($siteID==$_SESSION["currentSite"]?"selected":"") ?>  ><?=$siteName?></option>
-      <?php
-    } 
-    ?>
-  </select>
-</form>
+    <form method="POST" id="siteForm">
+      <select name="site" onchange="document.getElementById('siteForm').submit();">
+        <?php
+        $sqlSelectSite = $connection->prepare('select * from Sites');
+        $sqlSelectSite->execute();
+        $resutlOfSite = $sqlSelectSite->get_result();
+        while ($row = $resutlOfSite->fetch_assoc()) {
+          $siteID = $row['SiteId'];
+          $siteName = $row['SiteName'];
+        ?>
+          <option value="<?= $siteID ?>" <?= ($siteID == $_SESSION["currentSite"] ? "selected" : "") ?>><?= $siteName ?></option>
+        <?php
+        }
+        ?>
+      </select>
+    </form>
 
 
     <table class="reservationTable" border="1" cellspacing="0" cellpadding="10">
@@ -201,7 +200,7 @@ include_once("../Library/MyLibrary.php");
               $isPast = $currentTimeSlotDateTime < $now;
 
               $sqlSelect = $connection->prepare("SELECT * FROM reservation WHERE StartMoment = ? and SiteId=?");
-              $sqlSelect->bind_param("si", $currentTimeSlot,$_SESSION["currentSite"]);
+              $sqlSelect->bind_param("si", $currentTimeSlot, $_SESSION["currentSite"]);
               $sqlSelect->execute();
               $result = $sqlSelect->get_result();
               if ($result->num_rows == 0) {
@@ -210,22 +209,45 @@ include_once("../Library/MyLibrary.php");
                 $isReserved = true;
                 $row = $result->fetch_assoc();
                 $userID = $row['Reserved_by_userID'];
-                $userN = $connection->prepare('select Username from users where UserID = ?');
-                $userN->bind_param('i', $userID);
-                $userN->execute();
-                $result = $userN->get_result();
-                $userRow = $result->fetch_assoc();
-                $user = $userRow['Username'];
+                $userInfo = $connection->prepare('select * from users where UserID = ?');
+                $userInfo->bind_param('i', $userID);
+                $userInfo->execute();
+                $resultOfUserInfo = $userInfo->get_result();
+                while ($row = $resultOfUserInfo->fetch_assoc()) {
+                  $Last_name = strtoupper($row['Last_name']);
+                  $First_name = ucfirst($row['First_name']);
+                  $username = $row['Username'];
+                }
               }
-              $cellColor = $isReserved ? '#f8d7da' : ($isPast ? '#e0e0e0' : '#d4edda');
+
+              $red_reservedColor = '#f8d7da';
+              $purple_selfReservedColor = '#9B59B6';
+              $gray_pastTimeColor = '#e0e0e0';
+              $green_availableTimeColor = '#d4edda';
+
+              /* $cellColor = $isReserved ? '#f8d7da' : ($isPast ? '#e0e0e0' : '#d4edda'); */
+
+              if ($isReserved) {
+                if ($_SESSION["username"] == $username) {
+                  $cellColor = $purple_selfReservedColor;
+                } else {
+                  $cellColor = $red_reservedColor;
+                }
+              } else {
+                if ($isPast) {
+                  $cellColor = $gray_pastTimeColor;
+                } else {
+                  $cellColor = $green_availableTimeColor;
+                }
+              }
 
               ?>
 
               <td style="background-color: <?= $cellColor ?>;">
-
+                <!-- <p style="line-height: 1.2;">First line<br>Second line</p> -->
                 <?php if ($isReserved) { ?>
                   <?= $t['reserved'] ?>
-                  <?= ($_SESSION["Admin"]) ? "<br> $t[by] $user" : " " ?>
+                  <?= ($_SESSION["Admin"]) ? "<br> $t[by] <br> $Last_name $First_name" : " " ?>
                 <?php } else { ?>
 
                   <form method="POST" class="formBtn" style="margin:0;" onsubmit="return confirm('<?= $t['confirm_reserve_time'] ?>');">

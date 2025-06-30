@@ -31,9 +31,9 @@ include_once("../Library/MyLibrary.php");
 
       if (strtoupper($userRow['Level']) === 'ADMIN') {
         $AdminMode = true;
-        $displayReservations = $connection->prepare('SELECT * FROM reservation');
+        $displayReservations = $connection->prepare('SELECT * FROM reservation join users on Reserved_by_userID = UserID  join Sites on reservation.SiteId = Sites.SiteId');
       } else {
-        $displayReservations = $connection->prepare('SELECT * FROM reservation WHERE Reserved_by_userID = ?');
+        $displayReservations = $connection->prepare('SELECT * FROM reservation join Sites on reservation.SiteId = Sites.SiteId  WHERE Reserved_by_userID = ?');
         $displayReservations->bind_param('i', $userRow['UserID']);
       }
 
@@ -71,10 +71,11 @@ include_once("../Library/MyLibrary.php");
               <tr>
 
                 <th>#</th>
+                <th><?= $t["site"] ?></th>
                 </a>
-<?php if ($AdminMode): ?>
-    <th><?= $t["reserved_by_user_id"] ?></th>
-<?php endif; ?>
+                <?php if ($AdminMode): ?>
+                  <th><?= $t["reserved_by"] ?></th>
+                <?php endif; ?>
                 <th><?= $t["date"] ?></th>
                 <th><?= $t["time_slot"] ?></th>
                 <th><?= $t["action"] ?></th>
@@ -85,6 +86,12 @@ include_once("../Library/MyLibrary.php");
               $i = 1;
               while ($row = $reservations->fetch_assoc()) {
                 $user_ID = $row['Reserved_by_userID'];
+                $site = $row['SiteName'];
+                /* first and last name of who reserved will be display only to admin */
+                if ($AdminMode) {
+                  $first_name = ucfirst($row['First_name']);
+                  $last_name = strtoupper($row['Last_name']);
+                }
                 $startMoment = $row['StartMoment'];
                 $reservedDate = substr($startMoment, 0, 10);
                 $reservedTime = substr($startMoment, 11);
@@ -96,7 +103,8 @@ include_once("../Library/MyLibrary.php");
               ?>
                 <tr>
                   <td><?= $i++ ?></td>
-                  <?= ($AdminMode) ? '<td>' . $user_ID . '</td>' : ''; ?>
+                  <td><?= $site ?></td>
+                  <?= ($AdminMode) ? '<td>' .  $last_name . ' ' . $first_name . '</td>' : ''; ?>
                   <td><?= $reservedDate ?></td>
                   <td><?= $timeSlot ?></td>
                   <td>

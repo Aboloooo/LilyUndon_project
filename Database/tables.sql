@@ -18,11 +18,12 @@ CREATE TABLE users (
 );
 
 
-/* INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, Level, user_must_change_password)
+/*  INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, Level, user_must_change_password)
 VALUES
-("abolo", "ahmadi", "2003122601327", "admin", "password", "admin@gmail.com", "aDmin", 0),
-("abolo", "ahmadi", "2003122601328", "abolo123", "123", "abolo@gmail.com", "cusTomer", 1);
- */
+("admin", "ahmadi", "2003122601327", "admin", "password", "admin@gmail.com", "aDmin", 0),
+("abolo1", "ahmadi", "2003122601328", "abolo1", "$2y$10$nb/tFhTTao31CLpYEFiVqO0oSt0t11DElt2RHDLxARU2zuusIduEu", "abolo1@gmail.com", "cusTomer", 0),
+("abolo2", "ahmadi", "2003122601329", "abolo2", "$2y$10$nb/tFhTTao31CLpYEFiVqO0oSt0t11DElt2RHDLxARU2zuusIduEu", "abolo2@gmail.com", "cusTomer", 0);
+  */
 
  create table if not exists Sites(
     SiteId INT PRIMARY KEY AUTO_INCREMENT,
@@ -94,6 +95,15 @@ INSERT INTO translation (translationID, en, fr, de, ti, es, ar, fa) VALUES
   'Plan',
   'خطة',
   'برنامه'
+),
+('site', 
+  'Site', 
+  'Site', 
+  'Ort', 
+  'ቦታ', 
+  'Sitio', 
+  'موقع', 
+  'مکان'
 ),
 ('login', 
   'Login', 
@@ -728,14 +738,14 @@ INSERT INTO translation (translationID, en, fr, de, ti, es, ar, fa) VALUES
   'الأحد',
   'یکشنبه'
 ),
-('reserved_by_user_id', 
-  'Reserved by user_ID', 
-  'Réservé par l/ID utilisateur', 
-  'Reserviert durch Benutzer-ID',
-  'ብተጠቃሚ_ID ተዓዚብካ',
-  'Reservado por ID de usuario',
-  'محجوز بواسطة معرف المستخدم',
-  'رزرو شده توسط شناسه کاربری'
+('reserved_by', 
+  'Reserved by', 
+  'Réservé par', 
+  'Reserviert durch',
+  'ብተጠቃሚ ተዓዚብካ',
+  'Reservado por',
+  'محجوز بواسطة',
+  'رزرو شده توسط'
 ),
 
 /* users */

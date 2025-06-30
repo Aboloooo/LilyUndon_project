@@ -1,0 +1,10 @@
+bring back the reservations cell color like before and clear self reservation by adding text like "You Reserved" text.
+
+add a new user level (security)
+
+user with security level have access to only timeslots page 
+
+timeslot page must contain an extra btn to print the entire page
+
+if a session is terminated user must land into index page instead of ...
+

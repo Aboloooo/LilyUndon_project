@@ -1,4 +1,3 @@
-bring back the reservations cell color like before and clear self reservation by adding text like "You Reserved" text.
 
 add a new user level (security)
 
@@ -8,3 +7,6 @@ timeslot page must contain an extra btn to print the entire page
 
 if a session is terminated user must land into index page instead of ...
 
+add radio input for activation of users
+
+only admin can create account for securityGuard

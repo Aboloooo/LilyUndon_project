@@ -16,8 +16,6 @@ include_once("../Library/MyLibrary.php");
 
     <?php
     if (isset($_POST['submit'])) {
-        //echo "<script>alert('Error')</script>";
-
         $requiredFields = ["first_name", "last_name", "CNS_number", "username", "password", "password_confirmation", "email"];
         $errors = [];
 
@@ -40,7 +38,7 @@ include_once("../Library/MyLibrary.php");
             $hashedPass = password_hash($pass, PASSWORD_DEFAULT);
             $passConfir = $_POST['password_confirmation'];
             $email = $_POST['email'];
-            $defaultLevel = "customer";
+            $defaultLevel = 3;
             $defaultStatus = "pending";
             $user_must_change_pass = 1;
 
@@ -57,7 +55,7 @@ include_once("../Library/MyLibrary.php");
                     echo "<script>alert('" . addslashes($t['cns_username_error']) . "');</script>";
                 } else {
                     $sqlInsertValues = $connection->prepare('INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, Level,status, user_must_change_password) VALUES (?,?,?,?,?,?,?,?,?)');
-                    $sqlInsertValues->bind_param('ssisssssi', $firstN, $lastN, $CNS, $userN, $hashedPass, $email, $defaultLevel, $defaultStatus, $user_must_change_pass);
+                    $sqlInsertValues->bind_param('ssisssisi', $firstN, $lastN, $CNS, $userN, $hashedPass, $email, $defaultLevel, $defaultStatus, $user_must_change_pass);
                     $sqlInsertValues->execute();
                     if($_SESSION["Admin"] = true){
                         echo "<script>alert('" . $t['user_created_successfully_admin'] . "')</script>";

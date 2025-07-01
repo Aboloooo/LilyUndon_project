@@ -28,7 +28,7 @@ include_once("../Library/MyLibrary.php");
     if ($row = $result->fetch_assoc()) {
       $username = $row['Username'];
       $password = $row['Password'];
-      $level = $row['Level'];
+      $level = $row['AccessLevelID'];
 
       //use password verify function
       if (password_verify($_POST['password'], $password)) {
@@ -36,7 +36,7 @@ include_once("../Library/MyLibrary.php");
         $_SESSION['level'] = $level;
         $_SESSION["userLogin"] = true;
 
-        if (strtoupper($level) == 'ADMIN') {
+        if ($level == 1) {
           $_SESSION["Admin"] = true;
         }
         // user will be double checked to see if user still use their initial pass or not

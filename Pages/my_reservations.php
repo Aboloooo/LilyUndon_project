@@ -29,7 +29,7 @@ include_once("../Library/MyLibrary.php");
       $userInfoResult = $userInfo->get_result();
       $userRow = $userInfoResult->fetch_assoc();
 
-      if (strtoupper($userRow['Level']) === 'ADMIN') {
+      if ($userRow['AccessLevelID'] == 1) {
         $AdminMode = true;
         $displayReservations = $connection->prepare('SELECT * FROM reservation join users on Reserved_by_userID = UserID  join Sites on reservation.SiteId = Sites.SiteId');
       } else {

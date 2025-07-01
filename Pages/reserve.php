@@ -82,7 +82,7 @@ include_once("../Library/MyLibrary.php");
     $canBookTimeSlot = false;
 
     if ($_SESSION['username'] !== "Unknown") {
-      $userIDStmt = $connection->prepare("SELECT UserID,Level FROM users WHERE Username = ?");
+      $userIDStmt = $connection->prepare("SELECT UserID,AccessLevelID FROM users WHERE Username = ?");
       $userIDStmt->bind_param('s', $_SESSION['username']);
       $userIDStmt->execute();
       $result = $userIDStmt->get_result();
@@ -91,7 +91,7 @@ include_once("../Library/MyLibrary.php");
       // if user is not login user must be redirected to login page
 
       $userId = $row['UserID'];
-      $Level = $row['Level'];
+      $Level = $row['AccessLevelID'];
       $date = $_POST['day'];
       $time = $_POST['time'];
 
@@ -104,7 +104,7 @@ include_once("../Library/MyLibrary.php");
       $BookedTimeSlotsNumber = $resultOfReservationCheck->fetch_assoc();
 
       if ($BookedTimeSlotsNumber) {
-        if ($BookedTimeSlotsNumber['cnt'] <= 3 || strtolower($Level) == "admin") {
+        if ($BookedTimeSlotsNumber['cnt'] <= 3 || $Level == 1) {
           $canBookTimeSlot = true;
         }
       }
@@ -120,7 +120,7 @@ include_once("../Library/MyLibrary.php");
         $checkSameDayStmt->execute();
         $resultOfCheckSameDayStmt  = $checkSameDayStmt->get_result();
         $sameDayCount = $resultOfCheckSameDayStmt->fetch_assoc()['count'];
-        if ($sameDayCount > 0 && strtolower($Level) != "admin") {
+        if ($sameDayCount > 0 && $Level != 1) {
           echo "<script>alert('" . $t['already_have_reservation_on_day'] . "')</script>";
         } else {
           $sqlReservationInsert = $connection->prepare('insert into reservation(Reserved_by_userID,StartMoment,SiteId) values (?,?,?) ');
@@ -186,7 +186,7 @@ include_once("../Library/MyLibrary.php");
           <?php endforeach; ?>
         </tr>
       </thead>
-
+     
       <tbody>
         <?php foreach ($times as $time): ?>
           <tr>
@@ -220,14 +220,14 @@ include_once("../Library/MyLibrary.php");
                 }
               }
 
-              $red_reservedColor = '#f8d7da';
+             /*  $red_reservedColor = '#f8d7da';
               $purple_selfReservedColor = '#9B59B6';
               $gray_pastTimeColor = '#e0e0e0';
-              $green_availableTimeColor = '#d4edda';
+              $green_availableTimeColor = '#d4edda'; */
 
-              /* $cellColor = $isReserved ? '#f8d7da' : ($isPast ? '#e0e0e0' : '#d4edda'); */
+              $cellColor = $isReserved ? ($_SESSION["username"] == $username) ? '#f7c1c6' : '#f8d7da' : ($isPast ? '#e0e0e0' : '#d4edda');
 
-              if ($isReserved) {
+              /* if ($isReserved) {
                 if ($_SESSION["username"] == $username) {
                   $cellColor = $purple_selfReservedColor;
                 } else {
@@ -239,7 +239,7 @@ include_once("../Library/MyLibrary.php");
                 } else {
                   $cellColor = $green_availableTimeColor;
                 }
-              }
+              } */
 
               ?>
 
@@ -248,6 +248,7 @@ include_once("../Library/MyLibrary.php");
                 <?php if ($isReserved) { ?>
                   <?= $t['reserved'] ?>
                   <?= ($_SESSION["Admin"]) ? "<br> $t[by] <br> $Last_name $First_name" : " " ?>
+                  <?= ($_SESSION["username"] == $username && !$_SESSION['Admin']) ? "<br> $t[by] <br> $t[You] " : " "?>
                 <?php } else { ?>
 
                   <form method="POST" class="formBtn" style="margin:0;" onsubmit="return confirm('<?= $t['confirm_reserve_time'] ?>');">

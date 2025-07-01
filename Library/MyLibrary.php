@@ -15,10 +15,13 @@ if (!isset($_SESSION["username"])) {
     $_SESSION["username"] = "Unknown";
 }
 if (!isset($_SESSION["level"])) {
-    $_SESSION["level"] = "customer";
+    $_SESSION["level"] = 3;
 }
 if (!isset($_SESSION["Admin"])) {
     $_SESSION["Admin"] = false;
+}
+if (!isset($_SESSION["GuardReserveAccess"])) {
+    $_SESSION["GuardReserveAccess"] = false;
 }
 if (!isset($_SESSION["userMustChangeThePass"])) {
     $_SESSION["userMustChangeThePass"] = false;
@@ -34,6 +37,7 @@ if (!isset($_SESSION["currentSite"])) {
 if (isset($_POST["site"])) {
     $_SESSION["currentSite"] = $_POST["site"];
 }
+
 
 $t = [];
 $supportedLanguages = ['en', 'fr', 'de', 'ti', 'es', 'ar', 'fa'];

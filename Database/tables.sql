@@ -2,6 +2,15 @@ drop DATABASE if exists Don_Bosco;
 CREATE DATABASE Don_Bosco;
 USE Don_Bosco;
 
+Create Table AccessLevel(
+  AccessLevelID int primary key AUTO_INCREMENT,
+  level varchar(50)
+);
+insert into AccessLevel (level) values ("Admin"),
+insert into AccessLevel (level) values ("SecurityGuard"),
+insert into AccessLevel (level) values ("Residence");
+
+
 
 CREATE TABLE users (
     UserID INT PRIMARY KEY AUTO_INCREMENT,
@@ -11,10 +20,11 @@ CREATE TABLE users (
     Username VARCHAR(255) NOT NULL,
     Password VARCHAR(255) NOT NULL,
     Email VARCHAR(255) NOT NULL,
-    Level VARCHAR(255),
+    AccessLevelID int NOT NULL,
     status VARCHAR(50),
-    user_must_change_password BOOLEAN
+    user_must_change_password BOOLEAN,
     /* Zero is considered as false, nonzero values are considered as true. */
+    FOREIGN KEY (AccessLevelID) REFERENCES AccessLevel(AccessLevelID) 
 );
 
 
@@ -95,6 +105,15 @@ INSERT INTO translation (translationID, en, fr, de, ti, es, ar, fa) VALUES
   'Plan',
   'خطة',
   'برنامه'
+),
+('you', 
+  'You', 
+  'Vous', 
+  'Sie', 
+  'አንተ/እርስዎ', 
+  'Usted', 
+  'أنت', 
+  'شما'
 ),
 ('site', 
   'Site', 

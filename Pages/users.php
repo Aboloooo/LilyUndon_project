@@ -72,7 +72,7 @@ include_once("../Library/MyLibrary.php");
                 $UserN = $row['Username'];
                 $Password = $row['Password'];
                 $Email = $row['Email'];
-                $Level = $row['Level'];
+                $Level = $row['AccessLevelID'];
                 $status = $row['status'];
                 $mustChangePass = $row['user_must_change_password'];
 
@@ -92,7 +92,7 @@ include_once("../Library/MyLibrary.php");
                         <td><?= $UserN ?></td>
                         <td><?= $Password ?></td>
                         <td><?= $Email ?></td>
-                        <td><?= $Level ?></td>
+                        <td><?= $Level == 1 ? 'Admin' ?></td>
                         <td><?php if ($mustChangePass == 1) {
                                 echo $t['false'];
                             } else {

@@ -313,6 +313,46 @@ body {
   text-decoration: none;
 }
 
+  /* radio inputs for level selection (adding_uesr page) */
+  .levelSelectionInputsContainer{
+    display: flex;
+/*     transform: translate(-50%, -50%);
+ */    top: 10%;
+    /* left: 50%; */
+    width: max-content;
+  }
+  .levelSelectionInputsContainer input[type = 'radio']{
+    display: none;
+  }
+  .levelSelectionInputsContainer label{
+    position: relative;
+    color: #01cc65;
+    border: 2px solid ;
+    border-radius: 5px;
+    padding: 10px 32.5%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  .levelSelectionInputsContainer label:before{
+    content: "";
+    height: 30px;
+    width: 30px;
+    border: 3px solid #01cc65;
+    border-radius: 50%;
+    margin-right: 20px;
+  }
+  .levelSelectionInputsContainer input[type = 'radio']:checked + label{
+    background-color: #01cc65;
+    color: white;
+  }
+  .levelSelectionInputsContainer input[type = 'radio']:checked + label:before{
+    height: 16px;
+    width: 16px;
+    border: 10px solid white;
+    background-color: #01cc65;
+  }
+
 /* Reservation calender */
 .reservationTable {
   margin-left: auto;
@@ -528,55 +568,6 @@ table.user-table tr:hover {
 
   .toggle .line3 {
     transform: rotate(45deg) translate(-5px, -6px);
-  }
-
-  /* index */
-  .img {
-    flex-direction: column-reverse;
-    margin-top: 50px;
-    position: relative;
-  }
-  .part1 {
-    width: 100%;
-    margin: 0px;
-    margin-top: 65px;
-    z-index: -100;
-  }
-  .part2 {
-    width: 100%;
-    z-index: 99;
-    height: 60vh;
-    display: flex;
-    justify-content: space-between;
-  }
-  .part1,
-  .part2 {
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-  /* login page */
-  .login-container {
-    padding: 20px;
-    width: 65%;
-    line-height: 1.2;
-    margin-top: 25px;
-  }
-
-  .login-container input {
-    width: 95%;
-  }
-  .login-container h2 {
-    font-size: large;
-  }
-  .login-container input,
-  .login-container label,
-  .login-container p {
-    font-size: small;
-  }
-
-  .social-login {
-    flex-direction: column;
   }
 
   /* reseravtion table */

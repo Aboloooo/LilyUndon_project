@@ -6,8 +6,8 @@ Create Table AccessLevel(
   AccessLevelID int primary key AUTO_INCREMENT,
   level varchar(50)
 );
-insert into AccessLevel (level) values ("Admin"),
-insert into AccessLevel (level) values ("SecurityGuard"),
+insert into AccessLevel (level) values ("Admin");
+insert into AccessLevel (level) values ("SecurityGuard");
 insert into AccessLevel (level) values ("Residence");
 
 

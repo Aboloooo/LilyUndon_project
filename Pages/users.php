@@ -92,7 +92,10 @@ include_once("../Library/MyLibrary.php");
                         <td><?= $UserN ?></td>
                         <td><?= $Password ?></td>
                         <td><?= $Email ?></td>
-                        <td><?= $Level == 1 ? 'Admin' ?></td>
+                        <td><?= $Level == 1 ? 'Admin' : ' ' ?>
+                            <?= $Level == 2 ? 'SecurityGuard' : ' ' ?>
+                            <?= $Level == 3 ? 'Residence' : ' ' ?>
+                    </td>
                         <td><?php if ($mustChangePass == 1) {
                                 echo $t['false'];
                             } else {
@@ -101,7 +104,7 @@ include_once("../Library/MyLibrary.php");
 
                         <td>
                             <?php
-                            $disableIfAdmin = (strtolower($Level) == "admin") ? "disabled" : " ";
+                            $disableIfAdmin = ($Level == 1) ? "disabled" : " ";
                             ?>
                             <form method="POST" onsubmit="return confirm('<?= $t['confirmation_either_to_activate_or_deactivate_user'] ?>');" style="display:inline;">
                                 <input type="hidden" name="statusBtnChangeUserID" value="<?= $UserID ?>">
@@ -111,7 +114,7 @@ include_once("../Library/MyLibrary.php");
                         <td>
                             <!-- Example action -->
                             <?php
-                            if ($Level == "customer") {
+                            if ($Level == 3) {
                             ?>
                                 <form method="POST" onsubmit="return confirm('<?= $t['confirm_delete_user'] ?>');" style="display:inline;">
                                     <input type="hidden" name="deleteUserID" value="<?= $UserID ?>">

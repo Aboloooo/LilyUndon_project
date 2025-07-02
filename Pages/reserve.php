@@ -248,7 +248,7 @@ include_once("../Library/MyLibrary.php");
                 <?php if ($isReserved) { ?>
                   <?= $t['reserved'] ?>
                   <?= ($_SESSION["Admin"]) ? "<br> $t[by] <br> $Last_name $First_name" : " " ?>
-                  <?= ($_SESSION["username"] == $username && !$_SESSION['Admin']) ? "<br> $t[by] <br> $t[You] " : " "?>
+                  <?= ($_SESSION["username"] == $username && !$_SESSION['Admin']) ? "<br> $t[by] <br> $t[you] " : " "?>
                 <?php } else { ?>
 
                   <form method="POST" class="formBtn" style="margin:0;" onsubmit="return confirm('<?= $t['confirm_reserve_time'] ?>');">

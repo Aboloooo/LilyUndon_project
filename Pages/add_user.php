@@ -8,7 +8,7 @@ include_once("../Library/MyLibrary.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $t['register'] ?></title>
-    <link rel="stylesheet" href="../style.css? <?= time(); ?>">
+    <link rel="stylesheet" href="../style.css?<?php echo filemtime('../style.css'); ?>">    
     <script src="../script.js"></script>
 </head>
 
@@ -38,7 +38,7 @@ include_once("../Library/MyLibrary.php");
             $hashedPass = password_hash($pass, PASSWORD_DEFAULT);
             $passConfir = $_POST['password_confirmation'];
             $email = $_POST['email'];
-            $defaultLevel = 3;
+            $defaultLevel_ID = 3;
             $defaultStatus = "pending";
             $user_must_change_pass = 1;
 
@@ -54,8 +54,8 @@ include_once("../Library/MyLibrary.php");
                 if ($inputExist) {
                     echo "<script>alert('" . addslashes($t['cns_username_error']) . "');</script>";
                 } else {
-                    $sqlInsertValues = $connection->prepare('INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, Level,status, user_must_change_password) VALUES (?,?,?,?,?,?,?,?,?)');
-                    $sqlInsertValues->bind_param('ssisssisi', $firstN, $lastN, $CNS, $userN, $hashedPass, $email, $defaultLevel, $defaultStatus, $user_must_change_pass);
+                    $sqlInsertValues = $connection->prepare('INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, AccessLevelID,status, user_must_change_password) VALUES (?,?,?,?,?,?,?,?,?)');
+                    $sqlInsertValues->bind_param('ssisssisi', $firstN, $lastN, $CNS, $userN, $hashedPass, $email, $defaultLevel_ID, $defaultStatus, $user_must_change_pass);
                     $sqlInsertValues->execute();
                     if($_SESSION["Admin"] = true){
                         echo "<script>alert('" . $t['user_created_successfully_admin'] . "')</script>";
@@ -98,6 +98,21 @@ include_once("../Library/MyLibrary.php");
             <label for="password_confirmation"><?= $t['password_confirmation'] ?></label>
             <input type="password" id="password_confirmation" name="password_confirmation" placeholder="••••••••" required />
 
+            <!-- Level selection bar(visible only to admin) -->
+             <?php
+            if($_SESSION['Admin']){
+                ?>
+                <div class='levelSelectionInputsContainer'>
+                    <input type="radio" name='size' id='Residence' checked='checked'>
+                    <label for="Residence" >Residence</label><br>
+                    <input type="radio" name='size' id='SecurityGuard' >
+                    <label for="SecurityGuard">SecurityGuard</label><br>
+                    <input type="radio" name='size' id='Admin' >
+                    <label for="Admin">Admin</label>
+                </div>
+                <?php 
+            }
+             ?>
 
             <label for="email"><?= $t['email'] ?></label>
             <input type="email" id="username" name="email" placeholder="<?= $t['email'] ?>" required />

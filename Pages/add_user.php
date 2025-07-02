@@ -8,7 +8,7 @@ include_once("../Library/MyLibrary.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $t['register'] ?></title>
-    <link rel="stylesheet" href="../style.css?<?php echo filemtime('../style.css'); ?>">    
+    <link rel="stylesheet" href="../style.css?<?php echo filemtime('../style.css'); ?>">
     <script src="../script.js"></script>
 </head>
 
@@ -57,9 +57,9 @@ include_once("../Library/MyLibrary.php");
                     $sqlInsertValues = $connection->prepare('INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, AccessLevelID,status, user_must_change_password) VALUES (?,?,?,?,?,?,?,?,?)');
                     $sqlInsertValues->bind_param('ssisssisi', $firstN, $lastN, $CNS, $userN, $hashedPass, $email, $defaultLevel_ID, $defaultStatus, $user_must_change_pass);
                     $sqlInsertValues->execute();
-                    if($_SESSION["Admin"] = true){
+                    if ($_SESSION["Admin"] = true) {
                         echo "<script>alert('" . $t['user_created_successfully_admin'] . "')</script>";
-                    }else{
+                    } else {
                         echo "<script>alert('" . $t['user_created_successfully'] . "')</script>";
                     }
                 }
@@ -97,25 +97,25 @@ include_once("../Library/MyLibrary.php");
 
             <label for="password_confirmation"><?= $t['password_confirmation'] ?></label>
             <input type="password" id="password_confirmation" name="password_confirmation" placeholder="••••••••" required />
-            
+
             <label for="">Access Level</label>
             <!-- Level selection bar(visible only to admin) -->
-             <?php
-            if($_SESSION['Admin']){
+            <?php
+            if ($_SESSION['Admin']) {
                 /* translation needed */
-                ?>
+            ?>
                 <div class='levelSelectionInputsContainer'>
                     <form action="Post">
-                        <input type="radio" name='Residence' id='Residence' checked='checked'>
-                        <label for="Residence" >Residence</label><br>
-                        <input type="radio" name='SecurityGuard' id='SecurityGuard' >
+                        <input type="radio" name='AccessLevel' id='Residence' value="3" checked='checked'>
+                        <label for="Residence">Residence</label><br>
+                        <input type="radio" name='AccessLevel' id='SecurityGuard' value="2">
                         <label for="SecurityGuard">Security Guard</label><br>
                     </form>
-                    
+
                 </div>
-                <?php 
+            <?php
             }
-             ?>
+            ?>
 
             <label for="email"><?= $t['email'] ?></label>
             <input type="email" id="username" name="email" placeholder="<?= $t['email'] ?>" required />

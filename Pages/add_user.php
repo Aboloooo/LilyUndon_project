@@ -105,13 +105,10 @@ include_once("../Library/MyLibrary.php");
                 /* translation needed */
             ?>
                 <div class='levelSelectionInputsContainer'>
-                    <form action="Post">
-                        <input type="radio" name='AccessLevel' id='Residence' value="3" checked='checked'>
-                        <label for="Residence">Residence</label><br>
-                        <input type="radio" name='AccessLevel' id='SecurityGuard' value="2">
-                        <label for="SecurityGuard">Security Guard</label><br>
-                    </form>
-
+                    <input type="radio" name='AccessLevel' id='Residence' value="3" checked='checked'>
+                    <label for="Residence">Residence</label><br>
+                    <input type="radio" name='AccessLevel' id='SecurityGuard' value="2">
+                    <label for="SecurityGuard">Security Guard</label><br>
                 </div>
             <?php
             }

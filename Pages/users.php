@@ -83,48 +83,53 @@ include_once("../Library/MyLibrary.php");
 
 
             ?>
-                <tbody>
-                    <tr>
-                        <td><?= $UserID ?></td>
-                        <td><?= $Fname ?></td>
-                        <td><?= $Lname ?></td>
-                        <td><?= $CNS ?></td>
-                        <td><?= $UserN ?></td>
-                        <td><?= $Password ?></td>
-                        <td><?= $Email ?></td>
-                        <td><?= $Level == 1 ? 'Admin' : ' ' ?>
-                            <?= $Level == 2 ? 'SecurityGuard' : ' ' ?>
-                            <?= $Level == 3 ? 'Residence' : ' ' ?>
+                <tr>
+                    <td><?= $UserID ?></td>
+                    <td><?= $Fname ?></td>
+                    <td><?= $Lname ?></td>
+                    <td><?= $CNS ?></td>
+                    <td><?= $UserN ?></td>
+                    <td><?= $Password ?></td>
+                    <td><?= $Email ?></td>
+                    <td><?= $Level == 1 ? 'Admin' : ' ' ?>
+                        <?= $Level == 2 ? 'SecurityGuard' : ' ' ?>
+                        <?= $Level == 3 ? 'Residence' : ' ' ?>
                     </td>
-                        <td><?php if ($mustChangePass == 1) {
-                                echo $t['false'];
-                            } else {
-                                echo $t['true'];
-                            } ?></td>
+                    <td><?php if ($mustChangePass == 1) {
+                            echo $t['false'];
+                        } else {
+                            echo $t['true'];
+                        } ?></td>
 
-                        <td>
-                            <?php
-                            $disableIfAdmin = ($Level == 1) ? "disabled" : " ";
-                            ?>
-                            <form method="POST" onsubmit="return confirm('<?= $t['confirmation_either_to_activate_or_deactivate_user'] ?>');" style="display:inline;">
-                                <input type="hidden" name="statusBtnChangeUserID" value="<?= $UserID ?>">
-                                <button <?= $disableIfAdmin ?> type="submit" name="statusBtnChange" style="<?= $btnStyle ?>" class="action-btn"><?= $t[strtolower($status)] ?></button>
+                    <td>
+                        <?php
+                        $disableIfAdmin = ($Level == 1) ? "disabled" : " ";
+                        ?>
+                        <!-- Either activate or deactivate user -->
+                        <form method="POST" onsubmit="return confirm('<?= $t['confirmation_either_to_activate_or_deactivate_user'] ?>');" style="display:inline;">
+                            <input type="hidden" name="statusBtnChangeUserID" value="<?= $UserID ?>">
+                            <button <?= $disableIfAdmin ?> type="submit" name="statusBtnChange" style="<?= $btnStyle ?>" class="action-btn"><?= $t[strtolower($status)] ?></button>
+                        </form>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                        <tbody>
+                    </td>
+                    <td>
+                        <!-- Delete user action -->
+                        <?php
+                        if ($Level == 3 || $Level == 2) {
+                        ?>
+                            <form method="POST" onsubmit="return confirm('<?= $t['confirm_delete_user'] ?>');" style="display:inline;">
+                                <input type="hidden" name="deleteUserID" value="<?= $UserID ?>">
+                                <button type="submit" name="deleteUser" class="action-btn"><?= $t['delete'] ?></button>
                             </form>
-                        </td>
-                        <td>
-                            <!-- Example action -->
-                            <?php
-                            if ($Level == 3) {
-                            ?>
-                                <form method="POST" onsubmit="return confirm('<?= $t['confirm_delete_user'] ?>');" style="display:inline;">
-                                    <input type="hidden" name="deleteUserID" value="<?= $UserID ?>">
-                                    <button type="submit" name="deleteUser" class="action-btn"><?= $t['delete'] ?></button>
-                                </form>
-                            <?php
-                            }
-                            ?>
-                        </td>
-                    </tr>
+                        <?php
+                        }
+                        ?>
+                    </td>
+                </tr>
                 </tbody>
             <?php
             }

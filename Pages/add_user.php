@@ -97,18 +97,21 @@ include_once("../Library/MyLibrary.php");
 
             <label for="password_confirmation"><?= $t['password_confirmation'] ?></label>
             <input type="password" id="password_confirmation" name="password_confirmation" placeholder="••••••••" required />
-
+            
+            <label for="">Access Level</label>
             <!-- Level selection bar(visible only to admin) -->
              <?php
             if($_SESSION['Admin']){
+                /* translation needed */
                 ?>
                 <div class='levelSelectionInputsContainer'>
-                    <input type="radio" name='size' id='Residence' checked='checked'>
-                    <label for="Residence" >Residence</label><br>
-                    <input type="radio" name='size' id='SecurityGuard' >
-                    <label for="SecurityGuard">SecurityGuard</label><br>
-                    <input type="radio" name='size' id='Admin' >
-                    <label for="Admin">Admin</label>
+                    <form action="Post">
+                        <input type="radio" name='Residence' id='Residence' checked='checked'>
+                        <label for="Residence" >Residence</label><br>
+                        <input type="radio" name='SecurityGuard' id='SecurityGuard' >
+                        <label for="SecurityGuard">Security Guard</label><br>
+                    </form>
+                    
                 </div>
                 <?php 
             }

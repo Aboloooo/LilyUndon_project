@@ -38,7 +38,7 @@ include_once("../Library/MyLibrary.php");
             $hashedPass = password_hash($pass, PASSWORD_DEFAULT);
             $passConfir = $_POST['password_confirmation'];
             $email = $_POST['email'];
-            $defaultLevel_ID = 3;
+            $Level_ID = $_POST['AccessLevel'];
             $defaultStatus = "pending";
             $user_must_change_pass = 1;
 
@@ -55,7 +55,7 @@ include_once("../Library/MyLibrary.php");
                     echo "<script>alert('" . addslashes($t['cns_username_error']) . "');</script>";
                 } else {
                     $sqlInsertValues = $connection->prepare('INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, AccessLevelID,status, user_must_change_password) VALUES (?,?,?,?,?,?,?,?,?)');
-                    $sqlInsertValues->bind_param('ssisssisi', $firstN, $lastN, $CNS, $userN, $hashedPass, $email, $defaultLevel_ID, $defaultStatus, $user_must_change_pass);
+                    $sqlInsertValues->bind_param('ssisssisi', $firstN, $lastN, $CNS, $userN, $hashedPass, $email, $Level_ID, $defaultStatus, $user_must_change_pass);
                     $sqlInsertValues->execute();
                     if ($_SESSION["Admin"] = true) {
                         echo "<script>alert('" . $t['user_created_successfully_admin'] . "')</script>";

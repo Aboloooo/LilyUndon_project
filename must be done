@@ -11,3 +11,5 @@ if a session is terminated user must land into index page instead of ...
 
 
 only admin can create account for securityGuard
+
+JavaScript stings, add_user.php needs translation

@@ -9,7 +9,7 @@ include_once("../Library/MyLibrary.php");
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $t['users'] ?></title>
     <link rel="stylesheet" href="../style.css? <?= time(); ?>">
-    <script src="../script.js"></script>
+    <script src="../script.js" <?= time(); ?>></script>
 </head>
 
 <body>
@@ -22,22 +22,15 @@ include_once("../Library/MyLibrary.php");
         $deleteUserStatment->bind_param('i', $userIDToDelete);
         $deleteUserStatment->execute();
     }
-    if (isset($_POST['statusBtnChange'])) {
-        $userIDToChangeStatus = $_POST['statusBtnChangeUserID'];
 
-        $fetchStatus = $connection->prepare('select status from users where UserID = ?');
-        $fetchStatus->bind_param('i', $userIDToChangeStatus);
-        $fetchStatus->execute();
-        $resultStatus = $fetchStatus->get_result();
-        $userStatusRow = $resultStatus->fetch_assoc();
-        $userStatus = $userStatusRow['status'];
+    // Changing user status
+    if (isset($_POST['statusSliderChange']) && isset($_POST['statusBtnChangeUserID'])) {
+        $newStatus = ($_POST['statusSliderChange'] == '1') ? 'active' : 'pending';
+        $userID = $_POST['statusBtnChangeUserID'];
 
-        $newStatus = (strtolower($userStatus) == 'pending') ? 'active' : 'pending';
-
-
-        $statusUserToChangeStatment = $connection->prepare("update users set status =? WHERE UserID = ?");
-        $statusUserToChangeStatment->bind_param('si', $newStatus, $userIDToChangeStatus);
-        $statusUserToChangeStatment->execute();
+        $updateStatusStmt = $connection->prepare("UPDATE users SET status = ? WHERE UserID = ?");
+        $updateStatusStmt->bind_param('si', $newStatus, $userID);
+        $updateStatusStmt->execute();
     }
     ?>
 
@@ -73,15 +66,22 @@ include_once("../Library/MyLibrary.php");
                 $Password = $row['Password'];
                 $Email = $row['Email'];
                 $Level = $row['AccessLevelID'];
-                $status = $row['status'];
+                $status = strtolower($row['status']);
                 $mustChangePass = $row['user_must_change_password'];
 
-                $btnStyle = (strtolower($status) == 'pending')
-                    ? 'background-color: #f0ad4e; color: #fff; border: none; padding: 6px 12px; border-radius: 4px;'
-                    : 'background-color: #28a745; color: #fff; border: none; padding: 6px 12px; border-radius: 4px;';
+
+                $isActive = $status === 'active';
+                $btnStyle = $isActive
+                    ? 'background-color: #28a745; color: #fff;'
+                    : 'background-color: #f0ad4e; color: #fff;';
+
+                $ActiveOrNot = $isActive ? '0' : '1'; // what to send on toggle
+                $checked = $isActive ? 'checked' : '';
 
 
-
+                $AutoSubmition = 'onchange="this.form.submit()"';
+                $ActiveOrNot = $status == 'active' ? '0' : '1';
+                $checked = ($status == 'active') ? 'checked' : '';
             ?>
                 <tr>
                     <td><?= $UserID ?></td>
@@ -104,17 +104,26 @@ include_once("../Library/MyLibrary.php");
                     <td>
                         <?php
                         $disableIfAdmin = ($Level == 1) ? "disabled" : " ";
+                        $ActiveIfAdmin = ($Level == 1) ? "1" : " ";
                         ?>
                         <!-- Either activate or deactivate user -->
-                        <form method="POST" onsubmit="return confirm('<?= $t['confirmation_either_to_activate_or_deactivate_user'] ?>');" style="display:inline;">
+                        <!-- <form method="POST" onsubmit="return confirm('<?= $t['confirmation_either_to_activate_or_deactivate_user'] ?>');" style="display:inline;">
                             <input type="hidden" name="statusBtnChangeUserID" value="<?= $UserID ?>">
-                            <button <?= $disableIfAdmin ?> type="submit" name="statusBtnChange" style="<?= $btnStyle ?>" class="action-btn"><?= $t[strtolower($status)] ?></button>
+                            <button <?= $disableIfAdmin ?> type="submit" name="statusBtnChange" style="<?= $btnStyle ?>" class="action-btn"><?= $t[$status] ?></button>
+                        </form> -->
+                        <form method="post">
+                            <input type="hidden" name="statusBtnChangeUserID" value="<?= $UserID ?>">
+                            <label class="switch">
+                                <input type="checkbox"
+                                    name="statusSliderChange"
+                                    value="<?= $ActiveOrNot ?>"
+                                    onchange="this.form.submit()"
+                                    <?= $checked ?>
+                                    <?= $Level == 1 ? 'disabled' : '' ?>>
+                                <span class="slider round" style="<?= $btnStyle ?>"></span>
+                            </label>
                         </form>
-                        <label class="switch">
-                            <input type="checkbox">
-                            <span class="slider round"></span>
-                        </label>
-                        <tbody>
+
                     </td>
                     <td>
                         <!-- Delete user action -->

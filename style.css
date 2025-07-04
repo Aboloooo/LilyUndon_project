@@ -473,6 +473,66 @@ tr:hover {
   background-color: #b71c1c;
 }
 
+.btns{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+.btn-red-print {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: #e53935; /* deep red */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-red-print i {
+  font-size: 20px;
+}
+
+.btn-red-print:hover {
+  background-color: #c62828;
+  box-shadow: 0 4px 12px rgba(229, 57, 53, 0.3);
+}
+
+.btn-red-print:active {
+  background-color: #b71c1c;
+}
+
+.btn-red-print:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.4);
+}
+
+.select-green {
+  padding: 10px 14px;
+  border: 2px solid #4CAF50; /* base green */
+  border-radius: 8px;
+  background-color: white;
+  color: #000000; /* dark readable text */
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
+  appearance: none;
+
+  background-image: url("data:image/svg+xml,%3Csvg fill='green' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 20px;
+  padding-right: 40px;
+}
+
+
+
 /* displayed created users */
 .user-table-container {
   max-width: 1300px;

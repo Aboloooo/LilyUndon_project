@@ -10,6 +10,10 @@ include_once("../Library/MyLibrary.php");
   <title><?= $t['kitchen_reservation_calendar'] ?></title>
   <link rel="stylesheet" href="../style.css? <?= time(); ?>">
   <script src="../script.js"></script>
+  <!-- bank of icons -->
+  <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -153,22 +157,30 @@ include_once("../Library/MyLibrary.php");
   </div>
   <div class="reservation_table_content">
 
-    <form method="POST" id="siteForm">
-      <select name="site" onchange="document.getElementById('siteForm').submit();">
-        <?php
-        $sqlSelectSite = $connection->prepare('select * from Sites');
-        $sqlSelectSite->execute();
-        $resutlOfSite = $sqlSelectSite->get_result();
-        while ($row = $resutlOfSite->fetch_assoc()) {
-          $siteID = $row['SiteId'];
-          $siteName = $row['SiteName'];
-        ?>
-          <option value="<?= $siteID ?>" <?= ($siteID == $_SESSION["currentSite"] ? "selected" : "") ?>><?= $siteName ?></option>
-        <?php
-        }
-        ?>
-      </select>
-    </form>
+    <div class="btns">
+      <form method="POST" id="siteForm">
+        <select name="site" class="select-green" onchange="document.getElementById('siteForm').submit();">
+          <?php
+          $sqlSelectSite = $connection->prepare('SELECT * FROM Sites');
+          $sqlSelectSite->execute();
+          $resutlOfSite = $sqlSelectSite->get_result();
+          while ($row = $resutlOfSite->fetch_assoc()) {
+            $siteID = $row['SiteId'];
+            $siteName = $row['SiteName'];
+          ?>
+            <option value="<?= $siteID ?>" <?= ($siteID == $_SESSION["currentSite"] ? "selected" : "") ?>>
+              <?= $siteName ?>
+            </option>
+          <?php } ?>
+        </select>
+      </form>
+
+<?php if ($_SESSION["GuardReserveAccess"]){?>
+      <button onclick="window.print()" class="btn-red-print">
+        <i class='bx  bx-printer'></i> Print
+      </button>
+<?php };?>
+    </div>
 
 
     <table class="reservationTable" border="1" cellspacing="0" cellpadding="10">
@@ -186,7 +198,7 @@ include_once("../Library/MyLibrary.php");
           <?php endforeach; ?>
         </tr>
       </thead>
-     
+
       <tbody>
         <?php foreach ($times as $time): ?>
           <tr>
@@ -220,26 +232,7 @@ include_once("../Library/MyLibrary.php");
                 }
               }
 
-             /*  $red_reservedColor = '#f8d7da';
-              $purple_selfReservedColor = '#9B59B6';
-              $gray_pastTimeColor = '#e0e0e0';
-              $green_availableTimeColor = '#d4edda'; */
-
               $cellColor = $isReserved ? ($_SESSION["username"] == $username) ? '#f7c1c6' : '#f8d7da' : ($isPast ? '#e0e0e0' : '#d4edda');
-
-              /* if ($isReserved) {
-                if ($_SESSION["username"] == $username) {
-                  $cellColor = $purple_selfReservedColor;
-                } else {
-                  $cellColor = $red_reservedColor;
-                }
-              } else {
-                if ($isPast) {
-                  $cellColor = $gray_pastTimeColor;
-                } else {
-                  $cellColor = $green_availableTimeColor;
-                }
-              } */
 
               ?>
 
@@ -247,8 +240,12 @@ include_once("../Library/MyLibrary.php");
                 <!-- <p style="line-height: 1.2;">First line<br>Second line</p> -->
                 <?php if ($isReserved) { ?>
                   <?= $t['reserved'] ?>
+                  
                   <?= ($_SESSION["Admin"]) ? "<br> $t[by] <br> $Last_name $First_name" : " " ?>
-                  <?= ($_SESSION["username"] == $username && !$_SESSION['Admin']) ? "<br> $t[by] <br> $t[you] " : " "?>
+                  <?= ($_SESSION["username"] == $username && !$_SESSION['Admin']) ? "<br> $t[by] <br> $t[you] " : " " ?>
+                  <?= ($_SESSION["Admin"] &&  strtolower($username) == 'admin') ? "<br> $t[by] <br> admin " : " " ?>
+
+
                 <?php } else { ?>
 
                   <form method="POST" class="formBtn" style="margin:0;" onsubmit="return confirm('<?= $t['confirm_reserve_time'] ?>');">

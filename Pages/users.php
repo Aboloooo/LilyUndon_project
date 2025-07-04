@@ -24,9 +24,17 @@ include_once("../Library/MyLibrary.php");
     }
 
     // Changing user status
-    if (isset($_POST['statusSliderChange']) && isset($_POST['statusBtnChangeUserID'])) {
-        $newStatus = ($_POST['statusSliderChange'] == '1') ? 'active' : 'pending';
+    if (isset($_POST['statusBtnChangeUserID'])) {
         $userID = $_POST['statusBtnChangeUserID'];
+
+        $currentStatusOfUser  = $connection->prepare('select status from users where UserID = ?');
+        $currentStatusOfUser->bind_param('i', $userID);
+        $currentStatusOfUser->execute();
+        $resultOfStatus = $currentStatusOfUser->get_result();
+        $currentStatus = $resultOfStatus->fetch_assoc();
+        // echo $currentStatus['status'];
+
+        $newStatus = ($currentStatus['status'] == 'pending') ? 'active' : 'pending';
 
         $updateStatusStmt = $connection->prepare("UPDATE users SET status = ? WHERE UserID = ?");
         $updateStatusStmt->bind_param('si', $newStatus, $userID);
@@ -69,19 +77,17 @@ include_once("../Library/MyLibrary.php");
                 $status = strtolower($row['status']);
                 $mustChangePass = $row['user_must_change_password'];
 
-
                 $isActive = $status === 'active';
+
                 $btnStyle = $isActive
                     ? 'background-color: #28a745; color: #fff;'
                     : 'background-color: #f0ad4e; color: #fff;';
 
-                $ActiveOrNot = $isActive ? '0' : '1'; // what to send on toggle
+                $ActiveOrNot = $isActive ? '1' : '0'; // what to send on toggle 
+
                 $checked = $isActive ? 'checked' : '';
 
-
                 $AutoSubmition = 'onchange="this.form.submit()"';
-                $ActiveOrNot = $status == 'active' ? '0' : '1';
-                $checked = ($status == 'active') ? 'checked' : '';
             ?>
                 <tr>
                     <td><?= $UserID ?></td>
@@ -106,23 +112,20 @@ include_once("../Library/MyLibrary.php");
                         $disableIfAdmin = ($Level == 1) ? "disabled" : " ";
                         $ActiveIfAdmin = ($Level == 1) ? "1" : " ";
                         ?>
-                        <!-- Either activate or deactivate user -->
-                        <!-- <form method="POST" onsubmit="return confirm('<?= $t['confirmation_either_to_activate_or_deactivate_user'] ?>');" style="display:inline;">
-                            <input type="hidden" name="statusBtnChangeUserID" value="<?= $UserID ?>">
-                            <button <?= $disableIfAdmin ?> type="submit" name="statusBtnChange" style="<?= $btnStyle ?>" class="action-btn"><?= $t[$status] ?></button>
-                        </form> -->
-                        <form method="post">
+
+                        <form method="POST" style="display:inline;">
                             <input type="hidden" name="statusBtnChangeUserID" value="<?= $UserID ?>">
                             <label class="switch">
                                 <input type="checkbox"
                                     name="statusSliderChange"
                                     value="<?= $ActiveOrNot ?>"
-                                    onchange="this.form.submit()"
+                                    onchange="if(confirm('<?= $t['confirmation_either_to_activate_or_deactivate_user'] ?>')) this.form.submit(); else this.checked = !this.checked;"
                                     <?= $checked ?>
                                     <?= $Level == 1 ? 'disabled' : '' ?>>
                                 <span class="slider round" style="<?= $btnStyle ?>"></span>
                             </label>
                         </form>
+
 
                     </td>
                     <td>

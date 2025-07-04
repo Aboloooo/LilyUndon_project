@@ -20,8 +20,8 @@ if (!isset($_SESSION["level"])) {
 if (!isset($_SESSION["Admin"])) {
     $_SESSION["Admin"] = false;
 }
-if (!isset($_SESSION["GuardReserveAccess"])) {
-    $_SESSION["GuardReserveAccess"] = false;
+if (!isset($_SESSION["SecurityAccess"])) {
+    $_SESSION["SecurityAccess"] = false;
 }
 if (!isset($_SESSION["userMustChangeThePass"])) {
     $_SESSION["userMustChangeThePass"] = false;

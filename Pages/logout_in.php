@@ -38,6 +38,8 @@ include_once("../Library/MyLibrary.php");
 
         if ($level == 1) {
           $_SESSION["Admin"] = true;
+        }else if($level == 2){
+          $_SESSION["SecurityAccess"] = true;
         }
         // user will be double checked to see if user still use their initial pass or not
         $sqlChangeYourPass = $connection->prepare('select user_must_change_password from users where username=?');

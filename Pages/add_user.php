@@ -9,7 +9,9 @@ include_once("../Library/MyLibrary.php");
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $t['register'] ?></title>
     <link rel="stylesheet" href="../style.css?<?php echo filemtime('../style.css'); ?>">
-    <script src="../script.js"></script>
+    <!-- bank of icons -->
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -122,6 +124,13 @@ include_once("../Library/MyLibrary.php");
 
         </form>
     </div>
+
+
+
+
+
+    <script src="../script.js"></script>
+
 </body>
 
 </html>

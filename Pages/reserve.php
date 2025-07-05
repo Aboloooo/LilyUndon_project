@@ -9,7 +9,6 @@ include_once("../Library/MyLibrary.php");
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><?= $t['kitchen_reservation_calendar'] ?></title>
   <link rel="stylesheet" href="../style.css? <?= time(); ?>">
-  <script src="../script.js"></script>
   <!-- bank of icons -->
   <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
@@ -175,11 +174,11 @@ include_once("../Library/MyLibrary.php");
         </select>
       </form>
 
-<?php if ($_SESSION["GuardReserveAccess"]){?>
-      <button onclick="window.print()" class="btn-red-print">
-        <i class='bx  bx-printer'></i> Print
-      </button>
-<?php };?>
+      <?php if ($_SESSION["SecurityAccess"]) { ?>
+        <button onclick="window.print()" class="btn-red-print">
+          <i class='bx  bx-printer'></i> Print
+        </button>
+      <?php }; ?>
     </div>
 
 
@@ -240,7 +239,7 @@ include_once("../Library/MyLibrary.php");
                 <!-- <p style="line-height: 1.2;">First line<br>Second line</p> -->
                 <?php if ($isReserved) { ?>
                   <?= $t['reserved'] ?>
-                  
+
                   <?= ($_SESSION["Admin"]) ? "<br> $t[by] <br> $Last_name $First_name" : " " ?>
                   <?= ($_SESSION["username"] == $username && !$_SESSION['Admin']) ? "<br> $t[by] <br> $t[you] " : " " ?>
                   <?= ($_SESSION["Admin"] &&  strtolower($username) == 'admin') ? "<br> $t[by] <br> admin " : " " ?>
@@ -267,6 +266,10 @@ include_once("../Library/MyLibrary.php");
 
     </table>
   </div>
+
+
+
+  <script src="../script.js"></script>
 
 </body>
 

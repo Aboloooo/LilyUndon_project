@@ -9,7 +9,9 @@ include_once("../Library/MyLibrary.php");
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><?= $t['login_logout'] ?></title>
   <link rel="stylesheet" href="../style.css? <?= time(); ?>">
-  <script src="../script.js"></script>
+  <!-- bank of icons -->
+  <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -38,7 +40,7 @@ include_once("../Library/MyLibrary.php");
 
         if ($level == 1) {
           $_SESSION["Admin"] = true;
-        }else if($level == 2){
+        } else if ($level == 2) {
           $_SESSION["SecurityAccess"] = true;
         }
         // user will be double checked to see if user still use their initial pass or not
@@ -89,7 +91,10 @@ include_once("../Library/MyLibrary.php");
         <input type="text" id="username" name="username" placeholder="<?= $t['username'] ?>" required />
 
         <label for="password"><?= $t['password'] ?></label>
-        <input type="password" id="password" name="password" placeholder="••••••••" required />
+        <div class="input-wrapper">
+          <input type="password" id="password" name="password" placeholder="••••••••" required />
+          <img src="../img/open-eye.png" width="30px" alt="" class='revealPassToggle'>
+        </div>
 
         <a href="#" class="forgot"><?= $t['forgot_password'] ?></a>
 
@@ -162,13 +167,22 @@ include_once("../Library/MyLibrary.php");
 
     ?>
     <label for="username"><?= $t['current_password'] ?></label>
-    <input type="password" id="username" name="CurrentPassword" placeholder="<?= $t['current_password'] ?>" required />
+    <div class="input-wrapper">
+      <input type="password" id="username" name="CurrentPassword" placeholder="<?= $t['current_password'] ?>" class="revealPass" required />
+      <img src="../img/open-eye.png" width="30px" alt="" class='revealPassToggle'>
+    </div>
 
     <label for="username"><?= $t['new_password'] ?></label>
-    <input type="password" id="username" name="NewPassword" placeholder="••••••••" pattern="(?=.*\d).{7,}" title="at least 7 characters long,one number and one special character " required />
+    <div class="input-wrapper">
+      <input type="password" id="username" name="NewPassword" placeholder="••••••••" pattern="(?=.*\d).{7,}" title="at least 7 characters long,one number and one special character " class="revealPass" required />
+      <img src="../img/open-eye.png" width="30px" alt="" class='revealPassToggle'>
+    </div>
 
     <label for="password"><?= $t['confirm_new_password'] ?></label>
-    <input type="password" id="password" name="ConfirmNewPassword" placeholder="••••••••" required />
+    <div class="input-wrapper">
+      <input type="password" id="password" name="ConfirmNewPassword" placeholder="••••••••" required class="revealPass" />
+      <img src="../img/open-eye.png" width="30px" alt="" class='revealPassToggle'>
+    </div>
 
     <a href="#" class="forgot"><?= $t['forgot_password'] ?></a>
 
@@ -181,7 +195,7 @@ include_once("../Library/MyLibrary.php");
 <?php
       }
 ?>
-
+<script src="../script.js"></script>
 
 </body>
 

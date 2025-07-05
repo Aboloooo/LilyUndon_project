@@ -9,9 +9,9 @@ include_once("../Library/MyLibrary.php");
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><?= $t['home'] ?></title>
   <link rel="stylesheet" href="../style.css? <?= time(); ?>">
-  <script src="../script.js"></script>
   <!-- bank of icons -->
   <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
   <!-- bank of img 
   https://www.flaticon.com/free-icons/google 
   -->
@@ -53,6 +53,11 @@ include_once("../Library/MyLibrary.php");
         <button class="reservationBtn" name="<?= $reserveOrLogout ?>" role="button"><?= $t[$reserveOrLogout] ?></button>
       </form>
     </div>
+
+
+
+    <script src="../script.js"></script>
+
 </body>
 
 </html>

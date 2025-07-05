@@ -9,7 +9,9 @@ include_once("../Library/MyLibrary.php");
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><?= $t['my_reservations'] ?></title>
   <link rel="stylesheet" href="../style.css?<?= time(); ?>">
-  <script src="../script.js"></script>
+  <!-- bank of icons -->
+  <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -131,6 +133,13 @@ include_once("../Library/MyLibrary.php");
     }
   }
   ?>
+
+
+
+
+
+  <script src="../script.js"></script>
+
 </body>
 
 </html>

@@ -14,4 +14,18 @@ document.addEventListener("DOMContentLoaded", () => {
       body.style.overflowX = "hidden";
     }
   });
+
+  /* reveal pass toggle */
+  document.querySelectorAll(".revealPassToggle").forEach(function (icon) {
+    icon.addEventListener("click", function () {
+      const input = this.previousElementSibling; // finds the input before the image
+      if (input.type === "password") {
+        input.type = "text";
+        this.src = "../img/close-eye.png"; // Optional: change icon to eye-off
+      } else {
+        input.type = "password";
+        this.src = "../img/open-eye.png"; // Optional: change icon back to eye
+      }
+    });
+  });
 });

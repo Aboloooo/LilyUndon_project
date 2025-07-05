@@ -9,7 +9,9 @@ include_once("../Library/MyLibrary.php");
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $t['users'] ?></title>
     <link rel="stylesheet" href="../style.css? <?= time(); ?>">
-    <script src="../script.js" <?= time(); ?>></script>
+    <!-- bank of icons -->
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -71,7 +73,8 @@ include_once("../Library/MyLibrary.php");
                 $Lname = $row['Last_name'];
                 $CNS = $row['social_security_number'];
                 $UserN = $row['Username'];
-                $Password = $row['Password'];
+                    /*  $Password = strlen($row['Password']) */;
+                $Password = '●●●●●●●●●●';
                 $Email = $row['Email'];
                 $Level = $row['AccessLevelID'];
                 $status = strtolower($row['status']);
@@ -149,6 +152,11 @@ include_once("../Library/MyLibrary.php");
         </table>
     </div>
 
+
+
+
+
+    <script src="../script.js"></script>
 </body>
 
 </html>

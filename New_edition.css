@@ -1,0 +1,187 @@
+body {
+  display: flex;
+  align-items: center;
+}
+
+.login-container {
+  background-color: #fff;
+  max-width: 650px;
+  width: 100%;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  border-top: 6px solid var(--red); /* Croix-Rouge red */
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
+
+.login-container h2 {
+  margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #e30613;
+}
+
+.login-container p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.login-container input {
+  display: inline;
+  width: 45%;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  height: 35px;
+  margin: 10px 0 5px;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 10px 40px 10px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  height: 35px;
+}
+
+.form-container {
+  display: flex;
+  justify-content: space-between;
+}
+.form-container button {
+  background-color: white;
+  margin-bottom: -120px;
+}
+
+#previous {
+  margin-left: -100px;
+  border: none;
+  cursor: pointer;
+}
+#next {
+  margin-right: -100px;
+  border: none;
+  cursor: pointer;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.separator::before,
+.separator::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ccc;
+}
+
+.separator::before {
+  margin-right: 10px;
+}
+
+.separator::after {
+  margin-left: 10px;
+}
+
+.social-login {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.social-login button {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #000000;
+}
+
+.signup-text {
+  font-size: 13px;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.signup-text a {
+  color: #e30613;
+  text-decoration: none;
+}
+
+/* radio inputs for level selection (adding_uesr page) */
+.levelSelectionInputsContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.levelSelectionInputsContainer input[type="radio"] {
+  display: none;
+}
+
+.levelSelectionInputsContainer label {
+  flex: 1;
+  padding: 12px 15px;
+  color: #e30613;
+  border: 2px solid #e30613;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.levelSelectionInputsContainer label:before {
+  content: "";
+  height: 16px;
+  width: 16px;
+  border: 2px solid #e30613;
+  border-radius: 50%;
+  margin-right: 10px;
+  transition: all 0.2s ease;
+}
+
+.levelSelectionInputsContainer input[type="radio"]:checked + label {
+  background-color: #e30613;
+  color: white;
+}
+
+.levelSelectionInputsContainer input[type="radio"]:checked + label:before {
+  border: 4px solid white;
+  background-color: #e30613;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input-wrapper img {
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  cursor: pointer;
+}

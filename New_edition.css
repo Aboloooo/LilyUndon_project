@@ -185,3 +185,23 @@ body {
   width: 20px;
   cursor: pointer;
 }
+
+/* steps */
+.step {
+  display: none;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+#previous {
+  float: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+#next {
+  float: right;
+  background: none;
+  border: none;
+  cursor: pointer;
+}

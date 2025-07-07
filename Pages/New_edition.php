@@ -15,7 +15,6 @@ include_once("../Library/MyLibrary.php");
 </head>
 
 <body>
-
     <div class="login-container">
         <h2><?= $t['welcome_message'] ?> 👋</h2>
         <p><?= $t['form_instruction'] ?></p>
@@ -24,12 +23,12 @@ include_once("../Library/MyLibrary.php");
             <button id="previous"><img src="../img/previous.png" width="50px" alt=""></button>
 
             <div class="step">
-                <input type="text" id="username" name="first_name" placeholder="<?= $t['first_name'] ?>" required />
-                <input type="text" id="username" name="last_name" placeholder="<?= $t['last_name'] ?>" required />
+                <input type="text" id="first_name" name="first_name" placeholder="<?= $t['first_name'] ?>" required />
+                <input type="text" id="last_name" name="last_name" placeholder="<?= $t['last_name'] ?>" required />
             </div>
 
             <div class="step">
-                <input type="text" id="username" name="CNS_number" placeholder="<?= $t['social_security_number'] ?>" pattern="\d{13}" maxlength="13" minlength="13" required />
+                <input type="text" id="CNS_number" name="CNS_number" placeholder="<?= $t['social_security_number'] ?>" pattern="\d{13}" maxlength="13" minlength="13" required />
             </div>
 
             <div class="step">

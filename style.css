@@ -200,7 +200,7 @@ body {
 
 .login-container {
   background-color: #fff;
-  max-width: 400px;
+  max-width: 380px;
   width: 100%;
   padding: 30px;
   border-radius: 12px;
@@ -210,6 +210,9 @@ body {
   margin-right: auto;
   margin-top: 3%;
   margin-bottom: 3%;
+}
+.add_user {
+  max-width: 650px;
 }
 
 .login-container h2 {
@@ -224,7 +227,6 @@ body {
   color: #555;
   margin-bottom: 25px;
 }
-
 .login-container label {
   display: block;
   font-size: 14px;
@@ -237,6 +239,15 @@ body {
   border: 1px solid #ccc;
   border-radius: 6px;
   height: 35px;
+}
+.login-container .step input {
+  display: inline;
+  width: 45%;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  height: 35px;
+  margin: 10px 0 5px;
 }
 
 .input-wrapper input {
@@ -267,6 +278,37 @@ body {
   border: none;
   border-radius: 6px;
   font-size: 16px;
+  cursor: pointer;
+}
+.navigationBtns-container {
+  width: 100%;
+}
+
+#testBtn {
+  border: none;
+  cursor: pointer;
+  float: right;
+  background-color: #e30613;
+  color: white;
+}
+.step {
+  animation: fadeIn 0.3s ease-in-out;
+}
+#previous {
+  width: 50px;
+  float: left;
+  margin-left: -100px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+#next {
+  width: 50px;
+  float: right;
+  margin-right: -100px;
+  background: none;
+  border: none;
   cursor: pointer;
 }
 

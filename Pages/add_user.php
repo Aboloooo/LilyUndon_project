@@ -77,52 +77,62 @@ include_once("../Library/MyLibrary.php");
 
 
     <?= NavBar('add_user') ?>
-    <div class="login-container">
+    <div class="login-container add_user">
         <h2><?= $t['welcome_message'] ?> 👋</h2>
         <p><?= $t['form_instruction'] ?></p>
-        <form action="" method="POST">
-            <label for="First_name"><?= $t['first_name'] ?></label>
-            <input type="text" id="username" name="first_name" placeholder="<?= $t['first_name'] ?>" required />
 
-            <label for="Last_name"><?= $t['last_name'] ?></label>
-            <input type="text" id="username" name="last_name" placeholder="<?= $t['last_name'] ?>" required />
+        <form method="POST" class="form-container">
 
-            <label for="CNS"><?= $t['social_security_number'] ?></label>
-            <input type="text" id="username" name="CNS_number" placeholder="<?= $t['social_security_number'] ?>" pattern="\d{13}" maxlength="13" minlength="13" required />
+            <div class="step">
+                <input type="text" id="first_name" name="first_name" placeholder="   <?= $t['first_name'] ?>" required />
+                <input type="text" id="last_name" name="last_name" placeholder="   <?= $t['last_name'] ?>" required />
+            </div>
 
-            <label for="username"><?= $t['username'] ?></label>
-            <input type="text" id="username" name="username" placeholder="<?= $t['username'] ?>" required />
+            <div class="step">
+                <input type="text" id="CNS_number" name="CNS_number" placeholder="   <?= $t['social_security_number'] ?>" pattern="\d{13}" maxlength="13" minlength="13" required />
+            </div>
 
-            <label for="password"><?= $t['password'] ?></label>
-            <input type="password" id="password" name="password" placeholder="••••••••" pattern="(?=.*\d).{7,}" title="at least 7 characters long,one number and one special character " required />
+            <div class="step">
+                <input type="text" id="username" name="username" placeholder="   <?= $t['username'] ?>" required />
+                <input type="password" id="password" name="password" placeholder="   ••••••••" pattern="(?=.*\d).{7,}" title="at least 7 characters long,one number and one special character " required />
+            </div>
 
+            <div class="step">
+                <input type="password" id="password_confirmation" name="password_confirmation" placeholder="   <?= $t['password_confirmation'] ?>" required />
+            </div>
 
-            <label for="password_confirmation"><?= $t['password_confirmation'] ?></label>
-            <input type="password" id="password_confirmation" name="password_confirmation" placeholder="••••••••" required />
-
-            <label for="">Access Level</label>
             <!-- Level selection bar(visible only to admin) -->
             <?php
             if ($_SESSION['Admin']) {
                 /* translation needed */
             ?>
-                <div class='levelSelectionInputsContainer'>
-                    <input type="radio" name='AccessLevel' id='Residence' value="3" checked='checked'>
-                    <label for="Residence">Residence</label><br>
-                    <input type="radio" name='AccessLevel' id='SecurityGuard' value="2">
-                    <label for="SecurityGuard">Security Guard</label><br>
+                <div class="step">
+                    <div class='levelSelectionInputsContainer'>
+                        <input type="radio" name='AccessLevel' id='Residence' value="3" checked='checked'>
+                        <label for="Residence">Residence</label><br>
+                        <input type="radio" name='AccessLevel' id='SecurityGuard' value="2">
+                        <label for="SecurityGuard">Security Guard</label><br>
+                    </div>
                 </div>
             <?php
             }
             ?>
 
-            <label for="email"><?= $t['email'] ?></label>
-            <input type="email" id="username" name="email" placeholder="<?= $t['email'] ?>" required />
-
-
-            <button type="submit" name="submit"><?= $t['sign_in'] ?></button>
+            <div class="step">
+                <input type="email" id="username" name="email" placeholder="   <?= $t['email'] ?>" required />
+                <input type="submit" name="submit" id="testBtn" value="<?= $t['sign_in'] ?>">
+            </div>
+            <div class="navigationBtns-container">
+                <button id="previous"><img src="../img/previous.png" width="50px" alt=""></button>
+                <button id="next"><img src="../img/next.png" width="50px" alt=""></button>
+            </div>
 
         </form>
+
+
+    </div>
+
+    </form>
     </div>
 
 

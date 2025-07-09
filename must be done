@@ -1,3 +1,6 @@
+we might miss some point when we attempt to create a user, in case of failture user must be redirected to information missing point for example if passwords
+are not match or social_security_number already in use. 
+
 add an option for uesr to be able to see his password when wants to login
 
 user with security level have access to only timeslots page 

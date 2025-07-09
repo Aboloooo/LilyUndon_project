@@ -1,90 +1,9 @@
 
-.login-container {
-  background-color: #fff;
-  max-width: 650px;
-  width: 100%;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-  border-top: 6px solid var(--red); /* Croix-Rouge red */
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 3%;
-  margin-bottom: 3%;
-}
 
-.login-container h2 {
-  margin-bottom: 10px;
-  font-size: 24px;
-  font-weight: 600;
-  color: #e30613;
-}
 
-.login-container p {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 25px;
-}
-
-.login-container input {
-  display: inline;
-  width: 45%;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  height: 35px;
-  margin: 10px 0 5px;
-}
-
-.input-wrapper input {
-  width: 100%;
-  padding: 10px 40px 10px 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  box-sizing: border-box;
-  height: 35px;
-}
-.form-container button {
-  background-color: white;
-  margin-bottom: -120px;
-}
-.navigationBtns {
-  width: 100%;
-  display: inline;
-  background-color: #555;
-}
-
-#testBtn {
-  border: none;
-  cursor: pointer;
-  float: right;
-  background-color: #e30613;
-  color: white;
-}
 
 /* steps */
-.step {
-  animation: fadeIn 0.3s ease-in-out;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-#previous {
-  float: left;
-  margin-left: -100px;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
 
-#next {
-  float: right;
-  margin-right: -100px;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
 .separator {
   display: flex;
   align-items: center;

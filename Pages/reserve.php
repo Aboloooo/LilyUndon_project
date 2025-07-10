@@ -21,6 +21,9 @@ include_once("../Library/MyLibrary.php");
   <h1><?= $t['kitchen_reservation_calendar'] ?></h1>
 
   <?php
+  /* security guard can not reserve time slot */
+  $disableForSecurity = $_SESSION["SecurityAccess"] ? 'disabled' : ' ';
+
   $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   $times = [];
 
@@ -240,9 +243,19 @@ include_once("../Library/MyLibrary.php");
                 <?php if ($isReserved) { ?>
                   <?= $t['reserved'] ?>
 
-                  <?= ($_SESSION["Admin"]) ? "<br> $t[by] <br> $Last_name $First_name" : " " ?>
+                  <!-- <?= ($_SESSION["Admin"]) ? "<br> $t[by] <br> $Last_name $First_name" : " " ?>
                   <?= ($_SESSION["username"] == $username && !$_SESSION['Admin']) ? "<br> $t[by] <br> $t[you] " : " " ?>
-                  <?= ($_SESSION["Admin"] &&  strtolower($username) == 'admin') ? "<br> $t[by] <br> admin " : " " ?>
+                  <?= ($_SESSION["Admin"] &&  strtolower($username) == 'admin') ? "<br> $t[by] <br> admin " : " " ?> -->
+                  <?php
+                  if ($_SESSION["username"] == $username && !$_SESSION['Admin']) {
+                    echo "<br> $t[by] <br> $t[you] ";
+                  } else if ($_SESSION["Admin"] &&  strtolower($username) == 'admin') {
+                    echo "<br> $t[by] <br> admin ";
+                  } else if ($_SESSION['Admin'] || $_SESSION["SecurityAccess"]) {
+                    echo "<br> $t[by] <br> $Last_name $First_name";
+                  }
+
+                  ?>
 
 
                 <?php } else { ?>
@@ -251,7 +264,7 @@ include_once("../Library/MyLibrary.php");
 
                     <input type="hidden" name="day" value="<?= $fullWeekDates[$index] ?>">
                     <input type="hidden" name="time" value="<?= $time ?>">
-                    <button type="submit" class="reserveBtn" name="reservationBtn" <?= ($isPast ? 'disabled style="background-color: #ccc; cursor: not-allowed;"' : '') ?>>
+                    <button type="submit" class="reserveBtn" name="reservationBtn" <?= $disableForSecurity ?> <?= ($isPast ? 'disabled style="background-color: #ccc; cursor: not-allowed;"' : '') ?>>
                       <?= $isPast ? $t['past'] : $t['available'] ?>
                     </button>
                   </form>

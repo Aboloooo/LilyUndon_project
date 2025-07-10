@@ -18,6 +18,7 @@ include_once("../Library/MyLibrary.php");
 
     <?php
     if (isset($_POST['submit'])) {
+
         $requiredFields = ["first_name", "last_name", "CNS_number", "username", "password", "password_confirmation", "email"];
         $errors = [];
 
@@ -40,7 +41,7 @@ include_once("../Library/MyLibrary.php");
             $hashedPass = password_hash($pass, PASSWORD_DEFAULT);
             $passConfir = $_POST['password_confirmation'];
             $email = $_POST['email'];
-            $Level_ID = $_POST['AccessLevel'];
+            $Level_ID = $_SESSION['Admin'] ? $_POST['AccessLevel'] : '3';
             $defaultStatus = "pending";
             $user_must_change_pass = 1;
 
@@ -67,7 +68,6 @@ include_once("../Library/MyLibrary.php");
                 }
             } else {
                 echo "<script>alert('" . $t['passwords_not_match'] . "')</script>";
-                exit();
             }
         }
     }
@@ -104,14 +104,13 @@ include_once("../Library/MyLibrary.php");
             <!-- Level selection bar(visible only to admin) -->
             <?php
             if ($_SESSION['Admin']) {
-                /* translation needed */
             ?>
                 <div class="step">
                     <div class='levelSelectionInputsContainer'>
                         <input type="radio" name='AccessLevel' id='Residence' value="3" checked='checked'>
-                        <label for="Residence">Residence</label><br>
+                        <label for="Residence"><?= $t['resident'] ?></label><br>
                         <input type="radio" name='AccessLevel' id='SecurityGuard' value="2">
-                        <label for="SecurityGuard">Security Guard</label><br>
+                        <label for="SecurityGuard"><?= $t['security_guard'] ?></label><br>
                     </div>
                 </div>
             <?php

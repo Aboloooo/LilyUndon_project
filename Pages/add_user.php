@@ -122,8 +122,8 @@ include_once("../Library/MyLibrary.php");
                 <input type="submit" name="submit" id="testBtn" value="<?= $t['sign_in'] ?>">
             </div>
             <div class="navigationBtns-container">
-                <button id="previous"><img src="../img/previous.png" width="50px" alt=""></button>
-                <button id="next"><img src="../img/next.png" width="50px" alt=""></button>
+                <button id="previous"><img src="../img/previous.png" alt=""></button>
+                <button id="next"><img src="../img/next.png" alt=""></button>
             </div>
 
         </form>

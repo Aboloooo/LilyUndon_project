@@ -151,9 +151,9 @@ include_once("../Library/MyLibrary.php");
   ?>
   <div class="calMovement">
     <form action="" method="get" class="calendar-nav">
-      <button id="prevWeek" name="prevWeek">◀</button>
+      <button id="prevWeek" name="prevWeek" <?= $disableForSecurity ?>>◀</button>
       <span id="monthYear"><?= $currentMonthYear ?></span>
-      <button id="nextWeek" name="nextWeek">▶</button>
+      <button id="nextWeek" name="nextWeek" <?= $disableForSecurity ?>>▶</button>
       <input type="hidden" name="week" value="<?= $weekOffset ?>">
     </form>
   </div>
@@ -179,7 +179,7 @@ include_once("../Library/MyLibrary.php");
 
       <?php if ($_SESSION["SecurityAccess"]) { ?>
         <button onclick="window.print()" class="btn-red-print">
-          <i class='bx  bx-printer'></i> Print
+          <i class='bx  bx-printer'></i> <?= $t['print'] ?>
         </button>
       <?php }; ?>
     </div>

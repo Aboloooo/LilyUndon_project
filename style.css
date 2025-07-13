@@ -283,6 +283,9 @@ body {
 .navigationBtns-container {
   width: 100%;
 }
+.navigationBtns-container img {
+  width: 50px;
+}
 
 #testBtn {
   border: none;
@@ -759,7 +762,31 @@ input:checked + .slider:before {
   .toggle .line3 {
     transform: rotate(45deg) translate(-5px, -6px);
   }
-
+  /* index */
+  .img {
+    flex-direction: column-reverse;
+    margin-top: 50px;
+    position: relative;
+  }
+  .part1 {
+    width: 100%;
+    margin: 0px;
+    margin-top: 65px;
+    z-index: -100;
+  }
+  .part2 {
+    width: 100%;
+    z-index: 99;
+    height: 60vh;
+    display: flex;
+    justify-content: space-between;
+  }
+  .part1,
+  .part2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
   /* reseravtion table */
   .reservationTable {
     width: 100%;
@@ -905,5 +932,21 @@ input:checked + .slider:before {
   .action-btn {
     padding: 6px 10px;
     font-size: 0.9em;
+  }
+
+  /* creating users */
+  .login-container {
+    width: 268px;
+    flex-direction: column;
+  }
+
+  .navigationBtns-container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    margin-top: 15px;
+  }
+  .login-container .step input {
+    width: 100%;
   }
 }

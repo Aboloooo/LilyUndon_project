@@ -97,6 +97,15 @@ INSERT INTO translation (translationID, en, fr, de, ti, es, ar, fa) VALUES
   'الحالة',
   'وضعیت'
 ),
+('print', 
+ 'Print',      
+ 'Imprimer',  
+ 'Drucken',    
+ 'ኣታት',         
+ 'Imprimir',       
+ 'طباعة',           
+ 'چاپ'              
+),
 ('plan', 
   'Plan', 
   'Plan', 

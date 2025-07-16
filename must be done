@@ -1,0 +1,6 @@
+in case admin make reservation only string "admin" must appear in my reservation page
+
+if login fails in any case an error message must appear
+
+in case an user get deactivated a message must appear
+

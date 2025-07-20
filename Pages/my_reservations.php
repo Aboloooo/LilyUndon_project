@@ -91,8 +91,13 @@ include_once("../Library/MyLibrary.php");
                 $site = $row['SiteName'];
                 /* first and last name of who reserved will be display only to admin */
                 if ($AdminMode) {
-                  $first_name = ucfirst($row['First_name']);
-                  $last_name = strtoupper($row['Last_name']);
+                  if ($row['AccessLevelID'] == 1) {
+                    $reservedBy = '<td>Admin</td>';
+                  } else {
+                    $first_name = ucfirst($row['First_name']);
+                    $last_name = strtoupper($row['Last_name']);
+                    $reservedBy = '<td>' .  $last_name . ' ' . $first_name . '</td>';
+                  }
                 }
                 $startMoment = $row['StartMoment'];
                 $reservedDate = substr($startMoment, 0, 10);
@@ -106,7 +111,7 @@ include_once("../Library/MyLibrary.php");
                 <tr>
                   <td><?= $i++ ?></td>
                   <td><?= $site ?></td>
-                  <?= ($AdminMode) ? '<td>' .  $last_name . ' ' . $first_name . '</td>' : ''; ?>
+                  <?= ($AdminMode) ? $reservedBy : ''; ?>
                   <td><?= $reservedDate ?></td>
                   <td><?= $timeSlot ?></td>
                   <td>

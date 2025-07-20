@@ -473,6 +473,15 @@ INSERT INTO translation (translationID, en, fr, de, ti, es, ar, fa) VALUES
   'المستخدم غير موجود',
   'کاربر یافت نشد'
 ),
+('please_be_patient_while_admin_approves_your_account',
+  'Please be patient while admin approves your account',
+  'Veuillez patienter pendant que l\administrateur approuve votre compte',
+  'Bitte haben Sie Geduld, während der Administrator Ihr Konto freigibt',
+  'እባክዎን አስተዳዳሪው መለያዎን እስኪፈቅድ ይጠብቁ',
+  'Por favor, tenga paciencia mientras el administrador aprueba su cuenta',
+  'يرجى الانتظار حتى يقوم المدير بالموافقة على حسابك',
+  'لطفاً صبر کنید تا مدیر حساب شما را تأیید کند'
+),
 ('all_fields_required', 
   'All fields are required', 
   'Tous les champs sont obligatoires', 

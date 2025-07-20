@@ -20,7 +20,6 @@ include_once("../Library/MyLibrary.php");
   <?php
 
   /* sign in  */
-  //echo password_hash('password', PASSWORD_DEFAULT);
 
   if (isset($_POST['username']) && isset($_POST['password'])) {
     $loginCheck = $connection->prepare('select * from users where username =?');
@@ -28,38 +27,43 @@ include_once("../Library/MyLibrary.php");
     $loginCheck->execute();
     $result = $loginCheck->get_result();
     if ($row = $result->fetch_assoc()) {
-      $username = $row['Username'];
-      $password = $row['Password'];
-      $level = $row['AccessLevelID'];
+      if (strtolower($row['status']) == 'active') {
+        $username = $row['Username'];
+        $password = $row['Password'];
+        $level = $row['AccessLevelID'];
 
-      //use password verify function
-      if (password_verify($_POST['password'], $password)) {
-        $_SESSION["username"] = $username;
-        $_SESSION['level'] = $level;
-        $_SESSION["userLogin"] = true;
+        //use password verify function
+        if (password_verify($_POST['password'], $password)) {
+          $_SESSION["username"] = $username;
+          $_SESSION['level'] = $level;
+          $_SESSION["userLogin"] = true;
 
-        if ($level == 1) {
-          $_SESSION["Admin"] = true;
-        } else if ($level == 2) {
-          $_SESSION["SecurityAccess"] = true;
+          if ($level == 1) {
+            $_SESSION["Admin"] = true;
+          } else if ($level == 2) {
+            $_SESSION["SecurityAccess"] = true;
+          }
+          // user will be double checked to see if user still use their initial pass or not
+          $sqlChangeYourPass = $connection->prepare('select user_must_change_password from users where username=?');
+          $sqlChangeYourPass->bind_param('s', $_SESSION['username']);
+          $sqlChangeYourPass->execute();
+          $result = $sqlChangeYourPass->get_result();
+          $row = $result->fetch_assoc();
+          if ($row["user_must_change_password"] == 1) {
+            header("location: logout_in.php");
+            $_SESSION['userMustChangeThePass'] = true;
+          }
+          if ($row["user_must_change_password"] == 0) {
+            $_SESSION['userMustChangeThePass'] = false;
+            header("location: index.php");
+          }
+          exit();
+        } else {
+          echo "<script>alert('" . $t['password_incorrect'] . "')</script>";
         }
-        // user will be double checked to see if user still use their initial pass or not
-        $sqlChangeYourPass = $connection->prepare('select user_must_change_password from users where username=?');
-        $sqlChangeYourPass->bind_param('s', $_SESSION['username']);
-        $sqlChangeYourPass->execute();
-        $result = $sqlChangeYourPass->get_result();
-        $row = $result->fetch_assoc();
-        if ($row["user_must_change_password"] == 1) {
-          header("location: logout_in.php");
-          $_SESSION['userMustChangeThePass'] = true;
-        }
-        if ($row["user_must_change_password"] == 0) {
-          $_SESSION['userMustChangeThePass'] = false;
-          header("location: index.php");
-        }
-        exit();
       } else {
-        echo "<script>alert('" . $t['password_incorrect'] . "')</script>";
+        echo "<script>alert('" . $t['please_be_patient_while_admin_approves_your_account'] . "')</script>";
+        echo "<script>window.location.href = 'index.php' </script>";
       }
     } else {
       echo "<script>alert('" . $t["username_not_found"] . "')</script>";

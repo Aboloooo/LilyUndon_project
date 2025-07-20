@@ -231,6 +231,7 @@ include_once("../Library/MyLibrary.php");
                   $Last_name = strtoupper($row['Last_name']);
                   $First_name = ucfirst($row['First_name']);
                   $username = $row['Username'];
+                  $userLevel = $row['AccessLevelID'];
                 }
               }
 
@@ -247,12 +248,17 @@ include_once("../Library/MyLibrary.php");
                   <?= ($_SESSION["username"] == $username && !$_SESSION['Admin']) ? "<br> $t[by] <br> $t[you] " : " " ?>
                   <?= ($_SESSION["Admin"] &&  strtolower($username) == 'admin') ? "<br> $t[by] <br> admin " : " " ?> -->
                   <?php
+
                   if ($_SESSION["username"] == $username && !$_SESSION['Admin']) {
                     echo "<br> $t[by] <br> $t[you] ";
                   } else if ($_SESSION["Admin"] &&  strtolower($username) == 'admin') {
-                    echo "<br> $t[by] <br> admin ";
+                    echo "<br> $t[by] <br> Admin ";
                   } else if ($_SESSION['Admin'] || $_SESSION["SecurityAccess"]) {
-                    echo "<br> $t[by] <br> $Last_name $First_name";
+                    if (strtolower($username) == 'admin') {
+                      echo "<br> $t[by] <br> Admin ";
+                    } else {
+                      echo "<br> $t[by] <br> $Last_name $First_name";
+                    }
                   }
 
                   ?>

@@ -1,6 +1,3 @@
-in case admin make reservation only string "admin" must appear in my reservation page
 
-if login fails in any case an error message must appear
-
-in case an user get deactivated a message must appear
-
+navigation btn should not be deactived for security_guard
+admin string should be replace for admin reservations

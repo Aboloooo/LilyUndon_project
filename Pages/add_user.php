@@ -64,6 +64,7 @@ include_once("../Library/MyLibrary.php");
                         echo "<script>alert('" . $t['user_created_successfully_admin'] . "')</script>";
                     } else {
                         echo "<script>alert('" . $t['user_created_successfully'] . "')</script>";
+                        echo "<script>window.location.href = 'index.php' </script>";
                     }
                 }
             } else {

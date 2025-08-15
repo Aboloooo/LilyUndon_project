@@ -1,6 +1,6 @@
-drop DATABASE if exists Don_Bosco;
-CREATE DATABASE Don_Bosco;
-USE Don_Bosco;
+drop DATABASE if exists Lily_Undon;
+CREATE DATABASE Lily_Undon;
+USE Lily_Undon;
 
 Create Table AccessLevel(
   AccessLevelID int primary key AUTO_INCREMENT,
@@ -27,14 +27,6 @@ CREATE TABLE users (
     FOREIGN KEY (AccessLevelID) REFERENCES AccessLevel(AccessLevelID) 
 );
 
-
-/*  INSERT INTO users (First_name, Last_name, social_security_number, Username, Password, Email, Level, user_must_change_password)
-VALUES
-("admin", "ahmadi", "2003122601327", "admin", "password", "admin@gmail.com", "aDmin", 0),
-("abolo1", "ahmadi", "2003122601328", "abolo1", "$2y$10$nb/tFhTTao31CLpYEFiVqO0oSt0t11DElt2RHDLxARU2zuusIduEu", "abolo1@gmail.com", "cusTomer", 0),
-("abolo2", "ahmadi", "2003122601329", "abolo2", "$2y$10$nb/tFhTTao31CLpYEFiVqO0oSt0t11DElt2RHDLxARU2zuusIduEu", "abolo2@gmail.com", "cusTomer", 0);
-  */
-
  create table if not exists Sites(
     SiteId INT PRIMARY KEY AUTO_INCREMENT,
     SiteName VARCHAR(255)
@@ -49,15 +41,9 @@ CREATE TABLE IF NOT EXISTS reservation (
     FOREIGN KEY (SiteId) REFERENCES Sites(SiteId) 
 );
 
-insert into Sites(SiteName) values("DonBosco");
 insert into Sites(SiteName) values("LilyUnden");
+insert into Sites(SiteName) values("DonBosco");
 
-
-/* 
-insert into reservation(Reserved_by_userID,StartMoment) Values(2, "2025-04-28 12:00");
-insert into reservation(Reserved_by_userID,StartMoment) Values(2, "2025-04-30 10:00");
-insert into reservation(Reserved_by_userID,StartMoment) Values(2, "2025-05-03 08:00"); 
-*/
 
 CREATE TABLE translation (
     translationID VARCHAR(99) PRIMARY KEY,

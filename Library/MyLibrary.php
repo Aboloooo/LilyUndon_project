@@ -5,7 +5,7 @@ session_start();
 $host = 'localhost';
 $username = 'root';
 $password = '';
-$database = 'Don_Bosco';
+$database = 'Lily_Undon';
 $connection = mysqli_connect($host, $username, $password, $database);
 
 if (!isset($_SESSION["userLogin"])) {

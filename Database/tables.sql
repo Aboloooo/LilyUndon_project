@@ -13,7 +13,8 @@ insert into AccessLevel (level) values ("Residence");
 
 
 CREATE TABLE users (
-    UserID INT PRIMARY KEY AUTO_INCREMENT,
+    UserID INT PRIMARY KEY AUTO_INCREMENT,$
+    
     First_name VARCHAR(255),
     Last_name VARCHAR(255),
     social_security_number BIGINT NOT NULL,

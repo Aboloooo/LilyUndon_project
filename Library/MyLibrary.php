@@ -5,6 +5,8 @@ session_start();
 $host = 'localhost';
 $username = 'root';
 $password = '';
+$port = '3306';
+$certificate_file_path = '';
 $database = 'Lily_Undon';
 $connection = mysqli_connect($host, $username, $password, $database);
 

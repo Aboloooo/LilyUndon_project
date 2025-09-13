@@ -27,7 +27,7 @@ include_once("../Library/MyLibrary.php");
     $loginCheck->execute();
     $result = $loginCheck->get_result();
     if ($row = $result->fetch_assoc()) {
-      if (strtolower($row['status']) == 'active') {
+      if ($row['status'] == 1) {
         $username = $row['Username'];
         $password = $row['Password'];
         $level = $row['AccessLevelID'];

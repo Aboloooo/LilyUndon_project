@@ -69,7 +69,7 @@ if ($_SESSION['username'] && $_SESSION['username'] != 'Unknown') {
     $userIDstatResult = $userIDstat->get_result();
     $userStatus = $userIDstatResult->fetch_assoc();
 
-    if (!$userStatus || strtolower($userStatus['status']) != 'active') {
+    if (!$userStatus || strtolower($userStatus['status']) != 1) {
         echo "<script>alert('" . $t['session_terminated_status_changed'] . "')</script>";
         echo "<script>window.location.href = 'index.php' </script>";
         session_destroy();

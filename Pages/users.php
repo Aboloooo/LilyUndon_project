@@ -25,6 +25,16 @@ include_once("../Library/MyLibrary.php");
         $deleteUserStatment->execute();
     }
 
+    //Update user role
+    if (isset($_POST['Role'])) {
+        $newRole = $_POST['Role'];
+        $UserID = $_POST['ID'];
+
+        $updateRoleStat = $connection->prepare('UPDATE users set AccessLevelID = ? where UserID = ? ');
+        $updateRoleStat->bind_param('si', $newRole, $UserID);
+        $updateRoleStat->execute();
+    }
+
     // Changing user status
     if (isset($_POST['statusBtnChangeUserID'])) {
         $userID = $_POST['statusBtnChangeUserID'];
@@ -36,10 +46,10 @@ include_once("../Library/MyLibrary.php");
         $currentStatus = $resultOfStatus->fetch_assoc();
         // echo $currentStatus['status'];
 
-        $newStatus = ($currentStatus['status'] == 'pending') ? 'active' : 'pending';
+        $newStatus = ($currentStatus['status'] == 0) ? 1 : 0;
 
         $updateStatusStmt = $connection->prepare("UPDATE users SET status = ? WHERE UserID = ?");
-        $updateStatusStmt->bind_param('si', $newStatus, $userID);
+        $updateStatusStmt->bind_param('ii', $newStatus, $userID);
         $updateStatusStmt->execute();
     }
     ?>
@@ -77,10 +87,12 @@ include_once("../Library/MyLibrary.php");
                 $Password = '●●●●●●●●●●';
                 $Email = $row['Email'];
                 $Level = $row['AccessLevelID'];
-                $status = strtolower($row['status']);
+                $UserIsAdmin = ($Level == 1) ? true : false;
+                /* $status = strtolower($row['status']); */
+                $status = ($row['status'] == 0) ? "Pending" : "Active";
                 $mustChangePass = $row['user_must_change_password'];
 
-                $isActive = $status === 'active';
+                $isActive = $status === 'Active';
 
                 $btnStyle = $isActive
                     ? 'background-color: #28a745; color: #fff;'
@@ -100,10 +112,31 @@ include_once("../Library/MyLibrary.php");
                     <td><?= $UserN ?></td>
                     <td><?= $Password ?></td>
                     <td><?= $Email ?></td>
-                    <td><?= $Level == 1 ? 'Admin' : ' ' ?>
+                    <?php
+                    if ($UserIsAdmin) {
+                    ?>
+                        <td>Admin</td>
+                    <?php
+                    } else {
+                    ?>
+                        <td>
+                            <form method="Post" onsubmit="return confirm('Are you sure you want to make change?');">
+                                <input type="hidden" name="ID" value="<?= $UserID ?>">
+                                <select name="Role" <?= $AutoSubmition ?>>
+                                    <option value="2" <?= ($Level == 2) ? 'selected' : '' ?>>SecurityGuard</option>
+                                    <option value="3" <?= ($Level == 3) ? 'selected' : '' ?>>Residence</option>
+                                </select>
+
+                            </form>
+                        </td>
+                    <?php
+                    }
+                    ?>
+                    <!-- <td><?= $Level == 1 ? 'Admin' : ' ' ?>
                         <?= $Level == 2 ? 'SecurityGuard' : ' ' ?>
                         <?= $Level == 3 ? 'Residence' : ' ' ?>
-                    </td>
+                    </td> -->
+
                     <td><?php if ($mustChangePass == 1) {
                             echo $t['false'];
                         } else {

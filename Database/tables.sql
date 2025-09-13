@@ -21,7 +21,7 @@ CREATE TABLE users (
     Password VARCHAR(255) NOT NULL,
     Email VARCHAR(255) NOT NULL,
     AccessLevelID int NOT NULL,
-    status VARCHAR(50),
+    status BOOLEAN,
     user_must_change_password BOOLEAN,
     /* Zero is considered as false, nonzero values are considered as true. */
     FOREIGN KEY (AccessLevelID) REFERENCES AccessLevel(AccessLevelID) 

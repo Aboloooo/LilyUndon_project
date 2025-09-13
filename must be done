@@ -1,0 +1,13 @@
+account status could be boolean
+
+display who reserved a time slot, and something specific must be appeared to admin reservation view
+
+conceptional and logical model must be changed again cause of edited status attribute type 
+
+user role could be changable only by admin
+
+user shouldnt be able to set their privous pass as new one
+
+user level could be shown freindly 
+
+securityGard must be able to see next week time slot maximum

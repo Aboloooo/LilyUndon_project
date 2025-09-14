@@ -122,7 +122,7 @@ include_once("../Library/MyLibrary.php");
                         <td>
                             <form method="Post" onsubmit="return confirm('Are you sure you want to make change?');">
                                 <input type="hidden" name="ID" value="<?= $UserID ?>">
-                                <select name="Role" <?= $AutoSubmition ?>>
+                                <select name="Role" <?= $AutoSubmition ?> class="level">
                                     <option value="2" <?= ($Level == 2) ? 'selected' : '' ?>>SecurityGuard</option>
                                     <option value="3" <?= ($Level == 3) ? 'selected' : '' ?>>Residence</option>
                                 </select>
